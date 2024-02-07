@@ -29,7 +29,7 @@
 * Request Body
 ```json
 {
-	"number": "123456",
+	"ticket": "123456",
 	"price": 80,
 	"amount": 1
 }
@@ -37,7 +37,7 @@
 * Response Body
 ```json
 {
-	"number": "123456"
+	"ticket": "123456"
 }
 ```
 
@@ -50,7 +50,7 @@
 * Response Body
 ```json
 {
-	"numbers": ["000001","000002","123456"]
+	"tickets": ["000001","000002","123456"]
 }
 ```
 
@@ -90,7 +90,7 @@ sequenceDiagram
 * Response Body
 ```json
 {
-	"number": "000001",
+	"ticket": "000001",
 }
 ```
 
