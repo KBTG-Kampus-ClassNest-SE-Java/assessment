@@ -73,7 +73,7 @@
 	* ในฐานะผู้ใช้ ฉันต้องการดูรายการลอตเตอรี่ทั้งหมดที่เคยซื้อ
 #### Technical Details: EXP04
 * POST /users/:userId/lotteries
-* userId และ ticketId เป็นต่าที่ผู้ใช้ป้อนเข้ามา
+* userId และ ticketId เป็นค่าที่ผู้ใช้ป้อนเข้ามา
 * Response Body
 ```json
 {
@@ -88,7 +88,7 @@
 	* ในฐานะผู้ใช้ ฉันต้องการขายคืนลอตเตอรี่เพื่อได้เงินคืน
 #### Technical Details: EXP05
 * DELETE /users/:userId/lotteries/:ticketId
-* userId และ ticketId เป็นต่าที่ผู้ใช้ป้อนเข้ามา
+* userId และ ticketId เป็นค่าที่ผู้ใช้ป้อนเข้ามา
 * Response Body
 ```json
 {
