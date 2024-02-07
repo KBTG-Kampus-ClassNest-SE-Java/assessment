@@ -72,7 +72,7 @@
 	* As a user, I want to list all my lottery ticket So that I can see which one I have already bought and it cost
 	* ในฐานะผู้ใช้ ฉันต้องการดูรายการลอตเตอรี่ทั้งหมดที่เคยซื้อ
 #### Technical Details: EXP04
-* POST /users/:userId/lotteries
+* GET /users/:userId/lotteries
 * userId และ ticketId เป็นค่าที่ผู้ใช้ป้อนเข้ามา
 * Response Body
 ```json
