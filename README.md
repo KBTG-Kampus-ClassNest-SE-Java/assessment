@@ -26,6 +26,7 @@
 	* ในฐานะผู้ดูแลระบบ ฉันต้องการเพิ่มใบลอตเตอรี่ เพื่อที่จะสร้างคลังเก็บลอตเตอรี่
 #### Technical Details: EXP01
 * POST /admin/lotteries
+* ต้องยืนยันสิทธิ์การเข้าใช้งานด้วย basic authentication
 * Request Body
 ```json
 {
