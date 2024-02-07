@@ -12,8 +12,8 @@
 - ไม่ต้องกังวลเรื่องงวดของลอตเตอรี่
 
 ## Prerequisites
-* โปรเจคตั้งต้นคือ[โปรเจคนี้] (https://github.com/KBTG-Kampus-ClassNest-SE-Java/assessment) ตั้งเป็น public
-* กำหนดให้ส่งลิ้งค์คำตอบคือ github repository ที่เก็บโค้ดของคุณ `https://github.com/<your github name>/assessment`
+* โปรเจคตั้งต้นคือ[โปรเจคนี้] (https://github.com/KBTG-Kampus-ClassNest-SE-Java/assessment)
+* กำหนดให้ส่งลิ้งค์คำตอบคือ github repository ที่เก็บโค้ดของคุณ `https://github.com/<your github name>/assessment` ตั้งเป็น public
 * *จะต้อง* มีการใช้งาน PostgreSQL
 * *จะต้อง* มีการใช้งานสร้าง Table ชื่อ `lottery` เพื่อใช้จัดการกับลอตเตอรี่และ `user_ticket` เพื่อใช้เก็บรายการซื้อขายของผู้ใช้งาน
 * *จะต้อง* เปิดใช้งานได้ผ่าน port `8888`
