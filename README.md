@@ -59,7 +59,7 @@
 	* ในฐานะผู้ใช้ ฉันต้องการซื้อลอตเตอรี่ เพื่อที่จะได้ลุ้นถูกหวย
 #### Technical Details: EXP03
 * POST /users/:userId/lotteries/:ticketId
-* userId และ ticketId เป็นต่าที่ผู้ใช้ป้อนเข้ามา
+* userId และ ticketId เป็นค่าที่ผู้ใช้ป้อนเข้ามา
 * Response Body
 ```json
 {
