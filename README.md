@@ -72,15 +72,13 @@
 	* As a user, I want to list all my lottery ticket So that I can see which one I have already bought and it cost
 	* ในฐานะผู้ใช้ ฉันต้องการดูรายการลอตเตอรี่ทั้งหมดที่เคยซื้อ
 #### Technical Details: EXP04
-* GET /users/:userId/lotteries
-* userId และ ticketId เป็นค่าที่ผู้ใช้ป้อนเข้ามา
-* Response Body
-```json
-{
-	"numbers": ["000001","000002","123456"],
-	"count": 3,
-	"cost": 240
-}
+```mermaid
+sequenceDiagram
+    Client->>+API Server: call GET /users/:userId/lotteries
+    API Server->>+Database: get all lottery ticket by user
+    API Server->>+API Server: calculate total price
+    API Server->>+API Server: count of total lottery ticket
+    API Server-->>Client: return JSON body <br/> tickets = list of ticket e.g.  ["000001","000002","123456"] <br/> count = number <br/> cost = number
 ```
 
 ### Story: EXP05
