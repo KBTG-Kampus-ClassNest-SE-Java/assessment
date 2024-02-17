@@ -8,6 +8,7 @@ public class PosttestApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PosttestApplication.class, args);
+		System.out.println("START API SUCCESS!!!");
 	}
 
 }
