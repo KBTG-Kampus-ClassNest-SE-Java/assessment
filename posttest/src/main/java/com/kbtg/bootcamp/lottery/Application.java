@@ -1,13 +1,11 @@
-package com.kbtg.bootcamp.posttest;
+package com.kbtg.bootcamp.lottery;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PosttestApplication {
-
+public class Application {
 	public static void main(String[] args) {
-		SpringApplication.run(PosttestApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
-
 }
