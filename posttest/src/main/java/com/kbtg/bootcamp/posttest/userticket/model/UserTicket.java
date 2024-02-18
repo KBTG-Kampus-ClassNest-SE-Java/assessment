@@ -1,7 +1,6 @@
 package com.kbtg.bootcamp.posttest.userticket.model;
 
 import com.kbtg.bootcamp.posttest.lottery.model.Lottery;
-import com.kbtg.bootcamp.posttest.user.model.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,9 +19,8 @@ public class UserTicket {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    private User user;
+    @Column(name = "user_id")
+    private String userId;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ticket_id", referencedColumnName = "ticket_id")

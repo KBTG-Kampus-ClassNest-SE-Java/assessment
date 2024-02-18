@@ -19,19 +19,18 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(
-        prePostEnabled = true,
-        securedEnabled = true,
-        jsr250Enabled = true)
 public class CustomWebSecurityConfigurerAdapter {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests((authorize) -> {
-            authorize.anyRequest().authenticated();
-        }).httpBasic(Customizer.withDefaults());
+                .authorizeHttpRequests(
+                        (authorize) -> {
+                            authorize
+                                    .requestMatchers("/admin/lotteries").hasRole("ADMIN")
+                                    .anyRequest().permitAll();
+                        }).httpBasic(Customizer.withDefaults());
         return http.build();
     }
 
@@ -41,16 +40,12 @@ public class CustomWebSecurityConfigurerAdapter {
         UserDetails admin = User.builder()
                 .username("admin")
                 .password(passwordEncoder().encode("password"))
-                .roles("ADMIN", "USER")
+                .roles("ADMIN")
                 .build();
 
-        UserDetails user = User.builder()
-                .username("user")
-                .password(passwordEncoder().encode("password"))
-                .roles("USER")
-                .build();
-        return new InMemoryUserDetailsManager(admin, user);
+        return new InMemoryUserDetailsManager(admin);
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

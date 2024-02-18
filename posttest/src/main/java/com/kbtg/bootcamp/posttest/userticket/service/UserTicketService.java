@@ -4,8 +4,6 @@ import com.kbtg.bootcamp.posttest.lottery.dto.TicketDto;
 import com.kbtg.bootcamp.posttest.lottery.exception.LotteryUnavailableException;
 import com.kbtg.bootcamp.posttest.lottery.model.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.repository.LotteryRepository;
-import com.kbtg.bootcamp.posttest.user.model.User;
-import com.kbtg.bootcamp.posttest.user.repository.UserRepository;
 import com.kbtg.bootcamp.posttest.userticket.dto.UserTickerSummaryDto;
 import com.kbtg.bootcamp.posttest.userticket.dto.UserTicketDto;
 import com.kbtg.bootcamp.posttest.userticket.model.UserTicket;
@@ -20,19 +18,14 @@ public class UserTicketService {
 
     private final UserTicketRepository userTicketRepository;
     private final LotteryRepository lotteryRepository;
-    private final UserRepository userRepository;
 
-    public UserTicketService(UserTicketRepository userTicketRepository, LotteryRepository lotteryRepository, UserRepository userRepository) {
+    public UserTicketService(UserTicketRepository userTicketRepository, LotteryRepository lotteryRepository) {
         this.userTicketRepository = userTicketRepository;
         this.lotteryRepository = lotteryRepository;
-        this.userRepository = userRepository;
     }
 
     public UserTicketDto buyLotteries(String userId, String ticketId) {
         UserTicket userTicket = new UserTicket();
-
-        User user = userRepository.findById(userId).get();
-        user.setUserId(userId);
 
 
         Lottery lottery = lotteryRepository.findById(ticketId).get();
@@ -41,7 +34,7 @@ public class UserTicketService {
         }
         lottery.setTicket(ticketId);
 
-        userTicket.setUser(user);
+        userTicket.setUserId(userId);
         userTicket.setLottery(lottery);
 
         UserTicket saved = userTicketRepository.save(userTicket);
@@ -53,10 +46,8 @@ public class UserTicketService {
     public UserTickerSummaryDto getLotteriesByUserId(String userId) {
         UserTickerSummaryDto userTickerSummaryDto = new UserTickerSummaryDto();
 
-        User user = userRepository.findById(userId).get();
-        user.setUserId(userId);
 
-        List<UserTicket> byUser = userTicketRepository.findByUser(user);
+        List<UserTicket> byUser = userTicketRepository.findByUserId(userId);
         List<String> tickets = byUser.stream().map(b -> b.getLottery().getTicket()).collect(Collectors.toList());
 
         userTickerSummaryDto.setTickets(tickets);
@@ -77,17 +68,14 @@ public class UserTicketService {
     public TicketDto deleteLotteriesByUserId(String userId, String ticketId) {
         UserTicket userTicket = new UserTicket();
 
-        User user = userRepository.findById(userId).get();
-        user.setUserId(userId);
-
         Lottery lottery = lotteryRepository.findById(ticketId).get();
         lottery.setTicket(ticketId);
 
-        userTicket.setUser(user);
+        userTicket.setUserId(userId);
         userTicket.setLottery(lottery);
 
         try {
-            List<UserTicket> byUser = userTicketRepository.findByUser(user);
+            List<UserTicket> byUser = userTicketRepository.findByUserId(userId);
             if(byUser.size() > 0) {
                 userTicketRepository.delete(byUser.get(0));
                 lottery.setAmount(1);

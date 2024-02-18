@@ -3,14 +3,10 @@ package com.kbtg.bootcamp.posttest.userticket.controller;
 import com.kbtg.bootcamp.posttest.lottery.dto.TicketDto;
 import com.kbtg.bootcamp.posttest.userticket.dto.UserTickerSummaryDto;
 import com.kbtg.bootcamp.posttest.userticket.dto.UserTicketDto;
-import com.kbtg.bootcamp.posttest.userticket.model.UserTicket;
 import com.kbtg.bootcamp.posttest.userticket.service.UserTicketService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
 
 @RestController
 public class UserTicketController {
