@@ -1,6 +1,7 @@
 package com.kbtg.bootcamp.posttest.lottery.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,11 +14,10 @@ import lombok.Setter;
 @Entity
 @Table(name = "lottery")
 public class Lottery {
-    @Id
-    @GeneratedValue()
-    private Long id;
 
-    @Column(length = 6)
+    @Id
+    @Column(name = "ticket_id", length = 6)
+    @Size(min = 10, max = 10)
     private String ticket;
 
     private Integer price;

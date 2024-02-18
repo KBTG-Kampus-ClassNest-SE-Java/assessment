@@ -1,0 +1,41 @@
+package com.kbtg.bootcamp.posttest.userticket.service;
+
+import com.kbtg.bootcamp.posttest.lottery.model.Lottery;
+import com.kbtg.bootcamp.posttest.lottery.repository.LotteryRepository;
+import com.kbtg.bootcamp.posttest.user.model.User;
+import com.kbtg.bootcamp.posttest.user.repository.UserRepository;
+import com.kbtg.bootcamp.posttest.userticket.dto.UserTicketDto;
+import com.kbtg.bootcamp.posttest.userticket.model.UserTicket;
+import com.kbtg.bootcamp.posttest.userticket.repository.UserTicketRepository;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserTicketService {
+
+    private final UserTicketRepository userTicketRepository;
+    private final LotteryRepository lotteryRepository;
+    private final UserRepository userRepository;
+
+    public UserTicketService(UserTicketRepository userTicketRepository, LotteryRepository lotteryRepository, UserRepository userRepository) {
+        this.userTicketRepository = userTicketRepository;
+        this.lotteryRepository = lotteryRepository;
+        this.userRepository = userRepository;
+    }
+
+    public UserTicketDto buyLotteries(String userId, String ticketId) {
+        UserTicket userTicket = new UserTicket();
+        // find by userId
+        // find by ticketId
+        User user = userRepository.findById(userId).get();
+        user.setUserId(userId);
+
+        Lottery lottery = lotteryRepository.findById(ticketId).get();
+        lottery.setTicket(ticketId);
+
+        userTicket.setUser(user);
+        userTicket.setLottery(lottery);
+
+        UserTicket saved = userTicketRepository.save(userTicket);
+        return new UserTicketDto(saved.getId());
+    }
+}
