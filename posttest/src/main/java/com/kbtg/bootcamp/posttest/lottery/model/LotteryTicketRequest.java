@@ -17,7 +17,7 @@ public class LotteryTicketRequest {
     @Min(value = 1, message = "price should not be less than 1")
     private Integer price;
 
-    @NotNull(message = "Amount is required")
+    @NotNull(message = "amount is required")
     @Min(value = 1, message = "amount should not be less than 1")
     private Integer amount;
 }
