@@ -38,4 +38,19 @@ class LotteryControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.ticket").value(lotteryTicketResponse.ticket()));
     }
 
+    @Test
+    public void testAddLotteryTicketButInternalServerError() throws Exception {
+        String requestJson = "{\"ticket\": \"123456\", \"price\": 80, \"amount\": 1}";
+
+        when(lotteryService.createLotteryTicket(any(LotteryTicketRequest.class))).thenThrow(new RuntimeException());
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/lotteries")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(MockMvcResultMatchers.status().isInternalServerError())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("An internal error occurred when creating a lottery ticket"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.httpStatus").value("INTERNAL_SERVER_ERROR"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.dateTime").exists());
+    }
+
 }
