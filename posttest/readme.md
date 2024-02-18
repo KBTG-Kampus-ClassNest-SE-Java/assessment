@@ -16,7 +16,7 @@
 * [x] จะต้อง เปิดใช้งานได้ผ่าน port 8888
 * [ ] จะต้อง เรียกใช้ Database URL ผ่านทาง Environment variable ชื่อ DATABASE_URL ได้
 
-### Story: EXP01
+### EXP01
 #### default
 * [x] POST /admin/lotteries
 * [x] ต้องยืนยันสิทธิ์การเข้าใช้งานด้วย basic authentication
@@ -25,14 +25,19 @@
 #### extra
 * [x] login admin and user (inmemory)
 * [x] admin create lottery and save to postgres database
-### Story: EXP02
+
+### EXP02
 #### default
 * [x] GET /lotteries
 * [x] Response Body
 #### extra
 * [ ] admin/ user read lotteries all from postgres database
 
-### Technical Details: EXP03
+### EXP03
 * [x] POST /users/:userId/lotteries/:ticketId
 * [x] userId และ ticketId เป็นค่าที่ผู้ใช้ป้อนเข้ามา
+* [x] Response Body
+
+### EXP04
+* [x] ในฐานะผู้ใช้ ฉันต้องการดูรายการลอตเตอรี่ทั้งหมดที่เคยซื้อ
 * [x] Response Body
