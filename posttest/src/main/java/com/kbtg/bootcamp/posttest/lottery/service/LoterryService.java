@@ -6,6 +6,8 @@ import com.kbtg.bootcamp.posttest.lottery.model.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.repository.LotteryRepository;
 import org.springframework.stereotype.Service;
 
+import javax.management.RuntimeErrorException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -16,7 +18,12 @@ public class LoterryService {
     }
 
     public TicketDto save(Lottery lottery) {
-        return new TicketDto(lotteryRepository.save(lottery).getTicket());
+        Optional<Lottery> optional = lotteryRepository.findById(lottery.getTicket());
+        if(optional.isPresent()) {
+            throw new RuntimeException("Duplicate lottery");
+        }else {
+            return new TicketDto(lotteryRepository.save(lottery).getTicket());
+        }
     }
 
     public TicketsDto findAll() {

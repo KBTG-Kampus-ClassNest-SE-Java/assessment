@@ -79,6 +79,7 @@ public class UserTicketService {
             if(byUser.size() > 0) {
                 userTicketRepository.delete(byUser.get(0));
                 lottery.setAmount(1);
+                lotteryRepository.save(lottery);
                 return new TicketDto(ticketId);
             }else{
                 return null;
