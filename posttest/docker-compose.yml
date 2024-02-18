@@ -16,7 +16,9 @@ services:
       - spring-boot-postgres
 
   lottery-app:
-    build: .
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     environment:
       SERVER_PORT: 8888
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/lottery
