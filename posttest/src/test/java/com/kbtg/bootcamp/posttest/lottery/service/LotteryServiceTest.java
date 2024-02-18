@@ -42,7 +42,7 @@ public class LotteryServiceTest {
             "100000, 100, 100",
     })
     @DisplayName("When create a new valid lottery ticket should return valid ticket number")
-    public void testCreateLotteryTicket(String ticketNumber, int price, int amount) {
+    void testCreateLotteryTicket(String ticketNumber, int price, int amount) {
         lotteryTicketRequest.setTicket(ticketNumber);
         lotteryTicketRequest.setPrice(price);
         lotteryTicketRequest.setAmount(amount);

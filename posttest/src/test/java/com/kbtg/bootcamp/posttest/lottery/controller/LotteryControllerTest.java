@@ -32,7 +32,7 @@ class LotteryControllerTest {
     @Test
     @WithMockUser(username = "admin", roles = "ADMIN")
     @DisplayName("When add lottery ticket number 123456 should return ticket: 123456")
-    public void testAddLotteryTicket() throws Exception {
+    void testAddLotteryTicket() throws Exception {
         String requestJson = "{\"ticket\": \"123456\", \"price\": 80, \"amount\": 1}";
         LotteryTicketResponse lotteryTicketResponse = new LotteryTicketResponse("123456");
 
@@ -48,7 +48,7 @@ class LotteryControllerTest {
     @Test
     @WithMockUser(username = "admin", roles = "ADMIN")
     @DisplayName("When add lottery ticket but encounter internal server error should return error message")
-    public void testAddLotteryTicketButInternalServerError() throws Exception {
+    void testAddLotteryTicketButInternalServerError() throws Exception {
         String requestJson = "{\"ticket\": \"123456\", \"price\": 80, \"amount\": 1}";
 
         when(lotteryService.createLotteryTicket(any(LotteryTicketRequest.class))).thenThrow(new RuntimeException());
@@ -71,7 +71,7 @@ class LotteryControllerTest {
             "1234567, 80, 1",
     })
     @DisplayName("When add invalid ticket number should return ticket number must be 6 digits")
-    public void testAddLotteryTicketWithInvalidTicketValue(String ticketNumber, int price, int amount) throws Exception {
+    void testAddLotteryTicketWithInvalidTicketValue(String ticketNumber, int price, int amount) throws Exception {
         String requestJson = String.format("{\"ticket\": \"%s\", \"price\": %d, \"amount\": %d}", ticketNumber, price, amount);
 
         when(lotteryService.createLotteryTicket(any(LotteryTicketRequest.class))).thenThrow(new RuntimeException());
@@ -87,7 +87,7 @@ class LotteryControllerTest {
     @Test
     @WithMockUser(username = "admin", roles = "ADMIN")
     @DisplayName("When add ticket with 0 price should return price should not be less than 1")
-    public void testAddLotteryTicketWithZeroPriceShouldReturnError() throws Exception {
+    void testAddLotteryTicketWithZeroPriceShouldReturnError() throws Exception {
         String requestJson = "{\"ticket\": \"123456\", \"price\": 0, \"amount\": 1}";
 
         when(lotteryService.createLotteryTicket(any(LotteryTicketRequest.class))).thenThrow(new RuntimeException());
@@ -103,7 +103,7 @@ class LotteryControllerTest {
     @Test
     @WithMockUser(username = "admin", roles = "ADMIN")
     @DisplayName("When add ticket with 0 amount should return amount should not be less than 1")
-    public void testAddLotteryTicketWithZeroAmountShouldReturnError() throws Exception {
+    void testAddLotteryTicketWithZeroAmountShouldReturnError() throws Exception {
         String requestJson = "{\"ticket\": \"123456\", \"price\": 1, \"amount\": 0}";
 
         when(lotteryService.createLotteryTicket(any(LotteryTicketRequest.class))).thenThrow(new RuntimeException());
@@ -118,7 +118,7 @@ class LotteryControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = "ADMIN")
-    public void testAddLotteryTicketWithoutTicketValue() throws Exception {
+    void testAddLotteryTicketWithoutTicketValue() throws Exception {
         String requestJson = "{\"price\": 80, \"amount\": 1}";
 
         when(lotteryService.createLotteryTicket(any(LotteryTicketRequest.class))).thenThrow(new RuntimeException());
@@ -133,7 +133,7 @@ class LotteryControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = "ADMIN")
-    public void testAddLotteryTicketWithoutPriceValue() throws Exception {
+    void testAddLotteryTicketWithoutPriceValue() throws Exception {
         String requestJson = "{\"ticket\": \"123456\", \"amount\": 1}";
 
         when(lotteryService.createLotteryTicket(any(LotteryTicketRequest.class))).thenThrow(new RuntimeException());
@@ -148,7 +148,7 @@ class LotteryControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = "ADMIN")
-    public void testAddLotteryTicketWithoutAmountValue() throws Exception {
+    void testAddLotteryTicketWithoutAmountValue() throws Exception {
         String requestJson = "{\"ticket\": \"123456\", \"price\": 1}";
 
         when(lotteryService.createLotteryTicket(any(LotteryTicketRequest.class))).thenThrow(new RuntimeException());
