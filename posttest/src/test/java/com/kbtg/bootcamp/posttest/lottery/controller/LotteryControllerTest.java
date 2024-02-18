@@ -1,5 +1,6 @@
 package com.kbtg.bootcamp.posttest.lottery.controller;
 
+import com.kbtg.bootcamp.posttest.lottery.model.LotteryTicketListResponse;
 import com.kbtg.bootcamp.posttest.lottery.model.LotteryTicketRequest;
 import com.kbtg.bootcamp.posttest.lottery.model.LotteryTicketResponse;
 import com.kbtg.bootcamp.posttest.lottery.service.LotteryService;
@@ -16,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -159,6 +161,55 @@ class LotteryControllerTest {
                 .content(requestJson))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.amount").value("amount is required"));
+    }
+
+    @Test
+    @WithMockUser(username = "user", roles = "USER")
+    @DisplayName("When have 2 lottery tickets, get lotteries should return 2 lottery tickets")
+    void testGetTwoLotteryTickets() throws Exception {
+        LotteryTicketListResponse lotteryTicketListResponse = new LotteryTicketListResponse(List.of("123456", "000000"));
+
+        when(lotteryService.getLotteryTicketList())
+                .thenReturn(new LotteryTicketListResponse(List.of("123456", "000000")));
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/lotteries")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.tickets").isArray())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.tickets.length()").value(lotteryTicketListResponse.tickets().size()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.tickets[0]").value(lotteryTicketListResponse.tickets().get(0)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.tickets[1]").value(lotteryTicketListResponse.tickets().get(1)));
+    }
+
+    @Test
+    @WithMockUser(username = "user", roles = "USER")
+    @DisplayName("When not have lottery ticket, get lotteries should return empty")
+    void testGetZeroTickets() throws Exception {
+        when(lotteryService.getLotteryTicketList())
+                .thenReturn(new LotteryTicketListResponse(List.of()));
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/lotteries")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.tickets").isArray())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.tickets.length()").value(0))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.tickets").isEmpty());
+    }
+
+    @Test
+    @WithMockUser(username = "user", roles = "USER")
+    @DisplayName("When add lottery ticket but encounter internal server error should return error message")
+    void testGetAllLotteryTicketsButInternalServerError() throws Exception {
+
+        when(lotteryService.getLotteryTicketList()).thenThrow(new RuntimeException());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/lotteries")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isInternalServerError())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("An internal error occurred when getting lottery ticket list"));
     }
 
 }
