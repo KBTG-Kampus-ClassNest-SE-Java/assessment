@@ -23,6 +23,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) ->
                         requests
                                 .requestMatchers("/admin/**").authenticated()
+                                .anyRequest().permitAll()
                 )
                 .httpBasic(withDefaults());
 

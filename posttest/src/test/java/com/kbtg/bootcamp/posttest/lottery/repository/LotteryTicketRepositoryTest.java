@@ -16,7 +16,7 @@ public class LotteryTicketRepositoryTest {
     private LotteryTicketRepository lotteryTicketRepository;
 
     @Test
-    public void testSaveLotteryTicket() {
+    void testSaveLotteryTicket() {
         LotteryTicket ticket = new LotteryTicket();
         ticket.setTicket("1234562");
         ticket.setPrice(1);

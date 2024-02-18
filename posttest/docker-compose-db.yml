@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  postgres-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: lottery
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - ./src/main/resources/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    restart: on-failure

@@ -1,11 +1,15 @@
 package com.kbtg.bootcamp.posttest.lottery.service;
 
 import com.kbtg.bootcamp.posttest.lottery.model.LotteryTicket;
+import com.kbtg.bootcamp.posttest.lottery.model.LotteryTicketListResponse;
 import com.kbtg.bootcamp.posttest.lottery.model.LotteryTicketRequest;
 import com.kbtg.bootcamp.posttest.lottery.model.LotteryTicketResponse;
 import com.kbtg.bootcamp.posttest.lottery.repository.LotteryTicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LotteryService {
@@ -26,5 +30,15 @@ public class LotteryService {
         LotteryTicket savedTicket = lotteryTicketRepository.save(ticket);
 
         return new LotteryTicketResponse(savedTicket.getTicket());
+    }
+
+    public LotteryTicketListResponse getLotteryTicketList() {
+        List<String> ticketNumbers = lotteryTicketRepository
+                .findAll()
+                .stream()
+                .map(LotteryTicket::getTicket)
+                .collect(Collectors.toList());
+
+        return new LotteryTicketListResponse(ticketNumbers);
     }
 }
