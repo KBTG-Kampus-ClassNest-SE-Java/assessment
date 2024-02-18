@@ -1,6 +1,18 @@
 version: '3'
 
 services:
+  app:
+    build: .
+    restart: always
+    ports:
+      - "8888:8888"
+    networks:
+      - posttest-net
+    environment:
+      - spring.datasource.url=jdbc:postgresql://postgres:5432/lottery
+    depends_on:
+      - postgres
+
   postgres:
     image: postgres:16.0
     environment:
@@ -11,6 +23,9 @@ services:
     #      - ./db-init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"
-
+    networks:
+      - posttest-net
+networks:
+  posttest-net:
 volumes:
   pgdata:
