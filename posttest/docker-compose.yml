@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  postgres:
+  postgres-db:
     image: postgres:latest
     environment:
       POSTGRES_DB: lottery
@@ -11,6 +11,26 @@ services:
       - ./src/main/resources/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"
+    restart: on-failure
+    networks:
+      - spring-boot-postgres
 
-volumes:
-  pddata:
+  lottery-app:
+    build: .
+    environment:
+      SERVER_PORT: 8888
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/lottery
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+    ports:
+      - "8888:8888"
+    depends_on:
+      - postgres-db
+    restart: on-failure
+    networks:
+      - spring-boot-postgres
+
+networks:
+  spring-boot-postgres:
