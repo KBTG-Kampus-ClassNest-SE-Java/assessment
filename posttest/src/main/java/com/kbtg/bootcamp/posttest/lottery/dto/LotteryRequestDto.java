@@ -5,12 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TicketsDto {
-    private List<String> tickets;
+public class LotteryRequestDto {
+    private String ticket;
+    private Integer price;
+    private Integer amount;
 }

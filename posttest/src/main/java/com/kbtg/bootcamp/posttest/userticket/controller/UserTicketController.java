@@ -1,6 +1,6 @@
 package com.kbtg.bootcamp.posttest.userticket.controller;
 
-import com.kbtg.bootcamp.posttest.lottery.dto.TicketDto;
+import com.kbtg.bootcamp.posttest.lottery.dto.TicketResponseDto;
 import com.kbtg.bootcamp.posttest.userticket.dto.UserTickerSummaryDto;
 import com.kbtg.bootcamp.posttest.userticket.dto.UserTicketDto;
 import com.kbtg.bootcamp.posttest.userticket.service.UserTicketService;
@@ -28,7 +28,7 @@ public class UserTicketController {
     }
 
     @DeleteMapping("/users/{userId}/lotteries/{ticketId}")
-    public ResponseEntity<TicketDto> deleteLotteriesByUserId(@PathVariable String userId, @PathVariable String ticketId) {
+    public ResponseEntity<TicketResponseDto> deleteLotteriesByUserId(@PathVariable String userId, @PathVariable String ticketId) {
         return new ResponseEntity<>(userTicketService.deleteLotteriesByUserId(userId, ticketId), HttpStatus.OK);
     }
 }

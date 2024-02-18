@@ -1,8 +1,8 @@
 package com.kbtg.bootcamp.posttest.lottery.controller;
 
-import com.kbtg.bootcamp.posttest.lottery.dto.TicketDto;
-import com.kbtg.bootcamp.posttest.lottery.dto.TicketsDto;
-import com.kbtg.bootcamp.posttest.lottery.model.Lottery;
+import com.kbtg.bootcamp.posttest.lottery.dto.LotteryRequestDto;
+import com.kbtg.bootcamp.posttest.lottery.dto.TicketListResponseDto;
+import com.kbtg.bootcamp.posttest.lottery.dto.TicketResponseDto;
 import com.kbtg.bootcamp.posttest.lottery.service.LoterryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +20,13 @@ public class LotteryController {
     // Create
     @PostMapping("/admin/lotteries")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<TicketDto> create(@RequestBody Lottery lottery) {
-        return new ResponseEntity<>(new TicketDto(loterryService.save(lottery).getTicket()), HttpStatus.OK);
+    public ResponseEntity<TicketResponseDto> create(@RequestBody LotteryRequestDto lotteryRequestDto) {
+        return new ResponseEntity<>(new TicketResponseDto(loterryService.save(lotteryRequestDto).getTicket()), HttpStatus.OK);
     }
 
     // Read
     @GetMapping("/lotteries")
-    public ResponseEntity<TicketsDto> read() {
+    public ResponseEntity<TicketListResponseDto> read() {
         return new ResponseEntity<>(loterryService.findAll(), HttpStatus.OK);
     }
 }

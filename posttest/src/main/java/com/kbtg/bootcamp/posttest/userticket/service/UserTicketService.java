@@ -1,6 +1,6 @@
 package com.kbtg.bootcamp.posttest.userticket.service;
 
-import com.kbtg.bootcamp.posttest.lottery.dto.TicketDto;
+import com.kbtg.bootcamp.posttest.lottery.dto.TicketResponseDto;
 import com.kbtg.bootcamp.posttest.lottery.exception.LotteryUnavailableException;
 import com.kbtg.bootcamp.posttest.lottery.model.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.repository.LotteryRepository;
@@ -29,7 +29,7 @@ public class UserTicketService {
 
 
         Lottery lottery = lotteryRepository.findById(ticketId).get();
-        if(lottery.getAmount() == 0) {
+        if (lottery.getAmount() == 0) {
             throw new LotteryUnavailableException("Lottery Unavailable Exception");
         }
         lottery.setTicket(ticketId);
@@ -59,32 +59,25 @@ public class UserTicketService {
 
     private static Integer calculateTotalPrice(List<UserTicket> byUser) {
         Integer sum = 0;
-        for(UserTicket ticket : byUser) {
+        for (UserTicket ticket : byUser) {
             sum += ticket.getLottery().getPrice();
         }
         return sum;
     }
 
-    public TicketDto deleteLotteriesByUserId(String userId, String ticketId) {
-        UserTicket userTicket = new UserTicket();
-
-        Lottery lottery = lotteryRepository.findById(ticketId).get();
-        lottery.setTicket(ticketId);
-
-        userTicket.setUserId(userId);
-        userTicket.setLottery(lottery);
-
+    public TicketResponseDto deleteLotteriesByUserId(String userId, String ticketId) {
         try {
             List<UserTicket> byUser = userTicketRepository.findByUserId(userId);
-            if(byUser.size() > 0) {
+            if (byUser.size() > 0) {
                 userTicketRepository.delete(byUser.get(0));
+                Lottery lottery = lotteryRepository.findById(ticketId).get();
                 lottery.setAmount(1);
                 lotteryRepository.save(lottery);
-                return new TicketDto(ticketId);
-            }else{
+                return new TicketResponseDto(ticketId);
+            } else {
                 return null;
             }
-        }catch(Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }

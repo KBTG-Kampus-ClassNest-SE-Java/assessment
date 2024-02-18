@@ -7,8 +7,8 @@ services:
       POSTGRES_DB: lottery
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-#    volumes:
-#      - ./db-init.sql:/docker-entrypoint-initdb.d/init.sql
+    #    volumes:
+    #      - ./db-init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"
 
