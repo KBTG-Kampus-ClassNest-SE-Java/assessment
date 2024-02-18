@@ -1,0 +1,101 @@
+databaseChangeLog:
+  - changeSet:
+      id: create user table
+      author: siwakon.dev
+      changes:
+        - createTable:
+            tableName: user
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  incrementBy: 1
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: username
+                  type: varchar
+                  constraints:
+                    unique: true
+                    uniqueConstraintName: username_unique
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: created_date
+                  type: datetime
+              - column:
+                  name: modified_date
+                  type: timestamp
+  - changeSet:
+      id: create lottery table
+      author: siwakon.dev
+      changes:
+        - createTable:
+            tableName: lottery
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  incrementBy: 1
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: ticket
+                  type: varchar(6)
+                  constraints:
+                    unique: true
+                    uniqueConstraintName: ticket_unique
+                    nullable: false
+              - column:
+                  name: price
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: int
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: create user_ticket table
+      author: siwakon.dev
+      changes:
+        - createTable:
+            tableName: user_ticket
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  incrementBy: 1
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: user_ticket_user_id_fk
+                    references: user(id)
+              - column:
+                  name: lottery_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: user_ticket_lottery_id_fk
+                    references: lottery(id)
+
