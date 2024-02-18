@@ -1,5 +1,7 @@
 package com.kbtg.bootcamp.posttest.userticket.service;
 
+import com.kbtg.bootcamp.posttest.lottery.dto.TicketDto;
+import com.kbtg.bootcamp.posttest.lottery.exception.LotteryUnavailableException;
 import com.kbtg.bootcamp.posttest.lottery.model.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.repository.LotteryRepository;
 import com.kbtg.bootcamp.posttest.user.model.User;
@@ -32,13 +34,19 @@ public class UserTicketService {
         User user = userRepository.findById(userId).get();
         user.setUserId(userId);
 
+
         Lottery lottery = lotteryRepository.findById(ticketId).get();
+        if(lottery.getAmount() == 0) {
+            throw new LotteryUnavailableException("Lottery Unavailable Exception");
+        }
         lottery.setTicket(ticketId);
 
         userTicket.setUser(user);
         userTicket.setLottery(lottery);
 
         UserTicket saved = userTicketRepository.save(userTicket);
+        lottery.setAmount(0);
+        lotteryRepository.save(lottery);
         return new UserTicketDto(saved.getId());
     }
 
@@ -66,4 +74,29 @@ public class UserTicketService {
         return sum;
     }
 
+    public TicketDto deleteLotteriesByUserId(String userId, String ticketId) {
+        UserTicket userTicket = new UserTicket();
+
+        User user = userRepository.findById(userId).get();
+        user.setUserId(userId);
+
+        Lottery lottery = lotteryRepository.findById(ticketId).get();
+        lottery.setTicket(ticketId);
+
+        userTicket.setUser(user);
+        userTicket.setLottery(lottery);
+
+        try {
+            List<UserTicket> byUser = userTicketRepository.findByUser(user);
+            if(byUser.size() > 0) {
+                userTicketRepository.delete(byUser.get(0));
+                lottery.setAmount(1);
+                return new TicketDto(ticketId);
+            }else{
+                return null;
+            }
+        }catch(Exception e) {
+            return null;
+        }
+    }
 }

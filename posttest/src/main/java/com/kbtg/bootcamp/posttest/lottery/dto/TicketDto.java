@@ -10,5 +10,5 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TicketDto {
-    private String tickets;
+    private String ticket;
 }
