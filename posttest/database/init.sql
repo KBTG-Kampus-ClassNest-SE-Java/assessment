@@ -2,8 +2,7 @@ DROP TABLE IF EXISTS lottery;
 DROP TABLE IF EXISTS user_ticket;
 
 CREATE TABLE lottery (
-    ticket_id SERIAL PRIMARY KEY,
-    ticket_number VARCHAR(6) NOT NULL,
+    ticket_number VARCHAR(6) NOT NULL PRIMARY KEY,
     price DECIMAL NOT NULL,
     amount_available INT NOT NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT (NOW())
@@ -11,10 +10,11 @@ CREATE TABLE lottery (
 
 CREATE TABLE user_ticket (
     purchase_id SERIAL PRIMARY KEY,
+    ticket_number VARCHAR(6) NOT NULL,
     user_id VARCHAR(10) NOT NULL,
     ticket_id INT NOT NULL,
     purchase_date TIMESTAMP WITHOUT TIME ZONE DEFAULT (NOW()),
-    FOREIGN KEY (ticket_id) REFERENCES lottery(ticket_id)
+    FOREIGN KEY (ticket_number) REFERENCES lottery(ticket_number)
 );
 
 CREATE INDEX idx_ticket_number ON lottery(ticket_number);

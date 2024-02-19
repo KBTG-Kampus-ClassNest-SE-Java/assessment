@@ -10,9 +10,8 @@ import java.util.List;
 @Entity
 @Table(name = "lottery")
 public class Lottery {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer ticketId;
     @Column(name = "ticket_number")
     private String ticketNumber;
     @Column(name = "price")
@@ -29,13 +28,6 @@ public class Lottery {
         this.ticketAmount = ticketAmount;
     }
 
-    public Integer getTicketId() {
-        return ticketId;
-    }
-
-    public void setTicketId(Integer ticketId) {
-        this.ticketId = ticketId;
-    }
 
     public String getTicketNumber() {
         return ticketNumber;
