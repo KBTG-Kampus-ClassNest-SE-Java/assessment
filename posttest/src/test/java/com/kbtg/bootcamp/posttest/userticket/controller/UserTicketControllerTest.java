@@ -27,6 +27,7 @@ import static org.mockito.Mockito.when;
 class UserTicketControllerTest {
     public static final String TICKET = "000001";
     public static final String USER_ID = "0881234567";
+    public static final String USER_ID_INVALID = "abcdefghij";
     @Autowired
     private UserTicketController userTicketController;
 
@@ -53,7 +54,6 @@ class UserTicketControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.content().string("{\"tickets\":[\"000001\"],\"count\":1,\"cost\":80}"));
     }
-
 
     @Test
     @DisplayName("should return ticket when delete success")

@@ -11,6 +11,7 @@ import com.kbtg.bootcamp.posttest.userticket.repository.UserTicketRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,10 +28,17 @@ public class UserTicketService {
     public UserTicketDto buyLotteries(String userId, String ticketId) {
         UserTicket userTicket = new UserTicket();
 
+        Optional<Lottery> optional = lotteryRepository.findById(ticketId);
+        Lottery lottery = null;
 
-        Lottery lottery = lotteryRepository.findById(ticketId).get();
-        if (lottery.getAmount() == 0) {
+        if (!optional.isPresent()) {
             throw new LotteryUnavailableException("Lottery Unavailable Exception");
+        }else{
+            lottery = optional.get();
+            if(lottery.getAmount() <= 0) {
+                throw new LotteryUnavailableException("Lottery Unavailable Exception");
+            }
+
         }
         lottery.setTicket(ticketId);
 
