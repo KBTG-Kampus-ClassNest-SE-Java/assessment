@@ -1,11 +1,12 @@
 package com.kbtg.bootcamp.posttest.security.controller;
 
+import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import java.util.*;
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
@@ -18,12 +19,14 @@ public class AdminController {
     }
 
     @GetMapping("")
-    public String hello() {
-        return "hello admin";
+    public List<Lottery> showAllLotteryPage() {
+        return
+        lotteryService.getAllLotteries();
     }
 
-    @GetMapping("/lotteries") {
-
+    @GetMapping("/lotteries")
+    public void addNewLotteryTicketToDb() {
+        lotteryService.createLottery();
     }
 
 }
