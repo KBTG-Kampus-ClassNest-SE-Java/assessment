@@ -5,4 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LotteryRepository extends JpaRepository<Lottery, Long> {
+    boolean existsByTicket(String ticket);
 }

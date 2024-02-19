@@ -1,7 +1,9 @@
 package com.kbtg.bootcamp.posttest.security.controller;
 
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
+import com.kbtg.bootcamp.posttest.lottery.LotteryResponse;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,7 +13,6 @@ import org.springframework.http.*;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
@@ -46,5 +47,16 @@ class AdminControllerTest {
     void shouldReturnListOfEntity() {
         List<Lottery> allLotteries = lotteryService.getAllLotteries();
         assertThat(allLotteries.size()).isEqualTo(4); // 4 -> right size
+    }
+
+    @Test
+    @DisplayName("EXP01 task")
+    void shouldReturnTickerResponse() {
+        AdminRequest request = new AdminRequest("444444",60.0, 5L);
+
+        LotteryResponse response = lotteryService.createLottery(request);
+
+        assertThat(response.getTicket()).isEqualTo("4");
+
     }
 }

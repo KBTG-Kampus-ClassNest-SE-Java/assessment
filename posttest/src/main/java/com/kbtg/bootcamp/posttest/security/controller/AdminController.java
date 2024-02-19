@@ -1,11 +1,11 @@
 package com.kbtg.bootcamp.posttest.security.controller;
 
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
+import com.kbtg.bootcamp.posttest.lottery.LotteryResponse;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.*;
 @RestController
 @RequestMapping("/admin")
@@ -25,8 +25,11 @@ public class AdminController {
     }
 
     @GetMapping("/lotteries")
-    public void addNewLotteryTicketToDb() {
-        lotteryService.createLottery();
+    public LotteryResponse addNewLotteryTicketToDb(
+            @RequestBody AdminRequest request
+    ) {
+        return
+        lotteryService.createLottery(request);
     }
 
 }

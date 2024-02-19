@@ -27,6 +27,12 @@ public class Lottery {
     @JoinColumn(name = "profile_email", referencedColumnName = "email")
     private Profile profile;
 
+    public Lottery(String ticket, Double price, Long amount) {
+        this.ticket = ticket;
+        this.price = price;
+        this.amount = amount;
+    }
+
     public String getTicket() {
         return ticket;
     }
