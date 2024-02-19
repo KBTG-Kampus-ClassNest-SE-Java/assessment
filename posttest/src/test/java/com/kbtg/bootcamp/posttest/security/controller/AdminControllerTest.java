@@ -41,4 +41,10 @@ class AdminControllerTest {
         List<Lottery> allLotteries = lotteryService.getAllLotteries();
         assertThat(allLotteries).isNotNull();
     }
+
+    @Test
+    void shouldReturnListOfEntity() {
+        List<Lottery> allLotteries = lotteryService.getAllLotteries();
+        assertThat(allLotteries.size()).isEqualTo(3); // 3 -> wring size
+    }
 }
