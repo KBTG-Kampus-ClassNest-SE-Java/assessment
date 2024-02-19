@@ -65,6 +65,7 @@ class AdminControllerTest {
     @DisplayName("EXP01 task")
     void shouldReturnCreatedNewLotteryRequest() {
         Lottery lottery = new Lottery("879432", 55.5, 66L);
+
         AdminRequest request = new AdminRequest(lottery.getTicket(), lottery.getPrice(), lottery.getAmount());
         if (lottery.getId() == null) {
             LotteryResponse response = lotteryService.createLottery(request);
