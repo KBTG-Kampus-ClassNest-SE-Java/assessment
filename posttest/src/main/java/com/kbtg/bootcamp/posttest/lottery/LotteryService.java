@@ -28,7 +28,7 @@ public class LotteryService {
         Lottery newLottery = new Lottery(request.ticket(), request.price(), request.amount());
 
         if (lotteryRepository.existsByTicket(request.ticket())) {
-            throw new RuntimeException("Duplicate entity");
+            throw new DuplicateTickerException("Duplicate entity");
         } else {
             // new lottery
             lotteryRepository.save(newLottery);

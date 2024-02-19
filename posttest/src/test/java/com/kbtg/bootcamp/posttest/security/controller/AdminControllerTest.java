@@ -1,5 +1,6 @@
 package com.kbtg.bootcamp.posttest.security.controller;
 
+import com.kbtg.bootcamp.posttest.lottery.DuplicateTickerException;
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryResponse;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
@@ -13,6 +14,7 @@ import org.springframework.http.*;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
@@ -51,12 +53,10 @@ class AdminControllerTest {
 
     @Test
     @DisplayName("EXP01 task")
-    void shouldReturnTickerResponse() {
+    void shouldReturnDuplicateRuntime() {
         AdminRequest request = new AdminRequest("444444",60.0, 5L);
-
-        LotteryResponse response = lotteryService.createLottery(request);
-
-        assertThat(response.getTicket()).isEqualTo("4");
-
+        assertThrows(DuplicateTickerException.class, () -> {
+            lotteryService.createLottery(request);
+        });
     }
 }
