@@ -15,7 +15,7 @@ public class Lottery {
     @Column(length = 6)
     private String ticketId;
 
-    private Integer amount;
+    private Integer amount = 0;
 
     private BigDecimal price;
 }
