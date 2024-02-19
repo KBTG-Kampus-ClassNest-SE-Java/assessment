@@ -124,7 +124,7 @@ class AdminLotteryControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(reqPayloadJson)
                 )
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andReturn();
         String contentAsString = mvcResult.getResponse().getContentAsString();
 
