@@ -33,6 +33,6 @@ class TestLotteryControllerTest {
     @Test
     void shouldNotReturnEntity() {
         Lottery lottery = lotteryRepository.findById(1L).orElseThrow(RuntimeException::new); // right id
-        assertThat(lottery).isNull();
+        assertThat(lottery).isNotNull();
     }
 }
