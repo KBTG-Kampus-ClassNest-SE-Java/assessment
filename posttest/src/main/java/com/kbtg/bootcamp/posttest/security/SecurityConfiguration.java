@@ -18,6 +18,7 @@ public class SecurityConfiguration {
         return
         http.authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/users/**").permitAll() // if match with path /users/ permit all
+                .requestMatchers("/test/**").permitAll()
                 .anyRequest().authenticated()
         )
         .httpBasic(withDefaults())

@@ -20,15 +20,19 @@ public class TestLotteryController {
         this.lotteryService = lotteryService;
     }
 
-//    @GetMapping("/{requestedId}")
-//    public Lottery getLotteryPage(
-//            @PathVariable Long requestedId
-//    ) {
-//        Optional<Lottery> lottery = lotteryService.getLottery(requestedId);
-//        if (lottery.isPresent()) {
-//            return lottery.get();
-//        } else {
-//            throw new RuntimeException();
-//        }
-//    }
+    @GetMapping
+    public void setup() {
+
+    }
+    @GetMapping("/{requestedId}")
+    public Lottery getLotteryPage(
+            @PathVariable Long requestedId
+    ) {
+        Optional<Lottery> lottery = lotteryService.getLottery(requestedId);
+        if (lottery.isPresent()) {
+            return lottery.get();
+        } else {
+            throw new RuntimeException();
+        }
+    }
 }
