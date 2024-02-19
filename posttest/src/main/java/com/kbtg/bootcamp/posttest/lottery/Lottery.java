@@ -53,6 +53,10 @@ public class Lottery {
         return amount;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
     public void setAmount(Long amount) {
         this.amount = amount;
     }

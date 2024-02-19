@@ -1,9 +1,6 @@
 package com.kbtg.bootcamp.posttest.security.controller;
 
-import com.kbtg.bootcamp.posttest.lottery.DuplicateTickerException;
-import com.kbtg.bootcamp.posttest.lottery.Lottery;
-import com.kbtg.bootcamp.posttest.lottery.LotteryResponse;
-import com.kbtg.bootcamp.posttest.lottery.LotteryService;
+import com.kbtg.bootcamp.posttest.lottery.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +12,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
@@ -26,6 +24,9 @@ class AdminControllerTest {
 
     @Autowired
     LotteryService lotteryService;
+
+    @Autowired
+    LotteryRepository lotteryRepository;
 
     @Test
     void shouldNotReturnHttpStatusOK() {
@@ -52,11 +53,27 @@ class AdminControllerTest {
     }
 
     @Test
-    @DisplayName("EXP01 task")
+    @DisplayName("EXP01 task: check Duplicate")
     void shouldReturnDuplicateRuntime() {
         AdminRequest request = new AdminRequest("444444",60.0, 5L);
         assertThrows(DuplicateTickerException.class, () -> {
             lotteryService.createLottery(request);
         });
+    }
+
+    @Test
+    @DisplayName("EXP01 task")
+    void shouldReturnCreatedNewLotteryRequest() {
+        Lottery lottery = new Lottery("879432", 55.5, 66L);
+        AdminRequest request = new AdminRequest(lottery.getTicket(), lottery.getPrice(), lottery.getAmount());
+        if (lottery.getId() == null) {
+//            LotteryResponse response = lotteryService.createLottery(request);
+//            assertThat(response).isNotNull();
+//            assertThat(response.getTicket()).isEqualTo(lottery.getTicket());
+            fail("Intentional failure: This test should not execute the 'if' block");
+        } else {
+            // not a new Lottery
+//            assertThat(lottery.getId()).isNotNull();
+        }
     }
 }
