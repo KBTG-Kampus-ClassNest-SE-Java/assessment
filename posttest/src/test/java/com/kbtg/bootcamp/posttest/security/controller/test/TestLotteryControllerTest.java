@@ -40,6 +40,6 @@ class TestLotteryControllerTest {
     void shouldReturnEntityWithCorrectTicketNumber() {
         Lottery lottery = lotteryRepository.findById(1L).orElseThrow(RuntimeException::new); // right id
         String lotteryTicket = lottery.getTicket();
-        assertThat(lotteryTicket).isEqualTo("1"); // wrong ticketnumber
+        assertThat(lotteryTicket).isEqualTo("111111"); // right ticketnumber
     }
 }
