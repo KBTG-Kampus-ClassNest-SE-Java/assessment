@@ -67,13 +67,12 @@ class AdminControllerTest {
         Lottery lottery = new Lottery("879432", 55.5, 66L);
         AdminRequest request = new AdminRequest(lottery.getTicket(), lottery.getPrice(), lottery.getAmount());
         if (lottery.getId() == null) {
-//            LotteryResponse response = lotteryService.createLottery(request);
-//            assertThat(response).isNotNull();
-//            assertThat(response.getTicket()).isEqualTo(lottery.getTicket());
-            fail("Intentional failure: This test should not execute the 'if' block");
+            LotteryResponse response = lotteryService.createLottery(request);
+            assertThat(response).isNotNull();
+            assertThat(response.getTicket()).isEqualTo(lottery.getTicket());
         } else {
             // not a new Lottery
-//            assertThat(lottery.getId()).isNotNull();
+            assertThat(lottery.getId()).isNotNull();
         }
     }
 }
