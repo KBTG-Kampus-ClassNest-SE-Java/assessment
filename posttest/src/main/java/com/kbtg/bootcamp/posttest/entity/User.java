@@ -4,19 +4,18 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import java.util.Collection;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
-@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,17 +24,26 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class User implements UserDetails {
 
   @Id
-  @GeneratedValue
-  private Integer id;
+  @GeneratedValue(strategy= GenerationType.AUTO)
+  private Long id;
+
+  @NotNull(message = "username cannot be null")
   private String username;
+  @NotNull(message = "password cannot be null")
   private String password;
 
   @Enumerated(EnumType.STRING)
-  private Role userType;
+  private Role role;
+
+  public User(String username, String password, Role userType) {
+    this.username = username;
+    this.password = password;
+    this.role = userType;
+  }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return userType.getAuthorities();
+    return role.getAuthorities();
   }
 
   @Override

@@ -1,12 +1,15 @@
 package com.kbtg.bootcamp.posttest.authentication.service.impl;
 
-import com.kbtg.bootcamp.posttest.authentication.dto.AuthResponse;
+import com.kbtg.bootcamp.posttest.authentication.dto.AuthenticationResponse;
 import com.kbtg.bootcamp.posttest.authentication.request.AuthenticationRequest;
 import com.kbtg.bootcamp.posttest.authentication.request.RegisterRequest;
 import com.kbtg.bootcamp.posttest.authentication.service.AuthenticationService;
 import com.kbtg.bootcamp.posttest.config.JwtService;
 import com.kbtg.bootcamp.posttest.entity.User;
+import com.kbtg.bootcamp.posttest.exception.BadRequestException;
+import com.kbtg.bootcamp.posttest.exception.NotFoundException;
 import com.kbtg.bootcamp.posttest.user.repository.UserRepository;
+import java.time.ZonedDateTime;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,28 +30,35 @@ public class AuthenticationServiceImpl implements AuthenticationService {
   }
 
 
-  @Override
-  public String login(AuthenticationRequest authenticationRequest) {
-    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.username(), authenticationRequest.password()));
-    User user = userRepository.findByUsername(authenticationRequest.username()).orElseThrow(
-        () -> new RuntimeException("User not found")
-    );
-    return jwtService.generateToken(user);
-  }
 
   @Override
-  public AuthResponse register(RegisterRequest request) {
+  public AuthenticationResponse login(AuthenticationRequest authenticationRequest) {
+
+    try {
+      authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
+    } catch (Exception e) {
+      throw new BadRequestException("Invalid username or password");
+    }
+    User user = userRepository.findByUsername(authenticationRequest.getUsername()).orElseThrow(
+        () -> new NotFoundException("User not found")
+    );
+    return new AuthenticationResponse(jwtService.generateToken(user),ZonedDateTime.now());
+  }
+
+
+  @Override
+  public AuthenticationResponse register(RegisterRequest request) {
     userRepository.findDistinctByUsername(request.getUsername()).ifPresent(
         user -> {
-          throw new RuntimeException("User already exists");
+          throw new BadRequestException("User already exists");
         }
     );
-    User user = User.builder()
+
+    User user = userRepository.save(User.builder()
         .username(request.getUsername())
         .password(passwordEncoder.encode(request.getPassword()))
-        .userType(request.getRole())
-        .build();
-    userRepository.save(user);
-    return new AuthResponse(jwtService.generateToken(user));
+        .role(request.getRole())
+        .build());
+    return new AuthenticationResponse(jwtService.generateToken(user), ZonedDateTime.now());
   }
 }
