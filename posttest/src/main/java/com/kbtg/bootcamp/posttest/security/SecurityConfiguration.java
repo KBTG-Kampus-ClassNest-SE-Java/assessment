@@ -17,6 +17,7 @@ public class SecurityConfiguration {
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         return
         http.authorizeHttpRequests((requests) -> requests
+                .requestMatchers("/users/**").permitAll() // if match with path /users/ permit all
                 .anyRequest().authenticated()
         )
         .httpBasic(withDefaults())
