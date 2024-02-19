@@ -1,3 +1,22 @@
+# Database schema design
+```mermaid
+  erDiagram
+    lottery {
+		int id PK
+        string(6) ticket_id
+        int amount
+				decimal price
+    }
+
+    user_ticket {
+		int id PK
+		int(10) user_id FK
+        string(6) ticket_id
+        decimal buy_price
+				dateTime buy_date
+    }
+```
+
 # ระบบย่อยซื้อลอตเตอรี่
 แอพพลิเคชั่นธนาคารต้องการเพิ่มฟีเจอร์ให้ผู้ใช้งานสามารถซื้อลอตเตอรี่ได้ เพื่อตอบสนองกลุ่มนักเสี่ยงโชคยุคใหม่ที่ต้องการความสะดวก และไม่ต้องกังวลเรื่องการจัดเก็บลอตเตอรี่ไว้กับตัวเอง รวมทั้งการขึ้นเงินก็สามารถทำผ่านแอพพลิเคชั่นได้อย่างง่ายดาย
 
