@@ -19,7 +19,7 @@ class AdminControllerTest {
     @Test
     void shouldNotReturnHttpStatusOK() {
         HttpHeaders headers = new HttpHeaders();
-        headers.setBasicAuth("admin","password");
+        headers.setBasicAuth("user","password");
         HttpEntity<String> request = new HttpEntity<>(headers);
 
         ResponseEntity<String> response =
