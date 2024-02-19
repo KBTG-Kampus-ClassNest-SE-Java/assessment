@@ -3,6 +3,8 @@ package com.kbtg.bootcamp.posttest.features.lottery.admin;
 import com.kbtg.bootcamp.posttest.features.lottery.admin.model.create_lottery.CreateLotteryReqDto;
 import com.kbtg.bootcamp.posttest.features.lottery.admin.model.create_lottery.CreateLotteryResDto;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +21,10 @@ public class AdminLotteryController {
     }
 
     @PostMapping("")
-    public CreateLotteryResDto createTicket(@RequestBody @Valid CreateLotteryReqDto req) {
-        return adminLotteryService.createLottery(req);
+    public ResponseEntity<CreateLotteryResDto> createTicket(@RequestBody @Valid CreateLotteryReqDto req) {
+        CreateLotteryResDto bodyRes = adminLotteryService.createLottery(req);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(bodyRes);
     }
 
 }
