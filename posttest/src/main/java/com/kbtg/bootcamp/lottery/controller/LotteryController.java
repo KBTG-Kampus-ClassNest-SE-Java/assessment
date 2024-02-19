@@ -1,7 +1,7 @@
 package com.kbtg.bootcamp.lottery.controller;
 
 
-import com.kbtg.bootcamp.lottery.response.LotteryTicketResponse;
+import com.kbtg.bootcamp.lottery.response.LotteryResponse;
 import com.kbtg.bootcamp.lottery.service.LotteryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +19,7 @@ public class LotteryController {
     }
 
     @GetMapping("/lotteries")
-    public LotteryTicketResponse getLotteries() throws Exception {
+    public LotteryResponse getLotteries() throws Exception {
         return lotteryService.getAllLotteryTickets();
     }
 }

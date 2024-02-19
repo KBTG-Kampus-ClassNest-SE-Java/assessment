@@ -1,7 +1,7 @@
 package com.kbtg.bootcamp.lottery.controller;
 
 import com.kbtg.bootcamp.lottery.request.LotteryRequestDto;
-import com.kbtg.bootcamp.lottery.response.LotteryTicketResponse;
+import com.kbtg.bootcamp.lottery.response.LotteryResponse;
 import com.kbtg.bootcamp.lottery.service.LotteryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class AdminController {
 
     @PostMapping("/lotteries")
     @PreAuthorize("hasRole('ADMIN')")
-    public LotteryTicketResponse createLottery(@Valid @RequestBody LotteryRequestDto lotteryDTO) throws Exception {
+    public LotteryResponse createLottery(@Valid @RequestBody LotteryRequestDto lotteryDTO) throws Exception {
         return lotteryService.createLottery(lotteryDTO);
     }
 

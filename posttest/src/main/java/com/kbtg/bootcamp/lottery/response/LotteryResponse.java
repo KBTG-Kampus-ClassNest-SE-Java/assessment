@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.List;
 
-public class LotteryTicketResponse {
+public class LotteryResponse {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String ticket;
@@ -13,11 +13,11 @@ public class LotteryTicketResponse {
     private List<String> tickets;
 
 
-    public LotteryTicketResponse(List<String> tickets) {
+    public LotteryResponse(List<String> tickets) {
         this.tickets = tickets;
     }
 
-    public LotteryTicketResponse(String ticket) {
+    public LotteryResponse(String ticket) {
         this.ticket = ticket;
     }
 
