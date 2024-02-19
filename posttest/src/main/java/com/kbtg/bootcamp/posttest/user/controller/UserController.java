@@ -2,6 +2,7 @@ package com.kbtg.bootcamp.posttest.user.controller;
 
 import com.kbtg.bootcamp.posttest.helper.ResponseHandler;
 import com.kbtg.bootcamp.posttest.lottery.service.LotteryService;
+import com.kbtg.bootcamp.posttest.user.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,33 +13,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 public class UserController {
 
-  private final LotteryService lotteryService;
+  private final UserService userService;
 
-  public UserController(LotteryService lotteryService) {
-    this.lotteryService = lotteryService;
+  public UserController(UserService userService) {
+    this.userService = userService;
   }
   @PostMapping("/{userId}/lotteries/{ticketId}")
-  public ResponseEntity<Object> buyLottery(@PathVariable int ticketId, @PathVariable int userId) {
+  public ResponseEntity<Object> buyLottery(@PathVariable int ticketId, @PathVariable String userId) {
       return ResponseHandler.generateResponse(
           "Buy lottery success.",
           HttpStatus.OK,
-          lotteryService.buyLottery(ticketId, userId));
+          userService.buyLottery(ticketId, userId));
   }
-  @GetMapping("/{userId}/lotteries/")
-  public ResponseEntity<Object> getLotteryByUserId(@PathVariable int userId) {
+  @GetMapping("/{userId}/lotteries")
+  public ResponseEntity<Object> getLotteryByUserId(@PathVariable String userId) {
       return ResponseHandler.generateResponse(
           "Get lotteries success.",
           HttpStatus.OK,
-          lotteryService.getLotteriesByUserId(userId));
+          userService.getLotteriesByUserId(userId));
   }
   @DeleteMapping("/{userId}/lotteries/{ticketId}")
-  public ResponseEntity<Object> deleteLottery(@PathVariable int ticketId, @PathVariable int userId) {
+  public ResponseEntity<Object> deleteLottery(@PathVariable int ticketId, @PathVariable String userId) {
       return ResponseHandler.generateResponse(
           "sell lottery success.",
           HttpStatus.OK,
-          lotteryService.sellLottery(ticketId, userId));
+          userService.sellLottery(ticketId, userId));
   }
 }

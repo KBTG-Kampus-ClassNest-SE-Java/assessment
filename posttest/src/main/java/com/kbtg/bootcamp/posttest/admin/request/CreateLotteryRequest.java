@@ -1,5 +1,6 @@
-package com.kbtg.bootcamp.posttest.lottery.request;
+package com.kbtg.bootcamp.posttest.admin.request;
 
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -18,10 +19,11 @@ public class CreateLotteryRequest {
     private String ticket;
 
     @NotNull(message = "price is required")
+    @Digits(integer = 10, fraction = 0, message = "price must be a number")
     private Integer price;
 
     @NotNull(message = "amount is required")
-    private Integer amount;
-}
+    @Digits(integer = 10, fraction = 0, message = "amount must be a number")
+    private Integer amount;}
 
 

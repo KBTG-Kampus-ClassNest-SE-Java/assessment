@@ -7,8 +7,8 @@ services:
       - "5432:5432"
     restart: always
     environment:
-      POSTGRES_DB: assessment
       POSTGRES_USER: root
+      POSTGRES_DB: assessment
       POSTGRES_PASSWORD: 12345678
 #     volumes:
 #       - postgres-data:/var/lib/postgresql/data
@@ -22,10 +22,9 @@ services:
 #     ports:
 #       - "8888:8888"
 #     environment:
-#       SPRING_PROFILES_ACTIVE: "local"
-#       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/assessment?searchpath=public&createDatabaseIfNotExist=true&useUnicode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Bangkok&prepareThreshold=0
-#       SPRING_DATASOURCE_USERNAME: root
-#       SPRING_DATASOURCE_PASSWORD: 12345678
+#       DATABASE_URL: jdbc:postgresql://db:5432/assessment?searchpath=public&createDatabaseIfNotExist=true&useUnicode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Bangkok&prepareThreshold=0
+#       DATABASE_USERNAME: root
+#       DATABASE_PASSWORD: 12345678
 #     depends_on:
 #       - db
 #     networks:

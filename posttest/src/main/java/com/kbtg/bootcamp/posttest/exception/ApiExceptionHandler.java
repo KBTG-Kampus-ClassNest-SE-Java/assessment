@@ -1,13 +1,13 @@
 package com.kbtg.bootcamp.posttest.exception;
 
-import exception.ApiExceptionResponse;
-import io.jsonwebtoken.JwtException;
 import java.time.ZonedDateTime;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
@@ -45,16 +45,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(apiExceptionResponse,HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
-  @ExceptionHandler(value = {JwtException.class})
-  public ResponseEntity<Object> handleJwtException(JwtException jwtException) {
-    ApiExceptionResponse apiExceptionResponse = new ApiExceptionResponse(
-        jwtException.getMessage(),
-        HttpStatus.UNAUTHORIZED,
-        ZonedDateTime.now()
-    );
-
-    return new ResponseEntity<>(apiExceptionResponse,HttpStatus.UNAUTHORIZED);
-  }
 
   @ExceptionHandler(value = {IllegalArgumentException.class})
   public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException illegalArgumentException) {

@@ -7,6 +7,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.support.MetaDataAccessException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,7 +20,7 @@ public class ValidationExceptionHandler {
 
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<ApiErrorResponse> notValid(MethodArgumentNotValidException ex,
+  public ResponseEntity<ApiExceptionResponse> notValid(MethodArgumentNotValidException ex,
       HttpServletRequest request) {
     List<String> errors = new ArrayList<>();
 
@@ -27,7 +28,7 @@ public class ValidationExceptionHandler {
 
     String result = errors.toString();
 
-    ApiErrorResponse errorResponse = new ApiErrorResponse(result, HttpStatus.BAD_REQUEST, ZonedDateTime.now());
+    ApiExceptionResponse errorResponse = new ApiExceptionResponse(result, HttpStatus.BAD_REQUEST, ZonedDateTime.now());
 
     return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
 

@@ -1,7 +1,13 @@
-package exception;
+package com.kbtg.bootcamp.posttest.exception;
+
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.http.HttpStatus;
 
 import java.time.ZonedDateTime;
-import org.springframework.http.HttpStatus;
+
+@Getter
+@Setter
 
 public class ApiExceptionResponse {
 
