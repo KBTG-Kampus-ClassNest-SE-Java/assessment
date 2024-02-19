@@ -35,4 +35,11 @@ class TestLotteryControllerTest {
         Lottery lottery = lotteryRepository.findById(1L).orElseThrow(RuntimeException::new); // right id
         assertThat(lottery).isNotNull();
     }
+
+    @Test
+    void shouldReturnEntityWithCorrectTicketNumber() {
+        Lottery lottery = lotteryRepository.findById(1L).orElseThrow(RuntimeException::new); // right id
+        String lotteryTicket = lottery.getTicket();
+        assertThat(lotteryTicket).isEqualTo("1"); // wrong ticketnumber
+    }
 }
