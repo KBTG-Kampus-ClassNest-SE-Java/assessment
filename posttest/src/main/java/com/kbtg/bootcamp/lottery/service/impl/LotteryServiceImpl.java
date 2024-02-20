@@ -153,7 +153,6 @@ public class LotteryServiceImpl implements LotteryService {
         userTicket.setUserId(userId);
         userTicket.setPricePaid(ticketPrice);
         userTicket.setPurchaseDate(LocalDateTime.now());
-        userTicket.setIsSoldBackFlag(LOTTERY_NOT_SOLD_BACK_FLAG);
         userTicket.setLastUpdated(LocalDateTime.now());
         return userTicket;
     }
