@@ -14,7 +14,7 @@ public class UserTicket {
     private Integer id;
 
     @Column(length = 10)
-    private Integer userId;
+    private String userId;
 
     @Column(length = 6)
     private String ticketId;

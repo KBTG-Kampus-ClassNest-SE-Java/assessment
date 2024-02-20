@@ -13,6 +13,9 @@ import java.util.Optional;
 public interface LotteryRepository extends JpaRepository<Lottery, Integer> {
     Optional<Lottery> findByTicketIdAndPrice(String ticketId, BigDecimal price);
 
+    @Query("SELECT l FROM Lottery l WHERE l.amount > 0 AND l.ticketId = :ticketId ORDER BY l.price ASC")
+    List<Lottery> findAvailableLotteryByTicketId(String ticketId);
+
     @Query("SELECT l.ticketId FROM Lottery l WHERE l.amount > 0 GROUP BY l.ticketId")
     List<String> findAllAvailableLottery();
 }

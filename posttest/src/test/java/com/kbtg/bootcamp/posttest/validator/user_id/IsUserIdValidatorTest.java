@@ -1,4 +1,4 @@
-package com.kbtg.bootcamp.posttest.validator.lottery_id;
+package com.kbtg.bootcamp.posttest.validator.user_id;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -9,16 +9,20 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class IsLotteryIdValidatorTest {
-
-    private final IsLotteryIdValidator validator = new IsLotteryIdValidator();
+class IsUserIdValidatorTest {
+    private final IsUserIdValidator validator = new IsUserIdValidator();
 
     private static Stream<Arguments> IsValid_ShouldReturnFalse_WhenRequestIsInValid_DataSet() {
         return Stream.of(
                 Arguments.of((String) null),
                 Arguments.of(""),
+                Arguments.of("0"),
                 Arguments.of("12345S"),
-                Arguments.of("ABACZG")
+                Arguments.of("ABACZG"),
+                Arguments.of("123456789A"),
+                Arguments.of("ABSZDWERTA"),
+                Arguments.of("123456781111111"),
+                Arguments.of("99999999999")
         );
     }
 
@@ -32,9 +36,13 @@ class IsLotteryIdValidatorTest {
 
     private static Stream<Arguments> IsValid_ShouldReturnTrue_WhenRequestIsValid_DataSet() {
         return Stream.of(
+                Arguments.of("1"),
+                Arguments.of("2"),
+                Arguments.of("25"),
                 Arguments.of("120721"),
                 Arguments.of("652167"),
-                Arguments.of("123456")
+                Arguments.of("123456"),
+                Arguments.of("9999999999")
         );
     }
 
@@ -45,5 +53,4 @@ class IsLotteryIdValidatorTest {
 
         assertTrue(isValid);
     }
-
 }

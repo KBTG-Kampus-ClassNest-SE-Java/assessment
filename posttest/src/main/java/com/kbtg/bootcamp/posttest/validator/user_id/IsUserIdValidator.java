@@ -1,19 +1,20 @@
-package com.kbtg.bootcamp.posttest.validator.lottery_id;
+package com.kbtg.bootcamp.posttest.validator.user_id;
 
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class IsLotteryIdValidator implements ConstraintValidator<IsLotteryId, String> {
+public class IsUserIdValidator implements ConstraintValidator<IsUserId, String> {
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        if (value == null || value.length() != 6) {
+        if (value == null || !(value.length() >= 1 && value.length() <= 10)) {
             return false;
         }
 
         try {
-            Long.parseLong(value);
-            return true;
+            long number = Long.parseLong(value);
+
+            return number > 0;
         } catch (NumberFormatException e) {
             return false;
         }
