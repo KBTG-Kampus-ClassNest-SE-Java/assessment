@@ -12,6 +12,7 @@ public class LotteryTicket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name = "ticket_id", length = 6)
     private String ticket;
     private int price;
     private int amount;
