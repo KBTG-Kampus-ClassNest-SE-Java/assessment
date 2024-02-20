@@ -20,6 +20,6 @@ class ProfileTest {
     void shouldNotReturnANull() {
         List<Profile> all = null;
         all = profileRepository.findAll();
-        assertThat(all).isNull();
+        assertThat(all).isNotNull();
     }
 }
