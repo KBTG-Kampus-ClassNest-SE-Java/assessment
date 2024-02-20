@@ -18,7 +18,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler({ BadRequestException.class })
-    public ResponseEntity<ApiErrorResponse> handleNotFoundException(BadRequestException e) {
+    public ResponseEntity<ApiErrorResponse> BadRequestException(BadRequestException e) {
         ApiErrorResponse errorResponse =
                 new ApiErrorResponse(e.getMessage(), HttpStatus.BAD_REQUEST, ZonedDateTime.now());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
