@@ -27,6 +27,5 @@ public class UserController {
                 .map(lottery -> lottery.getTicket())
                 .collect(Collectors.toList());
         return new UserResponse(collect);
-
     }
 }

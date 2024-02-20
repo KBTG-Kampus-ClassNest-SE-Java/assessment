@@ -26,6 +26,9 @@ class UserControllerTest {
     @Autowired
     LotteryService lotteryService;
 
+    @Autowired
+    UserController userController;
+
     @Test
     void shouldNotReturnStatusOk() {
         ResponseEntity<String> response =
@@ -34,9 +37,11 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("EXP02 task: should return null")
-    void shoulReturnNull() {
+    @DisplayName("EXP02 task: should return not null")
+    void shouldReturnNonNull() {
+
         List<Lottery> allLotteries = lotteryService.getAllLotteries();
         assertThat(allLotteries).isNotNull();
+
     }
 }
