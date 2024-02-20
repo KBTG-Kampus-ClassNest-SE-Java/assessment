@@ -17,10 +17,11 @@ import org.springframework.test.context.TestPropertySource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @TestPropertySource(locations="classpath:application-test.properties")
@@ -60,6 +61,19 @@ public class LotteryServiceTest {
         String actualResult = lotteryTicketResponse.ticket();
 
         assertEquals(ticketNumber, actualResult);
+    }
+
+    @Test
+    @DisplayName("Should not create duplicate lottery ticket")
+    void testShouldNotCreateDuplicateTicket() {
+        lotteryTicketRequest.setTicket("123456");
+        lotteryTicket.setTicket("123456");
+
+        when(lotteryTicketRepository.findByTicket("123456")).thenReturn(Optional.of(lotteryTicket));
+        LotteryTicketResponse actualResult = lotteryService.createLotteryTicket(lotteryTicketRequest);
+
+        verify(lotteryTicketRepository, never()).save(any());
+        assertEquals("123456", actualResult.ticket());
     }
 
     @Test

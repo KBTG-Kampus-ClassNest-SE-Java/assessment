@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,14 +23,21 @@ public class LotteryService {
     }
 
     public LotteryTicketResponse createLotteryTicket(LotteryTicketRequest request) {
-        LotteryTicket ticket = new LotteryTicket();
-        ticket.setTicket(request.getTicket());
-        ticket.setPrice(request.getPrice());
-        ticket.setAmount(request.getAmount());
+        Optional<LotteryTicket> existingTicketOptional = lotteryTicketRepository.findByTicket(request.getTicket());
 
-        LotteryTicket savedTicket = lotteryTicketRepository.save(ticket);
+        if (existingTicketOptional.isPresent()) {
+            LotteryTicket existingTicket = existingTicketOptional.get();
+            return new LotteryTicketResponse(existingTicket.getTicket());
+        } else {
+            LotteryTicket ticket = new LotteryTicket();
+            ticket.setTicket(request.getTicket());
+            ticket.setPrice(request.getPrice());
+            ticket.setAmount(request.getAmount());
 
-        return new LotteryTicketResponse(savedTicket.getTicket());
+            LotteryTicket savedTicket = lotteryTicketRepository.save(ticket);
+
+            return new LotteryTicketResponse(savedTicket.getTicket());
+        }
     }
 
     public LotteryTicketListResponse getLotteryTicketList() {
