@@ -22,8 +22,14 @@ class LotteryRepositoryTest {
     @Test
     @DisplayName("EXP01 task: check Duplicate")
     void whenDuplicateTicket_thenThrowDataIntegrityViolationException() {
+        int min = 100000;
+        int max = 999999;
+        int randomNumber = (int) (Math.random() * (max - min + 1) + min);
+        String randomString = String.valueOf(randomNumber);
+
         // Arrange
         String ticket = "111111";
+
 
         // Act & Assert
         DuplicateTickerException exception = assertThrows(DuplicateTickerException.class, () -> {
