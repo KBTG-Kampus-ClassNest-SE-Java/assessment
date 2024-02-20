@@ -1,7 +1,6 @@
 package com.kbtg.bootcamp.posttest.lottery;
 
-import com.kbtg.bootcamp.posttest.security.controller.AdminRequest;
-import com.sun.jdi.request.DuplicateRequestException;
+import com.kbtg.bootcamp.posttest.admin.AdminRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
