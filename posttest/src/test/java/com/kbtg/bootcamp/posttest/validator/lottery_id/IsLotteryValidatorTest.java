@@ -16,6 +16,7 @@ class IsLotteryValidatorTest {
         return Stream.of(
                 Arguments.of((String) null),
                 Arguments.of(""),
+                Arguments.of("12345"),
                 Arguments.of("12345S"),
                 Arguments.of("ABACZG")
         );
