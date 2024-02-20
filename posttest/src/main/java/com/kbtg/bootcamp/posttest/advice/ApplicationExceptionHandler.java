@@ -1,5 +1,6 @@
 package com.kbtg.bootcamp.posttest.advice;
 
+import com.kbtg.bootcamp.posttest.exception.ElementNotFoundException;
 import com.kbtg.bootcamp.posttest.exception.IllegalOperationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +13,16 @@ import java.util.Map;
 @RestControllerAdvice
 public class ApplicationExceptionHandler {
 
-    @ExceptionHandler(IllegalOperationException.class)
-    public ResponseEntity<?> IllegalOperationExceptionHandler(IllegalOperationException e) {
+    @ExceptionHandler({
+            IllegalOperationException.class,
+            ElementNotFoundException.class
+    })
+    public ResponseEntity<?> IllegalOperationExceptionHandler(RuntimeException e) {
         Map<String,String> errorMap = new HashMap<>();
         errorMap.put("msg",e.getMessage());
 
         return new ResponseEntity<>(errorMap, HttpStatus.BAD_REQUEST);
     }
+
+
 }

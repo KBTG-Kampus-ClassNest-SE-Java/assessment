@@ -48,4 +48,5 @@ public class TicketServiceImpl implements TicketService {
 
         return new ListAllTicketsResponseDTO(tickets);
     }
+
 }
