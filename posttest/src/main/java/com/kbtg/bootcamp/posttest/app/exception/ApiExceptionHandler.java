@@ -1,4 +1,4 @@
-package com.kbtg.bootcamp.posttest.exception;
+package com.kbtg.bootcamp.posttest.app.exception;
 
 import java.time.ZonedDateTime;
 import org.springframework.http.HttpStatus;

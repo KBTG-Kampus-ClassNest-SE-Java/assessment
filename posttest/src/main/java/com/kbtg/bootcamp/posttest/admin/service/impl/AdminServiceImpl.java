@@ -3,7 +3,7 @@ package com.kbtg.bootcamp.posttest.admin.service.impl;
 
 import com.kbtg.bootcamp.posttest.admin.service.AdminService;
 import com.kbtg.bootcamp.posttest.entity.Lottery;
-import com.kbtg.bootcamp.posttest.exception.BadRequestException;
+import com.kbtg.bootcamp.posttest.app.exception.BadRequestException;
 import com.kbtg.bootcamp.posttest.lottery.repository.LotteryRepository;
 import com.kbtg.bootcamp.posttest.admin.request.CreateLotteryRequest;
 import com.kbtg.bootcamp.posttest.lottery.responese.TicketResponse;

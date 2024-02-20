@@ -2,9 +2,9 @@ package com.kbtg.bootcamp.posttest.user.service.impl;
 
 import com.kbtg.bootcamp.posttest.entity.Lottery;
 import com.kbtg.bootcamp.posttest.entity.UserTicket;
-import com.kbtg.bootcamp.posttest.exception.BadRequestException;
-import com.kbtg.bootcamp.posttest.exception.IllegalArgumentException;
-import com.kbtg.bootcamp.posttest.exception.NotFoundException;
+import com.kbtg.bootcamp.posttest.app.exception.BadRequestException;
+import com.kbtg.bootcamp.posttest.app.exception.IllegalArgumentException;
+import com.kbtg.bootcamp.posttest.app.exception.NotFoundException;
 import com.kbtg.bootcamp.posttest.lottery.repository.LotteryRepository;
 import com.kbtg.bootcamp.posttest.lottery.responese.TicketResponse;
 import com.kbtg.bootcamp.posttest.lottery.responese.UserLotteryResponse;

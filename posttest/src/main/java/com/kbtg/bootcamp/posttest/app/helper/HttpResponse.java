@@ -1,4 +1,4 @@
-package com.kbtg.bootcamp.posttest.helper;
+package com.kbtg.bootcamp.posttest.app.helper;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

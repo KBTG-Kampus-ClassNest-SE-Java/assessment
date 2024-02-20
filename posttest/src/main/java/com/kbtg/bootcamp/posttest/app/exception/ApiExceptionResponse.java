@@ -1,4 +1,4 @@
-package com.kbtg.bootcamp.posttest.exception;
+package com.kbtg.bootcamp.posttest.app.exception;
 
 import lombok.Getter;
 import lombok.Setter;

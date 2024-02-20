@@ -1,9 +1,8 @@
 package com.kbtg.bootcamp.posttest.admin.controller;
 
 import com.kbtg.bootcamp.posttest.admin.service.AdminService;
-import com.kbtg.bootcamp.posttest.helper.ResponseHandler;
+import com.kbtg.bootcamp.posttest.app.helper.ResponseHandler;
 import com.kbtg.bootcamp.posttest.admin.request.CreateLotteryRequest;
-import com.kbtg.bootcamp.posttest.lottery.service.LotteryService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

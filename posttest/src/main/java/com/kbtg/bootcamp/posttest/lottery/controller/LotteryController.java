@@ -1,7 +1,7 @@
 package com.kbtg.bootcamp.posttest.lottery.controller;
 
 
-import com.kbtg.bootcamp.posttest.helper.ResponseHandler;
+import com.kbtg.bootcamp.posttest.app.helper.ResponseHandler;
 import com.kbtg.bootcamp.posttest.lottery.service.LotteryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

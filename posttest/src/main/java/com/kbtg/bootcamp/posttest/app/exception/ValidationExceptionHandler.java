@@ -1,4 +1,4 @@
-package com.kbtg.bootcamp.posttest.exception;
+package com.kbtg.bootcamp.posttest.app.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -7,7 +7,6 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.support.MetaDataAccessException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
