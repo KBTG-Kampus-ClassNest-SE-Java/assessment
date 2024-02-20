@@ -20,6 +20,9 @@ jobs:
     permissions:
       contents: read
 
+    defaults:
+      run:
+        working-directory: ./posttest
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 17
