@@ -13,15 +13,16 @@ public class LotteryEntity {
     private String ticket;
     private int price;
     private int amount;
-
+    private boolean status;
     public LotteryEntity() {
 
     }
 
-    public LotteryEntity(String ticket, int price, int amount) {
+    public LotteryEntity(String ticket, int price, int amount, boolean status) {
         this.ticket = ticket;
         this.price = price;
         this.amount = amount;
+        this.status = status;
     }
 
     public String getTicket() {
@@ -46,5 +47,13 @@ public class LotteryEntity {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }
