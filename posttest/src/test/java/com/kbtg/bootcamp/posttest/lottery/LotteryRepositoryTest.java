@@ -43,10 +43,15 @@ class LotteryRepositoryTest {
 
 
     @Test
+    @DisplayName("EXP01 task: check notExits lottery")
     public void whenTicketDoesNotExist_thenReturnFalse() {
+        int min = 100000;
+        int max = 999999;
+        int randomNumber = (int) (Math.random() * (max - min + 1) + min);
+        String randomString = String.valueOf(randomNumber);
 
         // Arrange
-        String nonExistingTicket = "999999";
+        String nonExistingTicket = "111111";
 
         // Act
         boolean exists = lotteryRepository.existsByTicket(nonExistingTicket);
