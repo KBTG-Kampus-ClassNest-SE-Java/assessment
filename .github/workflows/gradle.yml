@@ -19,7 +19,24 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres:16.2
+        # Provide the password for postgres
+        env:
+          POSTGRES_USER: lotteryusr
+          POSTGRES_PASSWORD: secret
+          POSTGRES_DB: lottery
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     defaults:
       run:
         working-directory: ./posttest
