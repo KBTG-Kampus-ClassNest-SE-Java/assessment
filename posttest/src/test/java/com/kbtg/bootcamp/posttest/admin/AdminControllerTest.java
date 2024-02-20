@@ -1,4 +1,4 @@
-package com.kbtg.bootcamp.posttest.security.controller;
+package com.kbtg.bootcamp.posttest.admin;
 
 import com.kbtg.bootcamp.posttest.lottery.*;
 import org.junit.jupiter.api.DisplayName;
