@@ -51,7 +51,7 @@ class LotteryRepositoryTest {
         String randomString = String.valueOf(randomNumber);
 
         // Arrange
-        String nonExistingTicket = "111111";
+        String nonExistingTicket = randomString;
 
         // Act
         boolean exists = lotteryRepository.existsByTicket(nonExistingTicket);
