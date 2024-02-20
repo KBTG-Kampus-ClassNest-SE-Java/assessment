@@ -49,31 +49,7 @@ class AdminControllerTest {
     @Test
     void shouldReturnListOfEntity() {
         List<Lottery> allLotteries = lotteryService.getAllLotteries();
-        assertThat(allLotteries.size()).isEqualTo(lotteryRepository.count()); // 4 -> right size
+        assertThat(allLotteries.size()).isEqualTo(lotteryRepository.count()); //
     }
 
-//    @Test
-//    @DisplayName("EXP01 task: check Duplicate")
-//    void shouldReturnDuplicateRuntime() {
-//        AdminRequest request = new AdminRequest("444444",60.0, 5L);
-//        assertThrows(DuplicateTickerException.class, () -> {
-//            lotteryService.createLottery(request);
-//        });
-//    }
-
-//    @Test
-//    @DisplayName("EXP01 task")
-//    void shouldReturnCreatedNewLotteryRequest() {
-//        Lottery lottery = new Lottery("879432", 55.5, 66L);
-//
-//        AdminRequest request = new AdminRequest(lottery.getTicket(), lottery.getPrice(), lottery.getAmount());
-//        if (lottery.getId() == null) {
-//            LotteryResponse response = lotteryService.createLottery(request);
-//            assertThat(response).isNotNull();
-//            assertThat(response.getTicket()).isEqualTo(lottery.getTicket());
-//        } else {
-//            // not a new Lottery
-//            assertThat(lottery.getId()).isNotNull();
-//        }
-//    }
 }

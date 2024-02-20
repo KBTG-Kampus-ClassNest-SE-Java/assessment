@@ -27,7 +27,7 @@ public class LotteryService {
         Objects.requireNonNull(request);
         Lottery newLottery = new Lottery(request.ticket(), request.price(), request.amount());
 
-        if (newLottery.getId() != null ) {
+        if (lotteryRepository.existsByTicket(newLottery.getTicket())) {
             throw new DuplicateTickerException("Duplicate entity");
         } else {
             // new lottery
