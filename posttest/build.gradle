@@ -21,13 +21,27 @@ repositories {
 	mavenCentral()
 }
 
+tasks.register('installLocalGitHook', Copy) {
+	from new File(rootProject.rootDir, 'scripts/pre-commit')
+	into { new File(rootProject.rootDir, '.git/hooks') }
+	fileMode 0775
+}
+
+tasks.named('build') {
+	dependsOn 'installLocalGitHook'
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.postgresql:postgresql'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'com.h2database:h2'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
 }
 
 tasks.named('test') {
