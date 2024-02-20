@@ -21,14 +21,10 @@ repositories {
 	mavenCentral()
 }
 
-tasks.register('installLocalGitHook', Copy) {
-	from new File(rootProject.rootDir, './scripts/pre-commit')
-	into { new File(rootProject.rootDir, '.git/hooks') }
-	fileMode 0775
-}
-
-tasks.named('build') {
-	dependsOn 'installLocalGitHook'
+tasks.register('addPreCommitGitHookOnBuild') {
+	exec {
+		commandLine("cp", "./.scripts/pre-commit", "./.git/hooks")
+	}
 }
 
 dependencies {
