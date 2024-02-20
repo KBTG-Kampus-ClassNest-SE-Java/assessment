@@ -13,11 +13,9 @@ import java.util.List;
 
 public interface UserTicketRepository extends JpaRepository<UserTicket, Long> {
     List<UserTicket> findByUserId(Users userId);
-    @Modifying
     @Query("SELECT SUM(ut.pricePaid) FROM UserTicket ut WHERE ut.userId = :userId")
     BigDecimal getTotalPricePaidByUserId(@Param("userId") Users userId);
 
-    @Modifying
     @Query("SELECT COUNT(ut) FROM UserTicket ut WHERE ut.userId = :userId")
     Long getTicketCountByUserId(@Param("userId") Users userId);
 
