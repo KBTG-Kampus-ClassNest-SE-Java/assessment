@@ -61,4 +61,10 @@ class UserControllerTest {
         // assert
         assertThat(userResponse.getTickets()).isEqualTo(expectedTickets);
     }
+
+    @Test
+    @DisplayName("EXP03 test")
+    void test() {
+
+    }
 }

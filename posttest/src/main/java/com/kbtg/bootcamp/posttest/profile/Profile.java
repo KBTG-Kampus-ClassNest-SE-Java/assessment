@@ -15,6 +15,11 @@ public class Profile {
     private Integer id;
 
     public String name;
+
+    public Integer getId() {
+        return id;
+    }
+
     public String phone;
 
     @NotNull

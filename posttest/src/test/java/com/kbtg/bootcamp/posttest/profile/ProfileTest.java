@@ -22,4 +22,13 @@ class ProfileTest {
         all = profileRepository.findAll();
         assertThat(all).isNotNull();
     }
+
+    @Test
+    @DisplayName("EXP03 : get User_ticket")
+    void shouldReturnAnEntity() {
+        List<Profile> all = null;
+        all = profileRepository.findAll();
+        assertThat(all).isNotNull();
+        assertThat(all).isInstanceOf(List.class);
+    }
 }

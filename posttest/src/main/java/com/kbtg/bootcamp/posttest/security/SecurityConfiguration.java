@@ -16,7 +16,8 @@ public class SecurityConfiguration {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         return
-        http.authorizeHttpRequests((requests) -> requests
+        http
+                .authorizeRequests((requests) -> requests
                 .requestMatchers("/users/**").permitAll() // if match with path /users/ permit all
                 .requestMatchers("/test/**").permitAll()
                 .anyRequest().authenticated()

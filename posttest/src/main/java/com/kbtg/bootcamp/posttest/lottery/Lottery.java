@@ -14,6 +14,14 @@ public class Lottery {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+
     @NotNull
     @Size(min = 6, max = 6)
     @Pattern(regexp = "\\d{6}", message = "Ticket must be exactly 6 digits")

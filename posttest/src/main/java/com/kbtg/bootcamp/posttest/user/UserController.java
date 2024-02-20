@@ -1,6 +1,8 @@
 package com.kbtg.bootcamp.posttest.user;
 
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
+import com.kbtg.bootcamp.posttest.profile.Profile;
+import com.kbtg.bootcamp.posttest.profile.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +17,9 @@ public class UserController {
     private LotteryService lotteryService;
 
     @GetMapping("")
-    public String hello() {
-        return "hello user";
+    public List<Profile> helloProfile() {
+        return
+        lotteryService.getAllUserProfile();
     }
 
     @GetMapping("/lotteries")
@@ -30,8 +33,9 @@ public class UserController {
     @PostMapping("/{requestedUserId}/lotteries/{requestedTicketId}")
     public void getBuyLotteryPage(
         @PathVariable Integer requestedUserId,
-        @PathVariable Integer requestedTicketId
+        @PathVariable Integer requestedTicketId,
+        @RequestBody UserRequest request
     ) {
-
+        lotteryService.buyLotteries(request);
     }
 }
