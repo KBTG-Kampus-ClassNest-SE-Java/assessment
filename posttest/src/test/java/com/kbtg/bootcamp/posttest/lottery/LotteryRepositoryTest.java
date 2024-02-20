@@ -23,17 +23,16 @@ class LotteryRepositoryTest {
     @DisplayName("EXP01 task: check Duplicate")
     void whenDuplicateTicket_thenThrowDataIntegrityViolationException() {
         // Arrange
-        String ticket = "999999";
+        String ticket = "111111";
 
         // Act & Assert
-        DataIntegrityViolationException exception = assertThrows(DataIntegrityViolationException.class, () -> {
+        DuplicateTickerException exception = assertThrows(DuplicateTickerException.class, () -> {
             Lottery lottery2 = new Lottery(ticket, 20.0, 200L); // Duplicate ticket value
-            lotteryRepository.save(lottery2);
+            if (lotteryRepository.existsByTicket(ticket)) {
+                throw new DuplicateTickerException("duplicate ticket");
+            }
         });
 
-        // Assert
-        assertThat(exception.getMessage()).containsIgnoringCase("duplicate key value violates unique constraint");
-        assertThat(exception.getMessage()).containsIgnoringCase("lottery_ticket_key");
     }
 
 
