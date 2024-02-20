@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Run Gradle test
+./gradlew test
+
+if [ $? -ne 0 ]; then
+    echo "Pre-commit checks failed. Please fix the issues before committing."
+    exit 1
+fi
