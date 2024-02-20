@@ -20,7 +20,7 @@ public class LotteryTicketRepositoryTest {
     @DisplayName("Saving a new lottery ticket")
     void testSaveLotteryTicket() {
         LotteryTicket ticket = new LotteryTicket();
-        ticket.setTicket("1234562");
+        ticket.setTicket("123456");
         ticket.setPrice(1);
         ticket.setAmount(1);
 
