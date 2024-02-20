@@ -16,7 +16,6 @@ import java.util.List;
 public class Lottery {
 
     @Id
-    @Column(name = "ticket_number")
     private String ticketNumber;
     @Column(name = "price")
     private BigDecimal ticketPrice;
@@ -34,7 +33,6 @@ public class Lottery {
     public void setTicketAmount(Integer ticketAmount) {
         this.ticketAmount = ticketAmount;
     }
-
 
     public String getTicketNumber() {
         return ticketNumber;
@@ -64,5 +62,7 @@ public class Lottery {
         this.lastUpdate = lastUpdate;
     }
 
+    public Lottery() {
 
+    }
 }

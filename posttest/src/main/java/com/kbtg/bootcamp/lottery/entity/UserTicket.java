@@ -11,13 +11,15 @@ public class UserTicket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer ticket_id;
+    private Integer ticketId;
 
-    @Column(name = "ticket_number")
-    private String ticketNumber;
+    @ManyToOne
+    @JoinColumn(name = "ticket_number", referencedColumnName = "ticketNumber")
+    private Lottery lottery;
 
-    @Column(name = "user_id")
-    private String userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "userId")
+    private Users userId;
 
     @Column(name = "is_sold_back_flag")
     private String isSoldBackFlag;
@@ -31,28 +33,13 @@ public class UserTicket {
     @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
 
+
     public Integer getTicketId() {
-        return ticket_id;
+        return ticketId;
     }
 
     public void setTicketId(Integer ticket_id) {
-        this.ticket_id = ticket_id;
-    }
-
-    public String getTicketNumber() {
-        return ticketNumber;
-    }
-
-    public void setTicketNumber(String ticketNumber) {
-        this.ticketNumber = ticketNumber;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
+        this.ticketId = ticket_id;
     }
 
     public String getIsSoldBackFlag() {
@@ -86,4 +73,23 @@ public class UserTicket {
     public void setLastUpdated(LocalDateTime lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
+
+
+    public void setLotteryNumber(String lotteryNumber) {
+        this.lottery = new Lottery();
+        this.lottery.setTicketNumber(lotteryNumber);
+    }
+
+    public String getLotteryNumber() {
+       return this.lottery.getTicketNumber();
+    }
+    public void setUserId(String userId) {
+        this.userId = new Users();
+        this.userId.setUserId(userId);
+    }
+
+    public Users getUserId() {
+        return userId;
+    }
+
 }
