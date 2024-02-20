@@ -11,10 +11,6 @@ public class LotteryService {
 
     private List<Lottery> lotteries = new ArrayList<>();
 
-//    @Getter
-//    @Value("${lottery.price}")
-//    private Integer lotteryPrice;
-
     private Lottery lottery;
     public List<String> getAllLotteryTickets() {
         List<String> tickets = new ArrayList<>();
@@ -50,7 +46,6 @@ public class LotteryService {
         }
         return userLotteries;
     }
-
 
     public Integer getLotteryPrice() {
         return lottery.getPrice();

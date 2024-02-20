@@ -40,6 +40,7 @@ public class UserService {
         return user;
     }
 
+
     public void buyLottery(String userId, String lotteryId) {
         // Get the user by ID
         User user = getUserById(userId);
@@ -71,5 +72,12 @@ public class UserService {
         return tickets;
     }
 
+    public void deleteLotteries(String userId){
+        User user = getUserById(userId);
+        if (user == null) {
+            throw new IllegalArgumentException("User not found with ID: " + userId);
+        }
 
+        user.getLotteries().clear();
+    }
 }
