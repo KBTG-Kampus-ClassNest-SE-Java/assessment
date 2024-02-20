@@ -39,4 +39,8 @@ public class LotteryService {
     public List<Lottery> getAllLotteries() {
         return lotteryRepository.findAll(); // null
     }
+
+    public void buyLotteries() {
+
+    }
 }
