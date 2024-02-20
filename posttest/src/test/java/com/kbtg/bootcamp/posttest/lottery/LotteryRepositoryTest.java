@@ -4,10 +4,7 @@ import com.kbtg.bootcamp.posttest.security.controller.AdminRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,10 +23,7 @@ class LotteryRepositoryTest {
     @Test
     @DisplayName("EXP01 task: check Duplicate")
     void whenDuplicateTicket_thenThrowDataIntegrityViolationException() {
-        int min = 100000;
-        int max = 999999;
-        int randomNumber = (int) (Math.random() * (max - min + 1) + min);
-        String randomString = String.valueOf(randomNumber);
+        getRandom6digitsString();
 
         // Arrange
         String ticket = "111111";
@@ -49,10 +43,7 @@ class LotteryRepositoryTest {
     @Test
     @DisplayName("EXP01 task: check notExits lottery")
     public void whenTicketDoesNotExist_thenReturnFalse() {
-        int min = 100000;
-        int max = 999999;
-        int randomNumber = (int) (Math.random() * (max - min + 1) + min);
-        String randomString = String.valueOf(randomNumber);
+        String randomString = getRandom6digitsString();
 
         // Arrange
         String nonExistingTicket = randomString;
@@ -64,19 +55,26 @@ class LotteryRepositoryTest {
         assertThat(exists).isFalse();
     }
 
-    @Test
-    @DisplayName("EXP01 task: check return response body ")
-    void shouldReturnBodyWhenCreateNewLottery() {
+    private static String getRandom6digitsString() {
         int min = 100000;
         int max = 999999;
         int randomNumber = (int) (Math.random() * (max - min + 1) + min);
         String randomString = String.valueOf(randomNumber);
-        AdminRequest request = new AdminRequest("111111", 10.0, 10L);
+        return randomString;
+    }
 
-        lotteryService.createLottery(request);
+    @Test
+    @DisplayName("EXP01 task: check return response body ")
+    void shouldReturnBodyWhenCreateNewLottery() { // lottery does n't exist
+        String randomString = getRandom6digitsString();
+        // arrange
+        AdminRequest request = new AdminRequest(randomString, 10.0, 10L);
+
+        // act
+        LotteryResponse lottery = lotteryService.createLottery(request);
 
         // Assert
-        assertThat(lotteryService.createLottery(request).getClass()).isEqualTo(LotteryResponse.class);
+        assertThat(lottery).isInstanceOf(LotteryResponse.class);
     }
 
 }
