@@ -19,7 +19,6 @@ CREATE TABLE user_ticket (
     ticket_number VARCHAR(6) NOT NULL,
     user_id VARCHAR(100) NOT NULL,
     price_paid DECIMAL NOT NULL,
-    is_sold_back_flag VARCHAR(1) DEFAULT 'N',
     purchase_date TIMESTAMP WITHOUT TIME ZONE DEFAULT (NOW()),
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW(),
     last_updated TIMESTAMP WITHOUT TIME ZONE DEFAULT (NOW()),

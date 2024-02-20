@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/lotteries/{lotteryNumber}")
-    public LotteryPurchaseResponseDto purchaseLotteryTicket(@PathVariable("userId") String userId, @PathVariable("lotteryNumber")  String lotteryNumber) throws Exception {
+    public LotteryPurchaseResponseDto purchaseLotteryTicket(@PathVariable("userId") String userId, @PathVariable("lotteryNumber") String lotteryNumber) throws Exception {
         String userValidationResult = validateUserId(userId);
         if (!userValidationResult.equals("valid")) {
             throw new BadRequestException(userValidationResult);
@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}/lotteries/{ticketId}")
-    public LotteryResponseDto deleteLottery(@PathVariable("userId") String userId, @PathVariable("ticketId")  String ticketId) throws Exception {
+    public LotteryResponseDto deleteLottery(@PathVariable("userId") String userId, @PathVariable("ticketId") String ticketId) throws Exception {
 
         String userValidationResult = validateUserId(userId);
         if (!userValidationResult.equals("valid")) {
@@ -60,7 +60,7 @@ public class UserController {
             throw new BadRequestException(ticketValidationResult);
         }
 
-        return lotteryService.deleteLottery(userId, ticketId);
+        return lotteryService.soldBackLotteryTicket(userId, ticketId);
     }
 
     private String validateUserId(String userId) {

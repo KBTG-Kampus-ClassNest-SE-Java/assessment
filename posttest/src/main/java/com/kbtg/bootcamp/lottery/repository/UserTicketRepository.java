@@ -13,6 +13,7 @@ import java.util.List;
 
 public interface UserTicketRepository extends JpaRepository<UserTicket, Long> {
     List<UserTicket> findByUserId(Users userId);
+
     @Query("SELECT SUM(ut.pricePaid) FROM UserTicket ut WHERE ut.userId = :userId")
     BigDecimal getTotalPricePaidByUserId(@Param("userId") Users userId);
 

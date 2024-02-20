@@ -21,9 +21,6 @@ public class UserTicket {
     @JoinColumn(name = "user_id", referencedColumnName = "userId")
     private Users userId;
 
-    @Column(name = "is_sold_back_flag")
-    private String isSoldBackFlag;
-
     @Column(name = "price_paid")
     private BigDecimal pricePaid;
 
@@ -40,14 +37,6 @@ public class UserTicket {
 
     public void setTicketId(Integer ticket_id) {
         this.ticketId = ticket_id;
-    }
-
-    public String getIsSoldBackFlag() {
-        return isSoldBackFlag;
-    }
-
-    public void setIsSoldBackFlag(String isSoldBackFlag) {
-        this.isSoldBackFlag = isSoldBackFlag;
     }
 
     public BigDecimal getPricePaid() {
@@ -81,8 +70,9 @@ public class UserTicket {
     }
 
     public String getLotteryNumber() {
-       return this.lottery.getTicketNumber();
+        return this.lottery.getTicketNumber();
     }
+
     public void setUserId(String userId) {
         this.userId = new Users();
         this.userId.setUserId(userId);

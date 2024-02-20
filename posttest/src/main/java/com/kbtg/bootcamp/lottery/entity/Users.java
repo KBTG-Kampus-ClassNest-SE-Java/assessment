@@ -14,10 +14,18 @@ public class Users {
     @Id
     private String userId;
 
+
     public void setUserId(String userId) {
         this.userId = userId;
     }
 
+    public Users() {
+
+    }
+
+    public Users(String userId) {
+        this.userId = userId;
+    }
 
     public String getUserId() {
         return userId;

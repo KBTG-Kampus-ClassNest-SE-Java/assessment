@@ -16,7 +16,6 @@ public class LotteryUserResponseDto {
     private Long totalTicket;
 
 
-
     public LotteryUserResponseDto(List<String> ticketNumbers, BigDecimal totalPrice, Long totalTicket) {
         this.ticketNumber = ticketNumbers;
         this.pricePaid = totalPrice;

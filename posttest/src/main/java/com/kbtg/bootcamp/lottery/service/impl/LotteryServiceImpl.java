@@ -72,14 +72,13 @@ public class LotteryServiceImpl implements LotteryService {
 
     @Override
     @Transactional
-    public LotteryResponseDto deleteLottery(String userId, String ticketId) throws Exception {
-        Users user = new Users();
-        user.setUserId(userId);
+    public LotteryResponseDto soldBackLotteryTicket(String userId, String ticketId) throws Exception {
+        Users user = new Users(userId);
         boolean isExist = userTicketRepository.existsByTicketIdAndUserId(user, ticketId);
         if (!isExist) {
             throw new NotFoundException(TICKET_NOT_FOUND_OR_USER_ID);
         }
-        Lottery ticket =  userTicketRepository.findByTicketIdAndUserId(user, Long.valueOf(ticketId));
+        Lottery ticket = userTicketRepository.findByTicketIdAndUserId(user, Long.valueOf(ticketId));
         userTicketRepository.deleteLotteryTicketById(user, Long.valueOf(ticketId));
         Optional<Lottery> optionalLottery = lotteryRepository.findById(ticket.getTicketNumber());
         if (optionalLottery.isPresent()) {
@@ -94,8 +93,7 @@ public class LotteryServiceImpl implements LotteryService {
     @Override
     @Transactional
     public LotteryUserResponseDto getUserLotteryTickets(String userId) throws Exception {
-        Users user = new Users();
-        user.setUserId(userId);
+        Users user = new Users(userId);
         List<UserTicket> userTickets = userTicketRepository.findByUserId(user);
         if (userTickets.isEmpty()) {
             throw new NotFoundException(String.format(USER_NOT_FOUND, userId));
@@ -110,11 +108,11 @@ public class LotteryServiceImpl implements LotteryService {
 
     @Override
     @Transactional
-    public LotteryPurchaseResponseDto purchaseLotteryTicket(final String userId,final String lotteryNumber) throws Exception {
+    public LotteryPurchaseResponseDto purchaseLotteryTicket(final String userId, final String lotteryNumber) throws Exception {
         Optional<Lottery> optionalLottery = lotteryRepository.findById(lotteryNumber);
 
         if (optionalLottery.isEmpty()) {
-                throw new NotFoundException(String.format(LOTTERY_NOT_FOUND, lotteryNumber));
+            throw new NotFoundException(String.format(LOTTERY_NOT_FOUND, lotteryNumber));
         }
 
         Lottery lottery = optionalLottery.get();
@@ -122,7 +120,7 @@ public class LotteryServiceImpl implements LotteryService {
 
 
         Optional<Users> optionalUser = usersRepository.findById(userId);
-        if (optionalUser.isEmpty()){
+        if (optionalUser.isEmpty()) {
             createUser(userId);
         }
 
