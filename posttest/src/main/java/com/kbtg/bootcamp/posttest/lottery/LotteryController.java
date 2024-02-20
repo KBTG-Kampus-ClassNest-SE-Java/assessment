@@ -4,9 +4,10 @@ package com.kbtg.bootcamp.posttest.lottery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/admin/lotteries")
@@ -19,11 +20,6 @@ public class LotteryController {
         this.lotteryService = lotteryService;
     }
 
-    @GetMapping
-    public LotteryListResponse getAllLotteries() {
-        List<String> tickets = lotteryService.getAllLotteryTickets();
-        return new LotteryListResponse(tickets);
-    }
 
     @PostMapping
     public ResponseEntity<LotteryResponse> addLottery(@RequestBody LotteryRequest request) {

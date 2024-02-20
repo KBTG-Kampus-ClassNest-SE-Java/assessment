@@ -1,6 +1,7 @@
 package com.kbtg.bootcamp.posttest.user;
 
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
+import com.kbtg.bootcamp.posttest.lottery.LotteryListResponse;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
 import com.kbtg.bootcamp.posttest.userLottery.UserLotteryRequest;
 import com.kbtg.bootcamp.posttest.userLottery.UserLotteryResponse;
@@ -34,6 +35,23 @@ public class UserController {
         return (User) userService.getUserById(id);
     }
 
+    @GetMapping("/users/lotteries/list")
+    public LotteryListResponse getAllLotteries() {
+        List<String> tickets = lotteryService.getAllLotteryTickets();
+        return new LotteryListResponse(tickets);
+    }
+
+
+
+    @GetMapping("/users/{userId}/lotteries")
+    public UserLotteryResponse getUserLotteries(@PathVariable("userId") String userId) {
+        List<String> tickets = userService.getUserLotteryTickets(userId);
+        int count = tickets.size();
+        int cost = count * 80;
+
+        return new UserLotteryResponse(tickets, count, cost);
+    }
+
     @PostMapping("/users")
     @ApiResponse(responseCode = "201", description = "User Created")
     public User createUser(@RequestBody UserRequest request) {
@@ -50,19 +68,8 @@ public class UserController {
         userService.buyLottery(userLotteryRequest.userId(), userLotteryRequest.lotteryId());
     }
 
-    @GetMapping("/users/{userId}/lotteries")
-    public UserLotteryResponse getUserLotteries(@PathVariable("userId") String userId) {
-        List<String> tickets = userService.getUserLotteryTickets(userId);
-        int count = tickets.size();
-        int cost = count * 80;
-
-        return new UserLotteryResponse(tickets, count, cost);
-    }
-
-    @DeleteMapping("/users/{userId}/lotteries/sell")
-    public User sellAllLotteries(@PathVariable String userId) {
-        userService.deleteLotteries(userId);
-
-        return (User) userService.getUserById(userId);
+    @DeleteMapping("/users/{userId}/lotteries/{ticketId}")
+    public List<Lottery> sellAllLotteries(@PathVariable String userId, @PathVariable String ticketId) {
+        return userService.deleteLottery(userId, ticketId);
     }
 }

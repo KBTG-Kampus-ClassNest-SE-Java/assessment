@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -65,19 +66,31 @@ public class UserService {
         }
 
         List<String> tickets = new ArrayList<>();
-        List<Lottery> userLotteries =  user.getLotteries();
+        List<Lottery> userLotteries = user.getLotteries();
         for (Lottery lottery : userLotteries) {
             tickets.add(lottery.getId());
         }
         return tickets;
     }
 
-    public void deleteLotteries(String userId){
+    public List<Lottery> deleteLottery(String userId, String ticketId) {
         User user = getUserById(userId);
         if (user == null) {
             throw new IllegalArgumentException("User not found with ID: " + userId);
         }
 
-        user.getLotteries().clear();
+        List<Lottery> soldTickets = new ArrayList<>();
+        List<Lottery> userLotteries = user.getLotteries();
+        Iterator<Lottery> iterator = userLotteries.iterator();
+        while (iterator.hasNext()) {
+            Lottery lottery = iterator.next();
+            if (lottery.getId().equals(ticketId)) {
+                iterator.remove();
+                soldTickets.add(lottery);
+            }
+        }
+
+        return soldTickets;
     }
 }
+
