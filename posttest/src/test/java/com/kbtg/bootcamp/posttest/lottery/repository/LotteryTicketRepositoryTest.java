@@ -1,6 +1,7 @@
 package com.kbtg.bootcamp.posttest.lottery.repository;
 
 import com.kbtg.bootcamp.posttest.lottery.model.LotteryTicket;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -16,6 +17,7 @@ public class LotteryTicketRepositoryTest {
     private LotteryTicketRepository lotteryTicketRepository;
 
     @Test
+    @DisplayName("Saving a new lottery ticket")
     void testSaveLotteryTicket() {
         LotteryTicket ticket = new LotteryTicket();
         ticket.setTicket("1234562");

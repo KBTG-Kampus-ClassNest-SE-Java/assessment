@@ -1,5 +1,6 @@
 package com.kbtg.bootcamp.posttest.exception;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,8 @@ import static org.mockito.Mockito.when;
 class ApiExceptionHandlingTest {
 
     @Test
-    void handleValidationExceptions() {
+    @DisplayName("Handle validation exceptions")
+    void testHandleValidationExceptions() {
         MethodArgumentNotValidException mockException = mock(MethodArgumentNotValidException.class);
         BindingResult mockBindingResult = mock(BindingResult.class);
         FieldError mockFieldError = new FieldError("testObjectName", "testField", "Test error message");

@@ -46,7 +46,7 @@ public class LotteryServiceTest {
             "000000, 1, 10",
             "100000, 100, 100",
     })
-    @DisplayName("When create a new valid lottery ticket should return valid ticket number")
+    @DisplayName("Creating a new valid lottery ticket, should return valid ticket number")
     void testCreateLotteryTicket(String ticketNumber, int price, int amount) {
         lotteryTicketRequest.setTicket(ticketNumber);
         lotteryTicketRequest.setPrice(price);
@@ -63,7 +63,7 @@ public class LotteryServiceTest {
     }
 
     @Test
-    @DisplayName("When get lottery ticket list should return valid ticket list")
+    @DisplayName("Getting the lottery ticket list, should return a valid ticket list")
     void testGetLotteryTicketList() {
         List<String> ticketNumber = List.of("123456", "000000");
         List<LotteryTicket> ticketList = new ArrayList<>();
