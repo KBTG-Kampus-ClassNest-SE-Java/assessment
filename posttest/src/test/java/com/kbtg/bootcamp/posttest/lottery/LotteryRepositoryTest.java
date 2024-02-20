@@ -1,5 +1,6 @@
 package com.kbtg.bootcamp.posttest.lottery;
 
+import com.kbtg.bootcamp.posttest.security.controller.AdminRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class LotteryRepositoryTest {
     @Autowired
     private LotteryRepository lotteryRepository;
+
+    @Autowired
+    private LotteryService lotteryService;
 
 
     @Test
@@ -58,6 +62,21 @@ class LotteryRepositoryTest {
 
         // Assert
         assertThat(exists).isFalse();
+    }
+
+    @Test
+    @DisplayName("EXP01 task: check return response body ")
+    void shouldReturnBodyWhenCreateNewLottery() {
+        int min = 100000;
+        int max = 999999;
+        int randomNumber = (int) (Math.random() * (max - min + 1) + min);
+        String randomString = String.valueOf(randomNumber);
+        AdminRequest request = new AdminRequest("111111", 10.0, 10L);
+
+        lotteryService.createLottery(request);
+
+        // Assert
+        assertThat(lotteryService.createLottery(request).getClass()).isEqualTo(LotteryResponse.class);
     }
 
 }
