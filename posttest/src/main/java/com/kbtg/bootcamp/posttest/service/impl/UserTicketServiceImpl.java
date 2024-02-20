@@ -1,6 +1,7 @@
 package com.kbtg.bootcamp.posttest.service.impl;
 
 import com.kbtg.bootcamp.posttest.dto.response.PurchaseTicketResponseDTO;
+import com.kbtg.bootcamp.posttest.dto.response.RefundTicketResponseDTO;
 import com.kbtg.bootcamp.posttest.dto.response.UserPurchaseHistoryResponseDTO;
 import com.kbtg.bootcamp.posttest.entity.Ticket;
 import com.kbtg.bootcamp.posttest.entity.UserTicket;
@@ -11,7 +12,6 @@ import com.kbtg.bootcamp.posttest.repository.UserTicketRepository;
 import com.kbtg.bootcamp.posttest.service.UserTicketService;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -60,6 +60,31 @@ public class UserTicketServiceImpl implements UserTicketService {
                 historyTickets.size(),
                 historyTickets.stream().mapToInt(Ticket::getPrice).sum()
         );
+    }
+
+    @Override
+    public RefundTicketResponseDTO refundTicket(String userId, String ticketId) {
+
+        List<UserTicket> refundTicket = userTicketRepository.findByUserId(userId)
+                .stream()
+                .filter(userTicket -> userTicket.getTicket().getTicket_no().equals(ticketId))
+                .toList();
+
+
+        // Return with bad request because user id and ticket id might be existing.
+        // However, user didn't purchase the lottery.
+        // Hence, user trying to refund lottery which is not afforded yet(Illegal operation)
+        if(refundTicket.isEmpty()) {
+            throw new IllegalOperationException("User ID : " + userId + " didn't purchase lottery number : " + ticketId);
+        }
+
+        // ignore to handle optional because ticketId always exists
+        Ticket ticket = ticketRepository.findById(ticketId).get();
+
+        ticket.setAmount(ticket.getAmount() + refundTicket.size());
+        userTicketRepository.deleteAll(refundTicket);
+
+        return new RefundTicketResponseDTO(ticketId);
     }
 
 

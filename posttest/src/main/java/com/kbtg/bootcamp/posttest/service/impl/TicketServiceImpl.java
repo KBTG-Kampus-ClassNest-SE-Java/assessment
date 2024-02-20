@@ -7,6 +7,7 @@ import com.kbtg.bootcamp.posttest.entity.Ticket;
 import com.kbtg.bootcamp.posttest.exception.IllegalOperationException;
 import com.kbtg.bootcamp.posttest.repository.TicketRepository;
 import com.kbtg.bootcamp.posttest.service.TicketService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

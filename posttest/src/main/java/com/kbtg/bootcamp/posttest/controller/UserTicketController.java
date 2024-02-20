@@ -1,6 +1,7 @@
 package com.kbtg.bootcamp.posttest.controller;
 
 import com.kbtg.bootcamp.posttest.dto.response.PurchaseTicketResponseDTO;
+import com.kbtg.bootcamp.posttest.dto.response.RefundTicketResponseDTO;
 import com.kbtg.bootcamp.posttest.dto.response.UserPurchaseHistoryResponseDTO;
 import com.kbtg.bootcamp.posttest.service.UserTicketService;
 import jakarta.validation.constraints.NotBlank;
@@ -41,8 +42,24 @@ public class UserTicketController {
             @NotBlank(message = "User ID is mandatory")
             @Pattern(regexp = "^[0-9]{10}$",message = "User ID must be 10 digit numbers")
             String userId
-    ){
+    ) {
         UserPurchaseHistoryResponseDTO userPurchaseHistoryResponseDTO = userTicketService.showHistoryPurchase(userId);
         return new ResponseEntity<>(userPurchaseHistoryResponseDTO,HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{userId}/lotteries/{ticketId}")
+    public ResponseEntity<?> refundTicket(
+            @PathVariable
+            @NotBlank(message = "User ID is mandatory")
+            @Pattern(regexp = "^[0-9]{10}$",message = "User ID must be 10 digit numbers")
+            String userId,
+
+            @PathVariable
+            @NotBlank(message = "Lottery number is mandatory")
+            @Pattern(regexp = "^[0-9]{6}$",message = "Lottery number must be 6 digit numbers")
+            String ticketId
+    ) {
+        RefundTicketResponseDTO refundTicketResponseDTO = userTicketService.refundTicket(userId,ticketId);
+        return new ResponseEntity<>(refundTicketResponseDTO,HttpStatus.OK);
     }
 }
