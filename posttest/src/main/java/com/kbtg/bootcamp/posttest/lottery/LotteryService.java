@@ -32,7 +32,6 @@ public class LotteryService {
             // new lottery
             lotteryRepository.save(newLottery);
         }
-
         return new LotteryResponse(newLottery.getTicket());
     }
 
