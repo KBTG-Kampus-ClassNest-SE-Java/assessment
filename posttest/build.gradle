@@ -21,12 +21,6 @@ repositories {
 	mavenCentral()
 }
 
-tasks.register('addPreCommitGitHookOnBuild') {
-	exec {
-		commandLine("cp", "./.scripts/pre-commit", "./.git/hooks")
-	}
-}
-
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
