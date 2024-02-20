@@ -23,10 +23,8 @@ public class LotteryService {
     }
 
     public LotteryTicketResponse createLotteryTicket(LotteryTicketRequest request) {
-        Optional<LotteryTicket> existingTicketOptional = lotteryTicketRepository.findByTicket(request.getTicket());
-
-        if (existingTicketOptional.isPresent()) {
-            LotteryTicket existingTicket = existingTicketOptional.get();
+        LotteryTicket existingTicket = lotteryTicketRepository.findByTicket(request.getTicket());
+        if (existingTicket != null) {
             return new LotteryTicketResponse(existingTicket.getTicket());
         } else {
             LotteryTicket ticket = new LotteryTicket();

@@ -69,7 +69,7 @@ public class LotteryServiceTest {
         lotteryTicketRequest.setTicket("123456");
         lotteryTicket.setTicket("123456");
 
-        when(lotteryTicketRepository.findByTicket("123456")).thenReturn(Optional.of(lotteryTicket));
+        when(lotteryTicketRepository.findByTicket("123456")).thenReturn(lotteryTicket);
         LotteryTicketResponse actualResult = lotteryService.createLotteryTicket(lotteryTicketRequest);
 
         verify(lotteryTicketRepository, never()).save(any());

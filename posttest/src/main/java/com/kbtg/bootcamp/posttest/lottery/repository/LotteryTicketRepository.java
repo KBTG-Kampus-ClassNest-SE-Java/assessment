@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface LotteryTicketRepository extends JpaRepository<LotteryTicket, Long> {
-    Optional<LotteryTicket> findByTicket(String ticket);
+    LotteryTicket findByTicket(String ticket);
 }
