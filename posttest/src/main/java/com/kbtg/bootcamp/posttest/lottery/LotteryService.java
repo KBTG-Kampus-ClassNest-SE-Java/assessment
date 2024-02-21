@@ -26,6 +26,7 @@ public class LotteryService {
         this.profileRepository =  profileRepository;
     }
 
+
     public List<Profile> getAllUserProfile() {
         return
         profileRepository.findAll();
@@ -48,34 +49,25 @@ public class LotteryService {
         return new LotteryResponse(newLottery.getTicket());
     }
 
-    private boolean isExistedByTicket(String ticket) {
-        return lotteryRepository.existsByTicket(ticket);
+    public boolean isExistedByTicket(String ticket) {
+        // return false if ticket does not exist -> new
+        Optional<Lottery> result = lotteryRepository.findAll().stream()
+                .filter(lottery -> lottery.getTicket().equals(ticket))
+                .findFirst();
+        if (result.isPresent()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public List<Lottery> getAllLotteries() {
         return lotteryRepository.findAll(); // null
     }
 
-    public ResponseEntity<? extends Object> buyLotteries(UserRequest request) {
+
+    public ResponseEntity<?> buyLotteries(UserRequest request) {
         Objects.requireNonNull(request);
-
-        if (isExistedByTicket(request.ticketId())) { // there is a ticketNumber in the Lottery table
-
-            // find user that correspond with requestID
-            Profile profile = profileRepository.findById(request.userId()).orElse(null);
-            if (profile == null) {
-                return ResponseEntity.notFound().build(); // User not found
-            }
-            Lottery lottery = lotteryRepository.findById(Long.valueOf(request.ticketId())).get();
-            if (lottery == null) {
-                // Return a proper error response if the lottery ticket is not found
-                throw new NotExistLotteryException("Lottery ticket not found");
-            }
-            lottery.setProfile(profile);
-            return ResponseEntity.ok().body(String.valueOf(profile.getId()));
-        } else {
-            throw new NotExistLotteryException("Wrong Lottery ticketNumber");
-        }
-
+        return ResponseEntity.ok().body(request.userId());
     }
 }

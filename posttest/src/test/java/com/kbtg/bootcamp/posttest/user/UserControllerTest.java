@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest(
@@ -51,7 +50,7 @@ class UserControllerTest {
     void shouldReturnUserResponse() {
 
         // arrange
-        UserResponse userResponse = userController.getLotteriesPage();
+        UserResponseEXP02 userResponse = userController.getLotteriesPage();
         List<Lottery> allLotteries = lotteryService.getAllLotteries();
         // act
         List<String> expectedTickets = allLotteries.stream()
@@ -63,8 +62,13 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("EXP03 test")
+    @DisplayName("EXP03 test: return null")
     void test() {
+        UserRequest request = new UserRequest(1,"111111");
+
+        Object o = lotteryService.buyLotteries(request);
+        assertThat(o).isNotNull();
+        assertThat(o);
 
     }
 }

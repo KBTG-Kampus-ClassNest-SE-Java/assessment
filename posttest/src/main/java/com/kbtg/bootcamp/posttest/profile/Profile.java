@@ -14,21 +14,20 @@ public class Profile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    public String name;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String phone;
-
     @NotNull
-    @Email
-    private String email;
+    @Column(name = "userid")
+    private String userId;
+
+    public String name;
+    public String phone;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
     private List<Lottery> lotteries;
 
+
+    public Integer getId() {
+        return id;
+    }
     public String getName() {
         return name;
     }
@@ -45,11 +44,11 @@ public class Profile {
         this.phone = phone;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

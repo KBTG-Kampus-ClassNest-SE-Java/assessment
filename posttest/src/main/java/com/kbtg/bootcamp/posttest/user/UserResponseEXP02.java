@@ -2,7 +2,7 @@ package com.kbtg.bootcamp.posttest.user;
 
 import java.util.List;
 
-public class UserResponse {
+public class UserResponseEXP02 {
     private List<String> tickets;
 
     public List<String> getTickets() {
@@ -13,7 +13,7 @@ public class UserResponse {
         this.tickets = tickets;
     }
 
-    public UserResponse(List<String> tickets) {
+    public UserResponseEXP02(List<String> tickets) {
         this.tickets = tickets;
     }
 }

@@ -14,14 +14,6 @@ public class Lottery {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    public Profile getProfile() {
-        return profile;
-    }
-
-    public void setProfile(Profile profile) {
-        this.profile = profile;
-    }
-
     @NotNull
     @Size(min = 6, max = 6)
     @Pattern(regexp = "\\d{6}", message = "Ticket must be exactly 6 digits")
@@ -30,12 +22,11 @@ public class Lottery {
     private Double price;
     private Long amount;
 
-    public Lottery() {
-    }
-
     @ManyToOne
-    @JoinColumn(name = "profile_email", referencedColumnName = "email")
+    @JoinColumn(name = "profile_id", referencedColumnName = "userId")
     private Profile profile;
+
+    public Lottery() {}
 
     public Lottery(String ticket, Double price, Long amount) {
         this.ticket = ticket;
@@ -69,5 +60,13 @@ public class Lottery {
 
     public void setAmount(Long amount) {
         this.amount = amount;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 }

@@ -32,7 +32,7 @@ class LotteryRepositoryTest {
         // Act & Assert
         DuplicateTickerException exception = assertThrows(DuplicateTickerException.class, () -> {
             Lottery lottery2 = new Lottery(ticket, 20.0, 200L); // Duplicate ticket value
-            if (lotteryRepository.existsByTicket(ticket)) {
+            if (lotteryService.isExistedByTicket(ticket)) {
                 throw new DuplicateTickerException("duplicate ticket");
             }
         });
@@ -49,7 +49,7 @@ class LotteryRepositoryTest {
         String nonExistingTicket = randomString;
 
         // Act
-        boolean exists = lotteryRepository.existsByTicket(nonExistingTicket);
+        boolean exists = lotteryService.isExistedByTicket(nonExistingTicket);
 
         // Assert
         assertThat(exists).isFalse();
