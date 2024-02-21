@@ -17,7 +17,10 @@ public class UserController {
     @Autowired
     private LotteryService lotteryService;
 
+    @GetMapping("")
+    public void get() {
 
+    }
 
     @GetMapping("/lotteries")
     public UserResponse getLotteriesPage() {
