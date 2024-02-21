@@ -79,19 +79,15 @@ public class LotteryService {
     }
 
 
-    public ResponseEntity<?> getAllLotteriesByUserId(String requestedUserId) {
-        Lottery test = new Lottery("789456", 10.0, 20L);
-        Profile profile = new Profile();
-        profile.setUserId("1234567890");
-        test.setProfile(profile);
-        List<Lottery> lotteries = Arrays.asList(
-                test
-        );
+    public ResponseEntity<List<Lottery>> getAllLotteriesByUserId(String requestedUserId) {
 
         if (isUserExistsByUserId(requestedUserId)) {
-            List<Lottery> list = lotteries.stream()
-                    .filter(lottery -> lottery.getProfile().getUserId().equals(requestedUserId))
-                    .toList();
+            List<Lottery> list = getAllLotteries().stream()
+                    .filter(lottery -> {
+                        Profile profile = lottery.getProfile();
+                        return profile != null && profile.getUserId() != null && profile.getUserId().equals(requestedUserId);
+                    })
+                    .collect(Collectors.toList());
             return ResponseEntity.ok().body(list);
         } else {
             return ResponseEntity.ok().body(null);

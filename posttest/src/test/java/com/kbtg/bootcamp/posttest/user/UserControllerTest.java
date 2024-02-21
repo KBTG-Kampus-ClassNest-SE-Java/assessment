@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -123,14 +125,25 @@ class UserControllerTest {
     @Test
     @DisplayName("EXP04 : return List of lottery that existedUserId have")
     void testEXP04p3() {
-        List<Lottery> lotteries = Arrays.asList(
-                new Lottery("789456", 10.0, 20L),
-                new Lottery("654987", 10.0, 20L)
+
+        // Send GET request to the endpoint
+        ResponseEntity<List<Lottery>> response = restTemplate.exchange(
+                "/users/1234567890/lotteries",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Lottery>>() {}
         );
-        ResponseEntity<List> result = ResponseEntity.ok().body(lotteries);
-        ResponseEntity<List> response =
-                restTemplate.getForEntity("/users/1234567890/lotteries", List.class);
-        assertThat(response.getBody().toString()).isEqualTo(result.getBody().toString());
+
+        // Get the list of lotteries from the response
+        List<Lottery> actualLotteries = response.getBody();
+
+        // Call the service method to get the expected list of lotteries
+        ResponseEntity<List<Lottery>> expectedResponse = lotteryService.getAllLotteriesByUserId("1234567890");
+
+        // Assert that the actual list of lotteries matches the expected list
+        assertThat(response.getBody().toString()).isEqualTo(expectedResponse.getBody().toString());
+
+
     }
 
 
