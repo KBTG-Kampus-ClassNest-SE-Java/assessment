@@ -111,5 +111,12 @@ class UserControllerTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
+    @Test
+    @DisplayName("EXP04 test:shouldReturn Status OK")
+    void testEXP04p1() {
+        ResponseEntity<String> response =
+                restTemplate.getForEntity("/users",String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
 
 }
