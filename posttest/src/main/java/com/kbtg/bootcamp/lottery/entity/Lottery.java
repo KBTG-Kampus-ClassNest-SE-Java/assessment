@@ -22,13 +22,16 @@ public class Lottery {
 
     @Column(name = "amount_available")
     private Integer ticketAmount;
+    @Column(name = "last_updated")
+    private LocalDateTime lastUpdate;
+
+    public Lottery() {
+
+    }
 
     public Integer getTicketAmount() {
         return ticketAmount;
     }
-
-    @Column(name = "last_updated")
-    private LocalDateTime lastUpdate;
 
     public void setTicketAmount(Integer ticketAmount) {
         this.ticketAmount = ticketAmount;
@@ -38,12 +41,12 @@ public class Lottery {
         return ticketNumber;
     }
 
-    public List<String> getTicketNumbers() {
-        return Collections.singletonList(ticketNumber);
-    }
-
     public void setTicketNumber(String ticketNumber) {
         this.ticketNumber = ticketNumber;
+    }
+
+    public List<String> getTicketNumbers() {
+        return Collections.singletonList(ticketNumber);
     }
 
     public BigDecimal getTicketPrice() {
@@ -60,9 +63,5 @@ public class Lottery {
 
     public void setLastUpdate(LocalDateTime lastUpdate) {
         this.lastUpdate = lastUpdate;
-    }
-
-    public Lottery() {
-
     }
 }

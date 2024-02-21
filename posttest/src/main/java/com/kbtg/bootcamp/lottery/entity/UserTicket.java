@@ -63,23 +63,22 @@ public class UserTicket {
         this.lastUpdated = lastUpdated;
     }
 
+    public String getLotteryNumber() {
+        return this.lottery.getTicketNumber();
+    }
 
     public void setLotteryNumber(String lotteryNumber) {
         this.lottery = new Lottery();
         this.lottery.setTicketNumber(lotteryNumber);
     }
 
-    public String getLotteryNumber() {
-        return this.lottery.getTicketNumber();
+    public Users getUserId() {
+        return userId;
     }
 
     public void setUserId(String userId) {
         this.userId = new Users();
         this.userId.setUserId(userId);
-    }
-
-    public Users getUserId() {
-        return userId;
     }
 
 }
