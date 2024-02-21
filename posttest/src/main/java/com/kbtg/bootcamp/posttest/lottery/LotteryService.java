@@ -1,6 +1,7 @@
 
 package com.kbtg.bootcamp.posttest.lottery;
 
+import com.kbtg.bootcamp.posttest.exeption.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -9,7 +10,9 @@ import java.util.List;
 @Service
 public class LotteryService {
 
-    private final List<Lottery> lotteries = new ArrayList<>();
+    private final List<Lottery> lotteries = new ArrayList<>(List.of(
+            new Lottery("111111",1,80)
+    ));
 
     private Lottery lottery;
     public List<String> getAllLotteryTickets() {
@@ -28,12 +31,9 @@ public class LotteryService {
     }
 
     public Lottery getLotteryById(String lotteryId) {
-        for (Lottery lottery : lotteries) {
-            if (lottery.getId().equals(lotteryId)) {
-                return lottery;
-            }
-        }
-        return null;
+        return lotteries.stream().filter(lottery -> lottery.getId().equals(lotteryId))
+                .findFirst()
+                .orElseThrow(() -> new BadRequestException("Lottery ticket no. " + lotteryId + " sold out"));
     }
 
 

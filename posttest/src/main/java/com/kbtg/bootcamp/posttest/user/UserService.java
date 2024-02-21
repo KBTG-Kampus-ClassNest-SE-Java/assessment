@@ -1,5 +1,6 @@
 package com.kbtg.bootcamp.posttest.user;
 
+import com.kbtg.bootcamp.posttest.exeption.NotFoundException;
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,9 @@ import java.util.List;
 @Service
 public class UserService {
     private final LotteryService lotteryService;
-    private List<User> users = new ArrayList<>();
+    private List<User> users = new ArrayList<>(List.of(
+            new User("SirA")
+    ));
 
     @Autowired
     public UserService(LotteryService lotteryService) {
@@ -25,15 +28,10 @@ public class UserService {
     }
 
     public User getUserById(String userId) {
-        for (User user : users) {
-            if (user.getId().equals(userId)) {
-                return user;
-            }
-        }
-        return null;
+        return users.stream().filter(user -> user.getId().equals(userId))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("User : " + userId + " doesn't exist"));
     }
-
-    ;
 
     public User createUser(UserRequest request) {
         User user = new User(request.name());
@@ -43,19 +41,8 @@ public class UserService {
 
 
     public void buyLottery(String userId, String lotteryId) {
-        // Get the user by ID
         User user = getUserById(userId);
-        if (user == null) {
-            throw new IllegalArgumentException("User not found with ID: " + userId);
-        }
-
-        // Get the lottery by ID
         Lottery lottery = lotteryService.getLotteryById(lotteryId);
-        if (lottery == null) {
-            throw new IllegalArgumentException("Lottery not found with ID: " + lotteryId);
-        }
-
-        // Add the lottery to the user's list of lotteries
         user.getLotteries().add(lottery);
     }
 

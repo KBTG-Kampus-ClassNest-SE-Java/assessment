@@ -27,16 +27,13 @@ class LotteryControllerTest {
         request.setAmount(amount);
 
         String expected = "Invalid ticket: Ticket must have exactly 6 digits";
-        // Assert that invoking the controller method throws a BadRequestException
-
-
-        // Assert that the exception message contains the expected message
         assertEquals(expected, expected);
 
-//        ResponseEntity<?> responseEntity = (ResponseEntity<?>) lotteryController.addLottery(request);
-//
-//        // Assert that the response status code is 400 (Bad Request)
-//        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
+    }
+
+    @Test
+    @DisplayName("User can only buy lottery that admin created")
+    void couldBuyOnlyExistLottery() {
 
     }
 }
