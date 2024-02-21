@@ -17,8 +17,10 @@ public class UserController {
     @Autowired
     private LotteryService lotteryService;
 
-    @GetMapping("")
-    public void getAllUserLotteryByUserId() {
+    @GetMapping("/{requestedUserId}/lotteries")
+    public void getAllUserLotteryByUserId(
+            @PathVariable(name = "requestedUserId") Integer requestedUserId
+    ) {
 
     }
 
