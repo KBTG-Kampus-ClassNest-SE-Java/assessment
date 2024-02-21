@@ -34,16 +34,16 @@ public class LotteryRequestDto {
         return ticketNumber;
     }
 
+    public void setTicketNumber(String ticketNumber) {
+        this.ticketNumber = ticketNumber;
+    }
+
     public BigDecimal getTicketPrice() {
         return ticketPrice;
     }
 
     public void setTicketPrice(BigDecimal ticketPrice) {
         this.ticketPrice = ticketPrice;
-    }
-
-    public void setTicketNumber(String ticketNumber) {
-        this.ticketNumber = ticketNumber;
     }
 }
 

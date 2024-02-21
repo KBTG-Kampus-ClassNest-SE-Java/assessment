@@ -1,6 +1,9 @@
 package com.kbtg.bootcamp.lottery.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 import java.util.List;
 
@@ -15,10 +18,6 @@ public class Users {
     private String userId;
 
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     public Users() {
 
     }
@@ -29,6 +28,10 @@ public class Users {
 
     public String getUserId() {
         return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public List<UserTicket> getTickets() {
