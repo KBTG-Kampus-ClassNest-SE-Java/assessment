@@ -29,7 +29,7 @@ public class SecurityConfiguration  {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeRequests((requests) -> requests
             .requestMatchers(new AntPathRequestMatcher("/users/**")).permitAll()
-            .requestMatchers("/test/**").permitAll()
+            .requestMatchers(new AntPathRequestMatcher("/test/**")).permitAll()
             .anyRequest().authenticated()
         )
         .httpBasic(withDefaults())

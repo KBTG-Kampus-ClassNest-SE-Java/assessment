@@ -2,11 +2,9 @@ package com.kbtg.bootcamp.posttest.security.controller.test;
 
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
+import com.kbtg.bootcamp.posttest.user.UserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -34,5 +32,14 @@ public class TestLotteryController {
         } else {
             throw new RuntimeException();
         }
+    }
+
+    @PostMapping("/{requestedUserId}/lotteries/{requestedTicketId}")
+    public String getBuyLotteryPage(
+            @PathVariable(name = "requestedUserId") Integer requestedUserId,
+            @PathVariable(name = "requestedTicketId") Integer requestedTicketId,
+            @RequestBody UserRequest request
+    ) {
+        return "test";
     }
 }

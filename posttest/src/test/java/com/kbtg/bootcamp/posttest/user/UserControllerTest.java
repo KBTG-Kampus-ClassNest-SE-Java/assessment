@@ -2,6 +2,8 @@ package com.kbtg.bootcamp.posttest.user;
 
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
+import com.kbtg.bootcamp.posttest.profile.Profile;
+import com.kbtg.bootcamp.posttest.profile.ProfileRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ class UserControllerTest {
 
     @Autowired
     UserController userController;
+
+    @Autowired
+    ProfileRepository  profileRepository;
 
 
     @Test
@@ -65,14 +70,29 @@ class UserControllerTest {
     @DisplayName("EXP03 test: shouldReturn HTTPStatusOK and Body")
     void test() {
         UserRequest request = new UserRequest("1234567890","111111");
+
         ResponseEntity<String> result = ResponseEntity.ok().body("test");
         ResponseEntity<String> response =
-                restTemplate.postForEntity("/users/1/lotteries/111111",request, String.class );
-
+                restTemplate.postForEntity("/test/1/lotteries/111111",request, String.class );
 
         // assert
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isEqualTo(result.getBody());
+    }
+
+    @Test
+    @DisplayName("EXP03 test: shouldReturn Body with Profile")
+    void test2() {
+        UserRequest request = new UserRequest("1234567890","111111");
+        Profile profile = new Profile();
+        profile.setUserId("1234567890");
+        ResponseEntity<Profile> result = ResponseEntity.ok().body(profile);
+        ResponseEntity<String> response =
+                restTemplate.postForEntity("/users/1/lotteries/111111",request, String.class );
+
+        // assert
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isInstanceOf(Profile.class);
     }
 
 
