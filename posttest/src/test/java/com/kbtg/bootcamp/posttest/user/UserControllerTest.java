@@ -120,12 +120,15 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("EXP04 : shouldReturn existsUserId")
+    @DisplayName("EXP04 : exist userId return true")
     void testEXP04p3() {
-        ResponseEntity<?> response =
-                restTemplate.getForEntity("/user/1000000/lotteries",String.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        Boolean arrange = true;
+        ResponseEntity<Boolean> response =
+                restTemplate.getForEntity("/users/1234567890/lotteries", Boolean.class);
+        assertThat(response.getBody()).isEqualTo(arrange);
     }
+
+
 
 
 

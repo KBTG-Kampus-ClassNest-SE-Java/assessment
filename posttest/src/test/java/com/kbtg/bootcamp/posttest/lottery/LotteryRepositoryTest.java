@@ -1,6 +1,7 @@
 package com.kbtg.bootcamp.posttest.lottery;
 
 import com.kbtg.bootcamp.posttest.admin.AdminRequest;
+import com.kbtg.bootcamp.posttest.exception.DuplicateTickerException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

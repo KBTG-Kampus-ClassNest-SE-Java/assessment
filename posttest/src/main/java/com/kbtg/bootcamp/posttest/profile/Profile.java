@@ -31,10 +31,6 @@ public class Profile {
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
     private List<Lottery> lotteries;
 
-
-    public Integer getId() {
-        return id;
-    }
     public String getName() {
         return name;
     }
@@ -57,5 +53,14 @@ public class Profile {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    @Override
+    public String toString() {
+        return "Profile{" +
+                "userId='" + userId + '\'' +
+                ", name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
     }
 }
