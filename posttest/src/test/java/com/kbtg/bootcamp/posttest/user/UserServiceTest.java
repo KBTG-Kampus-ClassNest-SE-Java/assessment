@@ -1,6 +1,5 @@
 package com.kbtg.bootcamp.posttest.user;
 
-import com.kbtg.bootcamp.posttest.exeption.BadRequestException;
 import com.kbtg.bootcamp.posttest.exeption.NotFoundException;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +26,7 @@ class UserServiceTest {
     void couldBuyOnlyExistLottery() {
         String lotteryId = "11111";
         String userId = "0000000000";
-        BadRequestException exception = assertThrows(BadRequestException.class, () -> userService.buyLottery(userId, lotteryId));
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> userService.buyLottery(userId, lotteryId));
         String expectedMessage = "Lottery ticket no. " + lotteryId + " sold out";
         assertEquals(expectedMessage, exception.getMessage());
     }

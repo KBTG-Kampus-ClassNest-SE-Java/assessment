@@ -1,7 +1,7 @@
 
 package com.kbtg.bootcamp.posttest.lottery;
 
-import com.kbtg.bootcamp.posttest.exeption.BadRequestException;
+import com.kbtg.bootcamp.posttest.exeption.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -33,17 +33,22 @@ public class LotteryService {
     public Lottery getLotteryById(String lotteryId) {
         return lotteries.stream().filter(lottery -> lottery.getId().equals(lotteryId))
                 .findFirst()
-                .orElseThrow(() -> new BadRequestException("Lottery ticket no. " + lotteryId + " sold out"));
+                .orElseThrow(() -> new NotFoundException("Lottery ticket no. " + lotteryId + " sold out"));
     }
 
 
 
     public List<Lottery> getUserLotteries(String userId) {
         List<Lottery> userLotteries = new ArrayList<>();
+        boolean userFound = false;
         for (Lottery lottery : lotteries) {
             if (lottery.getId().equals(userId)) {
                 userLotteries.add(lottery);
+                userFound = true;
             }
+        }
+        if (!userFound) {
+            throw new NotFoundException("User lotteries not found for user ID: " + userId);
         }
         return userLotteries;
     }

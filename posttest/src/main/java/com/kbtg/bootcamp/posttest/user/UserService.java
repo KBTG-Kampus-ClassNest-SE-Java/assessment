@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -48,10 +47,6 @@ public class UserService {
 
     public List<String> getUserLotteryTickets(String userId) {
         User user = getUserById(userId);
-        if (user == null) {
-            throw new IllegalArgumentException("User not found with ID: " + userId);
-        }
-
         List<String> tickets = new ArrayList<>();
         List<Lottery> userLotteries = user.getLotteries();
         for (Lottery lottery : userLotteries) {
@@ -62,21 +57,13 @@ public class UserService {
 
     public List<Lottery> deleteLottery(String userId, String ticketId) {
         User user = getUserById(userId);
-        if (user == null) {
-            throw new IllegalArgumentException("User not found with ID: " + userId);
-        }
 
-        List<Lottery> soldTickets = new ArrayList<>();
         List<Lottery> userLotteries = user.getLotteries();
-        Iterator<Lottery> iterator = userLotteries.iterator();
-        while (iterator.hasNext()) {
-            Lottery lottery = iterator.next();
-            if (lottery.getId().equals(ticketId)) {
-                iterator.remove();
-                soldTickets.add(lottery);
-            }
-        }
+        List<Lottery> soldTickets = new ArrayList<>();
 
+         soldTickets.add(userLotteries.stream().filter(lotteries -> lotteries.getId().equals(ticketId))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("Lottery ticket no." + ticketId + " not exist")));
         return soldTickets;
     }
 }
