@@ -1,5 +1,7 @@
 package com.kbtg.bootcamp.posttest.user;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryRepository;
 import com.kbtg.bootcamp.posttest.lottery.LotteryResponse;
@@ -133,14 +135,18 @@ class UserControllerTest {
 
     @Test
     @DisplayName("EXP04 test: get all lottery ticket by user")
-    void testEXP04p3() {
+    void testEXP04p3() throws JsonProcessingException {
         List<Lottery> all = lotteryRepository.findAll();
-        ResponseEntity<?> result = ResponseEntity.ok().body(all);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String expectedBody = objectMapper.writeValueAsString(all);
+
+        ResponseEntity<String> result = ResponseEntity.ok().body(expectedBody);
         ResponseEntity<String> response =
                 restTemplate.getForEntity("/users/1234567890/lotteries",String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isEqualTo(result);
+        assertThat(response.getBody()).isEqualTo(result.getBody());
     }
 
 }

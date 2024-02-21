@@ -21,8 +21,7 @@ public class UserController {
     public Object getAllUserLotteryByUserId(
             @PathVariable(name = "requestedUserId") Integer requestedUserId
     ) {
-        return ResponseEntity.ok().body(null);
-
+        return ResponseEntity.ok().body(lotteryService.getAllLotteries());
     }
 
     @GetMapping("/lotteries")
