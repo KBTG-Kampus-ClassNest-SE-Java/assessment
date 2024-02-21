@@ -1,0 +1,29 @@
+version: '3.8'
+
+networks:
+  integration-test-example:
+
+services:
+  it_test:
+    image: app:latest
+    volumes:
+      - /app
+    working_dir: /app
+    ports:
+      - "8888:8080"
+    networks:
+      - integration-test-example
+    command: ["java", "-jar", "build/libs/posttest-0.0.1-SNAPSHOT.jar"]
+  db:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: postgres
+    restart: on-failure
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/
+    networks:
+      - integration-test-example
