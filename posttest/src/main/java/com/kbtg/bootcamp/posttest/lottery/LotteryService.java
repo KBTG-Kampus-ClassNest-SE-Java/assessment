@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public class LotteryService {
 
-    private List<Lottery> lotteries = new ArrayList<>();
+    private final List<Lottery> lotteries = new ArrayList<>();
 
     private Lottery lottery;
     public List<String> getAllLotteryTickets() {
@@ -20,10 +20,11 @@ public class LotteryService {
         return tickets;
     }
 
-    public String addLottery(LotteryRequest request) {
+
+    public LotteryResponse addLottery(LotteryRequest request) {
         Lottery lottery = new Lottery(request.getTicket(), request.getPrice(), request.getAmount());
         lotteries.add(lottery);
-        return lottery.getId();
+        return new LotteryResponse(lottery.getId());
     }
 
     public Lottery getLotteryById(String lotteryId) {
