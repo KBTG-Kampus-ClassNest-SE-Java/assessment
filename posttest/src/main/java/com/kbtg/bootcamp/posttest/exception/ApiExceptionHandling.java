@@ -34,4 +34,15 @@ public class ApiExceptionHandling {
 
         return new ResponseEntity<>(apiExceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(value = {ResourceUnavailableException.class})
+    public ResponseEntity<Object> handleResourceUnavailable(ResourceUnavailableException resourceUnavailableException) {
+        ApiExceptionResponse apiExceptionResponse = new ApiExceptionResponse(
+                resourceUnavailableException.getMessage(),
+                HttpStatus.NOT_FOUND,
+                ZonedDateTime.now()
+        );
+
+        return new ResponseEntity<>(apiExceptionResponse, HttpStatus.NOT_FOUND);
+    }
 }
