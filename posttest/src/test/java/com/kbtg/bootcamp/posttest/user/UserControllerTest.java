@@ -1,6 +1,8 @@
 package com.kbtg.bootcamp.posttest.user;
 
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
+import com.kbtg.bootcamp.posttest.lottery.LotteryRepository;
+import com.kbtg.bootcamp.posttest.lottery.LotteryResponse;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
 import com.kbtg.bootcamp.posttest.profile.Profile;
 import com.kbtg.bootcamp.posttest.profile.ProfileRepository;
@@ -37,6 +39,8 @@ class UserControllerTest {
     @Autowired
     ProfileRepository  profileRepository;
 
+    @Autowired
+    LotteryRepository lotteryRepository;
 
     @Test
     void shouldNotReturnStatusOk() {
@@ -125,6 +129,18 @@ class UserControllerTest {
         ResponseEntity<String> response =
                 restTemplate.getForEntity("/users/1234567890/lotteries",String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
+    @DisplayName("EXP04 test: get all lottery ticket by user")
+    void testEXP04p3() {
+        List<Lottery> all = lotteryRepository.findAll();
+        ResponseEntity<?> result = ResponseEntity.ok().body(all);
+        ResponseEntity<String> response =
+                restTemplate.getForEntity("/users/1234567890/lotteries",String.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isEqualTo(result);
     }
 
 }

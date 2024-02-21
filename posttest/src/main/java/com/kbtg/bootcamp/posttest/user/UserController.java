@@ -18,9 +18,10 @@ public class UserController {
     private LotteryService lotteryService;
 
     @GetMapping("/{requestedUserId}/lotteries")
-    public void getAllUserLotteryByUserId(
+    public Object getAllUserLotteryByUserId(
             @PathVariable(name = "requestedUserId") Integer requestedUserId
     ) {
+        return ResponseEntity.ok().body(null);
 
     }
 
