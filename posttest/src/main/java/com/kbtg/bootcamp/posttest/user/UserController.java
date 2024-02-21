@@ -38,7 +38,7 @@ public class UserController {
             @PathVariable(name = "requestedTicketId") Integer requestedTicketId,
             @RequestBody UserRequest request
     ) {
-        return "user";
+        return "test";
     }
 
 
