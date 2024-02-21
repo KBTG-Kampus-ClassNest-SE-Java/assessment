@@ -63,7 +63,7 @@ class UserServiceTest {
     }
 
     @Test
-    public void testPurchaseLotteryTicketWithNotFoundOrOutOfStockTicket() {
+    public void testPurchaseLotteryTicketWithNotFoundTicket() {
         when(userRepository.findByUserId("1234567890")).thenReturn(new User());
         when(lotteryTicketRepository.findByTicket("999999")).thenReturn(null);
 
@@ -71,6 +71,10 @@ class UserServiceTest {
             userService.purchaseLotteryTicket("1234567890", "999999");
         });
 
+    }
+
+    @Test
+    public void testPurchaseLotteryTicketWithOutOfStockTicket() {
         LotteryTicket outOfStockTicket = new LotteryTicket();
         outOfStockTicket.setAmount(0);
         when(lotteryTicketRepository.findByTicket("outOfStockTicketId")).thenReturn(outOfStockTicket);
