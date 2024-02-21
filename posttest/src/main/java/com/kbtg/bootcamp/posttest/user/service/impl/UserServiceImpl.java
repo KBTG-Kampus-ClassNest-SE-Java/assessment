@@ -33,18 +33,25 @@ public class UserServiceImpl implements UserService {
       throw new IllegalArgumentException("User ID must be a 10-digit number.");
     }
   }
+  public void validateTicketId(String ticketId) {
+    if (ticketId.length() != 6 || !ticketId.matches("\\d+")){
+      throw new IllegalArgumentException("Ticket ID must be a 6-digit number.");
+    }
+  }
   @Override
   @Transactional
-  public TicketIdResponse buyLottery(int ticketId, String userId) {
+  public TicketIdResponse buyLottery(String ticketId, String userId) {
     validateUserId(userId);
+    validateTicketId(ticketId);
 
-    Lottery lottery = lotteryRepository.findById(ticketId)
+    Lottery lottery = lotteryRepository.findByTicket(String.valueOf(ticketId))
         .orElseThrow(() -> new NotFoundException("Lottery not found"));
 
     if (lottery.getAmount() <= 0) {
       throw new BadRequestException("Lottery is sold out");
     }
-    if (userTicketRepository.existsByUserIdAndLotteryId(Integer.parseInt(userId), ticketId)) {
+    if (userTicketRepository.existsByUserIdAndLotteryId(Integer.parseInt(userId),
+        lottery.getId())) {
       throw new BadRequestException("User already bought this lottery");
     }
 
@@ -80,18 +87,19 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  public TicketResponse sellLottery(int ticketId, String userId) {
+  public TicketResponse sellLottery(String ticketId, String userId) {
     validateUserId(userId);
+    validateTicketId(ticketId);
 
-    Lottery lottery = lotteryRepository.findById(ticketId)
+    Lottery lottery = lotteryRepository.findByTicket(String.valueOf(ticketId))
         .orElseThrow(() -> new NotFoundException("Lottery not found"));
 
-    UserTicket userTicket = userTicketRepository.findByUserIdAndLotteryId(Integer.parseInt(userId), ticketId)
-        .orElseThrow(() -> new NotFoundException("User ticket not found"));
+    UserTicket userTicket = userTicketRepository.findByUserIdAndLotteryId(Integer.parseInt(userId), lottery.getId()
+    ).orElseThrow(() -> new NotFoundException("User did not buy this lottery"));
 
     userTicketRepository.delete(userTicket);
     lottery.setAmount(lottery.getAmount() + 1);
-    return new TicketResponse(userTicket.getId().toString());
+    return new TicketResponse(userTicket.getLottery().getTicket());
   }
 
 

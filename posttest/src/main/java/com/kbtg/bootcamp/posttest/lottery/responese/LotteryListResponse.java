@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LotteryListResponse {
 
-  private List<String> ticket;
+  private List<String> tickets;
 
 }

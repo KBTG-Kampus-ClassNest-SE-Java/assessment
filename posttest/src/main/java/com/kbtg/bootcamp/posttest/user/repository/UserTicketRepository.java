@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserTicketRepository extends JpaRepository<UserTicket, Integer> {
 
-  boolean existsByUserIdAndLotteryId(int userId, int ticketId);
+  boolean existsByUserIdAndLotteryId(int userId, Long ticketId);
 
   Collection<UserTicket> findByUserId(int userId);
 
-  Optional<UserTicket> findByUserIdAndLotteryId(int userId, int ticketId);
+  Optional<UserTicket> findByUserIdAndLotteryId(int userId, Long lotteryId);
 }

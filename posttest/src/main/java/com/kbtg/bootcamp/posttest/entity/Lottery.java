@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,6 +26,7 @@ public class Lottery {
   private Long id;
 
   @Column(name = "ticket", unique = true, nullable = false, length = 6)
+  @Size(min = 6, max = 6, message = "ticket must be 6 digits")
   private String ticket;
 
   private int amount;

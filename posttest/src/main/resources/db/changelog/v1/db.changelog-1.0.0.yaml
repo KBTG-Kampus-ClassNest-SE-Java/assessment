@@ -32,7 +32,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
   - changeSet:
-      id: create user_ticket
+      id: create table user_ticket
       author: poy
       changes:
         - createTable:

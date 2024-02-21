@@ -13,10 +13,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserLotteryResponse {
 
-  private List<String> ticket;
+  private List<String> tickets;
 
   private int count;
 
-  private int username;
+  private int cost;
 
 }

@@ -13,4 +13,5 @@ public interface LotteryRepository extends JpaRepository<Lottery, Integer> {
   Optional<Object> findDistinctByTicket(String ticket);
 
 
+  Optional<Lottery> findByTicket(String ticket);
 }

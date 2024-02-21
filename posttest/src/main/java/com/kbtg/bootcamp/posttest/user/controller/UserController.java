@@ -21,7 +21,7 @@ public class UserController {
     this.userService = userService;
   }
   @PostMapping("/{userId}/lotteries/{ticketId}")
-  public ResponseEntity<Object> buyLottery(@PathVariable int ticketId, @PathVariable String userId) {
+  public ResponseEntity<Object> buyLottery(@PathVariable String ticketId, @PathVariable String userId) {
       return ResponseHandler.generateResponse(
           "Buy lottery success.",
           HttpStatus.OK,
@@ -35,9 +35,9 @@ public class UserController {
           userService.getLotteriesByUserId(userId));
   }
   @DeleteMapping("/{userId}/lotteries/{ticketId}")
-  public ResponseEntity<Object> deleteLottery(@PathVariable int ticketId, @PathVariable String userId) {
+  public ResponseEntity<Object> deleteLottery(@PathVariable String ticketId, @PathVariable String userId) {
       return ResponseHandler.generateResponse(
-          "sell lottery success.",
+          "Sell lottery success.",
           HttpStatus.OK,
           userService.sellLottery(ticketId, userId));
   }

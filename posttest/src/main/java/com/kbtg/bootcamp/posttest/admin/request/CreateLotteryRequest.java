@@ -15,15 +15,14 @@ public class CreateLotteryRequest {
 
     @Pattern(regexp = "\\d+", message = "ticket must be numeric")
     @NotEmpty(message = "ticket is required")
-    @Size(min = 6, max = 6, message = "ticket must be 6 digits")
+    @Size(min = 6, max = 6, message = "ticket must be 6 number")
     private String ticket;
 
     @NotNull(message = "price is required")
-    @Digits(integer = 10, fraction = 0, message = "price must be a number")
     private Integer price;
 
     @NotNull(message = "amount is required")
-    @Digits(integer = 10, fraction = 0, message = "amount must be a number")
-    private Integer amount;}
+    private Integer amount;
+}
 
 

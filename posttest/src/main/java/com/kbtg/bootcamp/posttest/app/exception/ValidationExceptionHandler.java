@@ -16,8 +16,6 @@ import java.time.ZonedDateTime;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class ValidationExceptionHandler {
-
-
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ApiExceptionResponse> notValid(MethodArgumentNotValidException ex,
       HttpServletRequest request) {
@@ -25,7 +23,7 @@ public class ValidationExceptionHandler {
 
     ex.getAllErrors().forEach(err -> errors.add(err.getDefaultMessage()));
 
-    String result = errors.toString();
+    String result = String.join(" , ", errors);
 
     ApiExceptionResponse errorResponse = new ApiExceptionResponse(result, HttpStatus.BAD_REQUEST, ZonedDateTime.now());
 
