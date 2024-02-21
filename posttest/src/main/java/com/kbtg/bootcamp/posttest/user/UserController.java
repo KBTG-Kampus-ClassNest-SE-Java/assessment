@@ -18,11 +18,11 @@ public class UserController {
     private LotteryService lotteryService;
 
     @GetMapping("/{requestedUserId}/lotteries")
-    public ResponseEntity<?> getAllUserLotteryByUserIdPage(
-            @PathVariable(name = "requestedUserId") Integer requestedUserId
+    public Map<String, String> getAllUserLotteryByUserIdPage(
+            @PathVariable(name = "requestedUserId") String requestedUserId
     ) {
         return
-        lotteryService.getAllLotteriesByUserId(requestedUserId.toString());
+        lotteryService.getAllLotteriesByUserId(requestedUserId);
     }
 
     @GetMapping("/lotteries")
@@ -35,8 +35,8 @@ public class UserController {
 
     @PostMapping("/{requestedUserId}/lotteries/{requestedTicketId}")
     public ResponseEntity getBuyLotteryPage(
-            @PathVariable(name = "requestedUserId") Integer requestedUserId,
-            @PathVariable(name = "requestedTicketId") Integer requestedTicketId,
+            @PathVariable(name = "requestedUserId") String requestedUserId,
+            @PathVariable(name = "requestedTicketId") String requestedTicketId,
             @RequestBody UserRequest request
     ) {
         return lotteryService.buyLotteries(request);

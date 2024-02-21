@@ -79,22 +79,39 @@ public class LotteryService {
     }
 
 
-    public ResponseEntity<List<Lottery>> getAllLotteriesByUserId(String requestedUserId) {
-
+    public Map<String, String> getAllLotteriesByUserId(String requestedUserId) {
+        Integer counter = 0;
+        Double totalPrice = 0.0;
+        responseBody = new LinkedHashMap<>();
         if (isUserExistsByUserId(requestedUserId)) {
-            List<Lottery> list = getAllLotteries().stream()
+            List<Lottery> collect = getAllLotteries().stream()
                     .filter(lottery -> {
                         Profile profile = lottery.getProfile();
                         return profile != null && profile.getUserId() != null && profile.getUserId().equals(requestedUserId);
                     })
                     .collect(Collectors.toList());
-            return ResponseEntity.ok().body(list);
+
+            List<String> ticketList = collect.stream()
+                    .map(Lottery::getTicket)
+                    .collect(Collectors.toList());
+
+                    counter = collect.size();
+
+            totalPrice = collect.stream()
+                    .mapToDouble(
+                            lottery -> lottery.getPrice() * lottery.getAmount()
+                    )
+                    .sum();
+            responseBody.put("tickets", String.join(",",ticketList));
+            responseBody.put("count", counter.toString());
+            responseBody.put("totalPrice", totalPrice.toString());
+            return responseBody;
         } else {
-            return ResponseEntity.ok().body(null);
+            throw new NotExistUserIdException("Wrong user id");
         }
     }
 
-    private boolean isUserExistsByUserId(String requestedUserId) {
+    public boolean isUserExistsByUserId(String requestedUserId) {
         return
         profileRepository.findAll().stream()
                 .filter(profile -> profile.getUserId().equals(requestedUserId))

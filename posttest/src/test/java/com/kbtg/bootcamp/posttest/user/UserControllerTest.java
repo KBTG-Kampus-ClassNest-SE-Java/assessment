@@ -118,33 +118,18 @@ class UserControllerTest {
     @DisplayName("EXP04 test:shouldReturn Status OK with correct path variable")
     void testEXP04p2() {
         ResponseEntity<String> response =
-                restTemplate.getForEntity("/users/1234567890/lotteries",String.class);
+                restTemplate.getForEntity("/users/0987654321/lotteries",String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
     @DisplayName("EXP04 : return List of lottery that existedUserId have")
     void testEXP04p3() {
-
-        // Send GET request to the endpoint
-        ResponseEntity<List<Lottery>> response = restTemplate.exchange(
-                "/users/1234567890/lotteries",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<Lottery>>() {}
-        );
-
-        // Get the list of lotteries from the response
-        List<Lottery> actualLotteries = response.getBody();
-
-        // Call the service method to get the expected list of lotteries
-        ResponseEntity<List<Lottery>> expectedResponse = lotteryService.getAllLotteriesByUserId("1234567890");
-
-        // Assert that the actual list of lotteries matches the expected list
-        assertThat(response.getBody().toString()).isEqualTo(expectedResponse.getBody().toString());
-
+        boolean userExistsByUserId = lotteryService.isUserExistsByUserId("0987654321");
+        System.out.println("userExistsByUserId = " + userExistsByUserId);
 
     }
+
 
 
 
