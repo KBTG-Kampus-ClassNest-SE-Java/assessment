@@ -87,8 +87,8 @@ class UserControllerTest {
         Profile profile = new Profile();
         profile.setUserId("1234567890");
         ResponseEntity<Profile> result = ResponseEntity.ok().body(profile);
-        ResponseEntity<String> response =
-                restTemplate.postForEntity("/users/1/lotteries/111111",request, String.class );
+        ResponseEntity<Profile> response =
+                restTemplate.postForEntity("/users/1/lotteries/111111",request, Profile.class );
 
         // assert
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);

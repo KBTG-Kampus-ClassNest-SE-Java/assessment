@@ -33,12 +33,12 @@ public class UserController {
     }
 
     @PostMapping("/{requestedUserId}/lotteries/{requestedTicketId}")
-    public String getBuyLotteryPage(
+    public Profile getBuyLotteryPage(
             @PathVariable(name = "requestedUserId") Integer requestedUserId,
             @PathVariable(name = "requestedTicketId") Integer requestedTicketId,
             @RequestBody UserRequest request
     ) {
-        return "test";
+        return new Profile();
     }
 
 

@@ -66,8 +66,8 @@ public class LotteryService {
     }
 
 
-    public ResponseEntity<?> buyLotteries(UserRequest request) {
+    public Profile buyLotteries(UserRequest request) {
         Objects.requireNonNull(request);
-        return ResponseEntity.ok().body(request.userId());
+        return null;
     }
 }
