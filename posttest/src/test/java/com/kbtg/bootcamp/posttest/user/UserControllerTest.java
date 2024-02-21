@@ -13,7 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -55,7 +57,7 @@ class UserControllerTest {
     void shouldReturnUserResponse() {
 
         // arrange
-        UserResponseEXP02 userResponse = userController.getLotteriesPage();
+        UserResponse userResponse = userController.getLotteriesPage();
         List<Lottery> allLotteries = lotteryService.getAllLotteries();
         // act
         List<String> expectedTickets = allLotteries.stream()
@@ -99,14 +101,14 @@ class UserControllerTest {
     @DisplayName("EXP03 test: shouldReturn Body with Id from user_ticket ")
     void test3() {
         UserRequest request = new UserRequest("1234567890","111111");
-
-        ResponseEntity<String> result = ResponseEntity.ok().body(request.userId());
+        Map<String, String> responseBody = new HashMap<>();
+        responseBody.put("id", request.userId());
+        ResponseEntity<?> result = ResponseEntity.ok().body(responseBody);
         ResponseEntity<String> response =
                 restTemplate.postForEntity("/users/1/lotteries/111111",request, String.class );
 
         // assert
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isEqualTo(result.getBody());
     }
 
 

@@ -21,6 +21,13 @@ public class Profile {
     public String name;
     public String phone;
 
+    public Profile() {
+    }
+
+    public Profile(String name) {
+        this.name = name;
+    }
+
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
     private List<Lottery> lotteries;
 

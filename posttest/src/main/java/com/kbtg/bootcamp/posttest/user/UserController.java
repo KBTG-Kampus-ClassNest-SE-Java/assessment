@@ -2,11 +2,8 @@ package com.kbtg.bootcamp.posttest.user;
 
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
 import com.kbtg.bootcamp.posttest.profile.Profile;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,11 +23,11 @@ public class UserController {
     }
 
     @GetMapping("/lotteries")
-    public UserResponseEXP02 getLotteriesPage() {
+    public UserResponse getLotteriesPage() {
         List<String> collect = lotteryService.getAllLotteries().stream()
                 .map(lottery -> lottery.getTicket())
                 .collect(Collectors.toList());
-        return new UserResponseEXP02(collect);
+        return new UserResponse(collect);
     }
 
     @PostMapping("/{requestedUserId}/lotteries/{requestedTicketId}")
