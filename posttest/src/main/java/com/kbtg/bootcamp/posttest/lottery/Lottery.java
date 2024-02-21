@@ -22,6 +22,13 @@ public class Lottery {
     private Double price;
     private Long amount;
 
+    @Override
+    public String toString() {
+        return "Lottery{" +
+                "ticket='" + ticket + '\'' +
+                '}';
+    }
+
     @ManyToOne
     @JoinColumn(name = "profile_id", referencedColumnName = "userId")
     private Profile profile;

@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -120,12 +121,16 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("EXP04 : exist userId return true")
+    @DisplayName("EXP04 : return List of lottery that existedUserId have")
     void testEXP04p3() {
-        Boolean arrange = true;
-        ResponseEntity<Boolean> response =
-                restTemplate.getForEntity("/users/1234567890/lotteries", Boolean.class);
-        assertThat(response.getBody()).isEqualTo(arrange);
+        List<Lottery> lotteries = Arrays.asList(
+                new Lottery("789456", 10.0, 20L),
+                new Lottery("654987", 10.0, 20L)
+        );
+        ResponseEntity<List> result = ResponseEntity.ok().body(lotteries);
+        ResponseEntity<List> response =
+                restTemplate.getForEntity("/users/1234567890/lotteries", List.class);
+        assertThat(response.getBody().toString()).isEqualTo(result.getBody().toString());
     }
 
 

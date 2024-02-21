@@ -18,7 +18,7 @@ public class UserController {
     private LotteryService lotteryService;
 
     @GetMapping("/{requestedUserId}/lotteries")
-    public ResponseEntity<Boolean> getAllUserLotteryByUserIdPage(
+    public ResponseEntity<?> getAllUserLotteryByUserIdPage(
             @PathVariable(name = "requestedUserId") Integer requestedUserId
     ) {
         return
