@@ -12,9 +12,10 @@ public class LotteryTicket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "ticket_id", length = 6)
+    @Column(name = "ticket_id", length = 6, unique = true, nullable = false)
     private String ticket;
+    @Column(nullable = false)
     private int price;
+    @Column(nullable = false)
     private int amount;
-
 }

@@ -1,5 +1,6 @@
 package com.kbtg.bootcamp.posttest.lottery.controller;
 
+import com.kbtg.bootcamp.posttest.exception.DuplicationException;
 import com.kbtg.bootcamp.posttest.lottery.model.LotteryTicketListResponse;
 import com.kbtg.bootcamp.posttest.lottery.model.LotteryTicketRequest;
 import com.kbtg.bootcamp.posttest.lottery.model.LotteryTicketResponse;
@@ -213,6 +214,23 @@ class LotteryControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isInternalServerError())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("An internal error occurred when getting lottery ticket list"));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = "ADMIN")
+    @DisplayName("Adding a duplicated lottery ticket should return an error message")
+    void testAddDuplicatedLotteryTicket() throws Exception {
+        String requestJson = "{\"ticket\": \"123456\", \"price\": 80, \"amount\": 1}";
+
+        when(lotteryService.createLotteryTicket(any(LotteryTicketRequest.class)))
+                .thenThrow(new DuplicationException("ticketId: 123456 already existing"));
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/lotteries")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                .content(requestJson))
+                .andExpect(MockMvcResultMatchers.status().isConflict())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("ticketId: 123456 already existing"));
     }
 
 }

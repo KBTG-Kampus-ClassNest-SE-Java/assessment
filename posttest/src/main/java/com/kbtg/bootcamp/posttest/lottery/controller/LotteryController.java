@@ -1,5 +1,6 @@
 package com.kbtg.bootcamp.posttest.lottery.controller;
 
+import com.kbtg.bootcamp.posttest.exception.DuplicationException;
 import com.kbtg.bootcamp.posttest.exception.InternalServiceException;
 import com.kbtg.bootcamp.posttest.lottery.model.LotteryTicketListResponse;
 import com.kbtg.bootcamp.posttest.lottery.model.LotteryTicketRequest;
@@ -32,7 +33,9 @@ public class LotteryController {
         try {
             LotteryTicketResponse response = lotteryService.createLotteryTicket(request);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
-        } catch (Exception e) {
+        } catch (DuplicationException e) {
+            throw e;
+       } catch (Exception e) {
             throw new InternalServiceException("An internal error occurred when creating a lottery ticket");
         }
     }

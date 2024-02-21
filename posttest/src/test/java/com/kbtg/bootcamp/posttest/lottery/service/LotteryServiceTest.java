@@ -1,5 +1,6 @@
 package com.kbtg.bootcamp.posttest.lottery.service;
 
+import com.kbtg.bootcamp.posttest.exception.DuplicationException;
 import com.kbtg.bootcamp.posttest.lottery.model.LotteryTicket;
 import com.kbtg.bootcamp.posttest.lottery.model.LotteryTicketListResponse;
 import com.kbtg.bootcamp.posttest.lottery.model.LotteryTicketRequest;
@@ -17,9 +18,9 @@ import org.springframework.test.context.TestPropertySource;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -64,16 +65,16 @@ public class LotteryServiceTest {
     }
 
     @Test
-    @DisplayName("Should not create duplicate lottery ticket")
+    @DisplayName("Should not create duplicate lottery ticket but throw 'DuplicationException'")
     void testShouldNotCreateDuplicateTicket() {
         lotteryTicketRequest.setTicket("123456");
         lotteryTicket.setTicket("123456");
 
         when(lotteryTicketRepository.findByTicket("123456")).thenReturn(lotteryTicket);
-        LotteryTicketResponse actualResult = lotteryService.createLotteryTicket(lotteryTicketRequest);
+        DuplicationException actualResult = assertThrows(DuplicationException.class, () -> lotteryService.createLotteryTicket(lotteryTicketRequest));
 
         verify(lotteryTicketRepository, never()).save(any());
-        assertEquals("123456", actualResult.ticket());
+        assertEquals("ticketId: 123456 already existing", actualResult.getMessage());
     }
 
     @Test

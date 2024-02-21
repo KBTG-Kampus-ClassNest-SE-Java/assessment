@@ -22,6 +22,7 @@ class ApiExceptionHandlingTest {
         MethodArgumentNotValidException mockException = mock(MethodArgumentNotValidException.class);
         BindingResult mockBindingResult = mock(BindingResult.class);
         FieldError mockFieldError = new FieldError("testObjectName", "testField", "Test error message");
+
         when(mockBindingResult.getFieldErrors()).thenReturn(java.util.Collections.singletonList(mockFieldError));
         when(mockException.getBindingResult()).thenReturn(mockBindingResult);
 
