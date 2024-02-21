@@ -80,8 +80,7 @@ public class LotteryService {
 
 
     public ResponseEntity<Boolean> getAllLotteriesByUserId(String requestedUserId) {
-        String fakeid = "0000000000";
-        if (isUserExistsByUserId(fakeid)) {
+        if (isUserExistsByUserId(requestedUserId)) {
             return ResponseEntity.ok().body(true);
         } else {
             return ResponseEntity.ok().body(false);
