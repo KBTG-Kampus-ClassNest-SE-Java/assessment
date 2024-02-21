@@ -1,10 +1,7 @@
 package com.kbtg.bootcamp.posttest.user;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryRepository;
-import com.kbtg.bootcamp.posttest.lottery.LotteryResponse;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
 import com.kbtg.bootcamp.posttest.profile.Profile;
 import com.kbtg.bootcamp.posttest.profile.ProfileRepository;
@@ -121,6 +118,15 @@ class UserControllerTest {
                 restTemplate.getForEntity("/users/1234567890/lotteries",String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
+
+    @Test
+    @DisplayName("EXP04 : shouldReturn existsUserId")
+    void testEXP04p3() {
+        ResponseEntity<?> response =
+                restTemplate.getForEntity("/user/1000000/lotteries",String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
 
 
 

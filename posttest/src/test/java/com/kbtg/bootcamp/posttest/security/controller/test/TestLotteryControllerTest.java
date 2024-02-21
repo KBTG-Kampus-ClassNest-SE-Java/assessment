@@ -34,6 +34,12 @@ class TestLotteryControllerTest {
     }
 
     @Test
+    void shouldNotReturnStatusOk() {
+        ResponseEntity<String> response =
+                restTemplate.getForEntity("/test", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+    @Test
     void shouldNotReturnEntity() {
         Lottery lottery = lotteryRepository.findById(1L).orElseThrow(RuntimeException::new); // right id
         assertThat(lottery).isNotNull();
@@ -62,12 +68,7 @@ class TestLotteryControllerTest {
         assertThat(response.getBody()).isEqualTo(result.getBody());
     }
 
-    @Test
-    void shouldNotReturnStatusOk() {
-        ResponseEntity<String> response =
-                restTemplate.getForEntity("/test", String.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    }
+
 
     @Test
     @DisplayName("EXP04 test:shouldReturn Status OK")
@@ -76,4 +77,6 @@ class TestLotteryControllerTest {
                 restTemplate.getForEntity("/test",String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
+
+
 }

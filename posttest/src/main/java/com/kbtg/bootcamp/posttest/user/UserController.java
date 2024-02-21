@@ -2,13 +2,12 @@ package com.kbtg.bootcamp.posttest.user;
 
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
-import com.kbtg.bootcamp.posttest.profile.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -22,9 +21,9 @@ public class UserController {
     public Object getAllUserLotteryByUserIdPage(
             @PathVariable(name = "requestedUserId") Integer requestedUserId
     ) {
-        List<Lottery> allLotteries = lotteryService.getAllLotteries();
+        Map<String, String> result = lotteryService.getAllLotteriesByUserId(requestedUserId);
 
-        return ResponseEntity.ok().body(allLotteries);
+        return ResponseEntity.ok().body(result);
     }
 
     @GetMapping("/lotteries")
