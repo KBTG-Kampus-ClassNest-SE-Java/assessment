@@ -1,5 +1,6 @@
 package com.kbtg.bootcamp.posttest.service;
 
+import com.kbtg.bootcamp.posttest.dto.LotteryRequestDto;
 import com.kbtg.bootcamp.posttest.dto.LotteryResponseDto;
 import com.kbtg.bootcamp.posttest.model.Lottery;
 import com.kbtg.bootcamp.posttest.repositoty.LotteryRepository;
@@ -23,8 +24,20 @@ public class LotteryService {
                 .map(lottery -> lottery.getLottery_number())
                 .collect(Collectors.toList());
 
+        LotteryResponseDto responseDto = new LotteryResponseDto(tickets.toString());
+        return ResponseEntity.ok().body(responseDto);
+
+    }
+
+    public ResponseEntity<LotteryResponseDto> createLottery(LotteryRequestDto requestDto){
+        Lottery lottery = new Lottery(requestDto.getTickets(), requestDto.getPrice(), requestDto.getAmount());
+        lotteryRepository.save(lottery);
+
+        String tickets = lottery.getLottery_number();
         LotteryResponseDto responseDto = new LotteryResponseDto(tickets);
         return ResponseEntity.ok().body(responseDto);
+
+
 
     }
 
