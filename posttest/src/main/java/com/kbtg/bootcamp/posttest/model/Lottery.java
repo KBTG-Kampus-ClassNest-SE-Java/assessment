@@ -1,16 +1,18 @@
 package com.kbtg.bootcamp.posttest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Entity
-@Table(name = "lottery")
 public class Lottery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "lottery_id")
     private Integer id;
-
 
     private String lottery_number;
 
@@ -19,9 +21,9 @@ public class Lottery {
 
     private int amount;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private Users user;
+    @JsonIgnore
+    @OneToMany(mappedBy = "lottery" )
+    List<OrderLine> orderLines;
 
 
 }

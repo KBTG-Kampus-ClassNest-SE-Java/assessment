@@ -8,18 +8,19 @@ import java.util.List;
 
 @Entity
 @Data
-public class Users {
+@Table(name = "user_ticket")
+public class UserTicket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "user_ticket_id")
     private Integer id;
 
-    private String username;
-
-    private String password;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users users;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "users")
-    List<UserTicket> userTickets;
-
+    @OneToMany(mappedBy = "userTickets")
+    List<OrderLine> orderLines;
 }
