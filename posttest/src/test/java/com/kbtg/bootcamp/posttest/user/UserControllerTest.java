@@ -95,5 +95,19 @@ class UserControllerTest {
         assertThat(response.getBody()).isInstanceOf(Profile.class);
     }
 
+    @Test
+    @DisplayName("EXP03 test: shouldReturn Body with Id from user_ticket ")
+    void test3() {
+        UserRequest request = new UserRequest("1234567890","111111");
+
+        ResponseEntity<String> result = ResponseEntity.ok().body(request.userId());
+        ResponseEntity<String> response =
+                restTemplate.postForEntity("/users/1/lotteries/111111",request, String.class );
+
+        // assert
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isEqualTo(result.getBody());
+    }
+
 
 }

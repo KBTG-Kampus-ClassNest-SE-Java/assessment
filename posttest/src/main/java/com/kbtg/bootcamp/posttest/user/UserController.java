@@ -4,6 +4,7 @@ import com.kbtg.bootcamp.posttest.lottery.LotteryService;
 import com.kbtg.bootcamp.posttest.profile.Profile;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -33,12 +34,12 @@ public class UserController {
     }
 
     @PostMapping("/{requestedUserId}/lotteries/{requestedTicketId}")
-    public Profile getBuyLotteryPage(
+    public ResponseEntity getBuyLotteryPage(
             @PathVariable(name = "requestedUserId") Integer requestedUserId,
             @PathVariable(name = "requestedTicketId") Integer requestedTicketId,
             @RequestBody UserRequest request
     ) {
-        return new Profile();
+        return lotteryService.buyLotteries(request);
     }
 
 
