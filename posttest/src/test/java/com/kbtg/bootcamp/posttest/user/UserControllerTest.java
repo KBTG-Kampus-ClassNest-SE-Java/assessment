@@ -62,13 +62,12 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("EXP03 test: return null")
+    @DisplayName("EXP03 test: shouldReturn HTTPStatusOK")
     void test() {
-        UserRequest request = new UserRequest(1,"111111");
-
-        Object o = lotteryService.buyLotteries(request);
-        assertThat(o).isNotNull();
-        assertThat(o);
-
+        UserRequest request = new UserRequest("1234567890","111111");
+        ResponseEntity<String> response =
+                restTemplate.postForEntity("/users/1/lotteries/111111",request, String.class );
+        // assert
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 }

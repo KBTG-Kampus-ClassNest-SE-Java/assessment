@@ -32,14 +32,14 @@ public class UserController {
         return new UserResponseEXP02(collect);
     }
 
-    @PostMapping("/{requestedUserId}/lotteries/{requestedTicketId}")
-    public String getBuyLotteryPage(
-            @PathVariable(name = "requestedUserId") Integer requestedUserId,
-            @PathVariable(name = "requestedTicketId") Integer requestedTicketId,
-            @RequestBody UserRequest request
-    ) {
-        return "user";
-    }
+//    @PostMapping("/{requestedUserId}/lotteries/{requestedTicketId}")
+//    public String getBuyLotteryPage(
+//            @PathVariable(name = "requestedUserId") Integer requestedUserId,
+//            @PathVariable(name = "requestedTicketId") Integer requestedTicketId,
+//            @RequestBody UserRequest request
+//    ) {
+//        return "user";
+//    }
 
 
 }
