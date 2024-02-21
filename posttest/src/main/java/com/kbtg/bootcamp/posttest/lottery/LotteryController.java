@@ -2,12 +2,8 @@
 package com.kbtg.bootcamp.posttest.lottery;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin/lotteries")
@@ -21,13 +17,12 @@ public class LotteryController {
     }
 
 
+    @GetMapping
+    public Lottery getLotteryById(@RequestBody LotteryRequest request){
+        return lotteryService.getLotteryById(request.getTicket());
+    }
     @PostMapping
-    public ResponseEntity<LotteryResponse> addLottery(@RequestBody LotteryRequest request) {
-        String lottery = lotteryService.addLottery(request);
-
-        // Create a response body containing the lottery ticket
-        LotteryResponse response = new LotteryResponse(lottery);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    public LotteryResponse addLottery(@Validated @RequestBody LotteryRequest request) {
+        return lotteryService.addLottery(request);
     }
 }

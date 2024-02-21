@@ -24,10 +24,4 @@ public class Lottery {
         this.price = price;
         this.amount = amount;
     }
-
-
-    //    public Lottery(String ticket) {
-//        this.ticket = ticket;
-//    }
-
 }
