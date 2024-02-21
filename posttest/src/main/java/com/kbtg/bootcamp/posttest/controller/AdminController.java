@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @Autowired
     TicketService ticketService;
+
+    public AdminController(TicketService ticketService) {
+        this.ticketService = ticketService;
+    }
 
     @PostMapping("/lotteries")
     public ResponseEntity<?> createTicket(@RequestBody @Valid CreateTicketRequestDTO createTicketRequestDTO) {
