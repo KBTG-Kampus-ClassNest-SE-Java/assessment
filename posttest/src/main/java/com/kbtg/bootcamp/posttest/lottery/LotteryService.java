@@ -82,4 +82,5 @@ public class LotteryService {
             throw new NotExistLotteryException("Wrong ticket number");
         }
     }
+
 }

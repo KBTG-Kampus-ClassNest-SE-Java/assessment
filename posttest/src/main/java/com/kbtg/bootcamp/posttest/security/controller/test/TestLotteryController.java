@@ -4,8 +4,10 @@ import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
 import com.kbtg.bootcamp.posttest.user.UserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -18,7 +20,7 @@ public class TestLotteryController {
         this.lotteryService = lotteryService;
     }
 
-    @GetMapping
+    @GetMapping()
     public void setup() {
 
     }
@@ -41,5 +43,14 @@ public class TestLotteryController {
             @RequestBody UserRequest request
     ) {
         return "test";
+    }
+
+    @GetMapping("/{requestedUserId}/lotteries")
+    public Object getAllUserLotteryByUserIdPage(
+            @PathVariable(name = "requestedUserId") Integer requestedUserId
+    ) {
+        List<Lottery> allLotteries = lotteryService.getAllLotteries();
+
+        return ResponseEntity.ok().body(allLotteries);
     }
 }

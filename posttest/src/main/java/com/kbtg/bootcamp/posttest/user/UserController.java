@@ -1,5 +1,6 @@
 package com.kbtg.bootcamp.posttest.user;
 
+import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
 import com.kbtg.bootcamp.posttest.profile.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,12 @@ public class UserController {
     private LotteryService lotteryService;
 
     @GetMapping("/{requestedUserId}/lotteries")
-    public Object getAllUserLotteryByUserId(
+    public Object getAllUserLotteryByUserIdPage(
             @PathVariable(name = "requestedUserId") Integer requestedUserId
     ) {
-        return ResponseEntity.ok().body(lotteryService.getAllLotteries());
+        List<Lottery> allLotteries = lotteryService.getAllLotteries();
+
+        return ResponseEntity.ok().body(allLotteries);
     }
 
     @GetMapping("/lotteries")
