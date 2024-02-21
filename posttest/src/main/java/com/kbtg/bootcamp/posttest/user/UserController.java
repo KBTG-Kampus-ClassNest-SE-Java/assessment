@@ -18,7 +18,7 @@ public class UserController {
     private LotteryService lotteryService;
 
     @GetMapping("")
-    public void get() {
+    public void getAllUserLotteryByUserId() {
 
     }
 

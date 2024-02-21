@@ -119,4 +119,12 @@ class UserControllerTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
+    @Test
+    @DisplayName("EXP04 test:shouldReturn Status OK with correct path variable")
+    void testEXP04p2() {
+        ResponseEntity<String> response =
+                restTemplate.getForEntity("/users/1234567890/lotteries",String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
 }
