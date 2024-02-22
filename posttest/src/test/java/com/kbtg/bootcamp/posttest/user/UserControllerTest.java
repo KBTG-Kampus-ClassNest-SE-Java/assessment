@@ -1,5 +1,6 @@
 package com.kbtg.bootcamp.posttest.user;
 
+import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -7,7 +8,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
 
 class UserControllerTest {
 
@@ -39,18 +44,28 @@ class UserControllerTest {
     @Test
     @DisplayName("Name should not be empty")
     void testCreateUserWithEmptyName() {
-
+        UserRequest request = mock(UserRequest.class);
+        assertThrows(NullPointerException.class, () -> userService.createUser(request));
     }
 
     @Test
     @DisplayName("Name should not exceed 100 characters")
     void testCreateUserWithExcessiveNameLength() {
+        String longName = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris condimentum";
+        UserRequest request = new UserRequest(longName);
+        assertThrows(NullPointerException.class, () -> userService.createUser(request));
 
     }
 
-    @Test
-    @DisplayName("Name should only contain alphabets")
-    void testCreateUserWithNonAlphabeticName() {
 
+    @Test
+    @DisplayName("User's lotteries should be deleted after selling")
+    void deleteLotteryAfterSell() {
+        User user = new User("1");
+        Lottery lottery = new Lottery("123456", 100, 1);
+        user.getLotteries().add(lottery);
+        List<Lottery> soldLotteries = userService.deleteLottery(user.getId(), user.getLotteries().toString());
+//        userService.deleteLottery(user.getId(), user.getLotteries().toString());
+        assertEquals("1", soldLotteries);
     }
 }
