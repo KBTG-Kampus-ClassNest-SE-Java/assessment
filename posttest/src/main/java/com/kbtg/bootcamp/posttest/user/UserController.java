@@ -44,7 +44,7 @@ public class UserController {
 
     @GetMapping("/users/{userId}/lotteries")
     public UserLotteryResponse getUserLotteries(@PathVariable("userId") String userId) {
-        List<String> tickets = userService.getUserLotteryTickets(userId);
+        List<String> tickets = userService.getUserLotteries(userId);
         int count = tickets.size();
         int cost = count * 80;
 
