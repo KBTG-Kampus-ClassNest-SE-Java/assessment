@@ -10,6 +10,7 @@ public class PosttestApplication {
         SpringApplication.run(PosttestApplication.class, args);
         System.out.println("START API SUCCESS!!!");
         System.out.println("START API SUCCESS!!!");
+        System.out.println("START API SUCCESS!!!");
 
     }
 

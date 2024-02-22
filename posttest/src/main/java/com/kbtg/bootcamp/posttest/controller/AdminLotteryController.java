@@ -12,36 +12,33 @@ public class AdminLotteryController {
 
     private final ImpLotteryService impLotteryService;
 
-    public AdminLotteryController(ImpLotteryService ImpLotteryService) {
-        this.impLotteryService = ImpLotteryService;
+    public AdminLotteryController(ImpLotteryService impLotteryService) {
+        this.impLotteryService = impLotteryService;
     }
 
     @GetMapping("")
     public List<LotteryEntity> findAllLottery() {
-        return impLotteryService.findAllLottery();
+        return impLotteryService.getAllLottery();
     }
 
-    //    @GetMapping("/{id}")
-//    public Optional<LotteryEntity> findLotteryById(@PathVariable("id") Long id) {
-//        return ILotteryService.findLotteryById(id);
-//    }
-
     @PostMapping("")
-    public LotteryEntity addLottery(@RequestBody LotteryEntity lotteryEntity) {
-
-        impLotteryService.saveLottery(lotteryEntity);
+    public LotteryEntity addLotteryToStore(@RequestBody LotteryEntity lotteryEntity) {
+        impLotteryService.addLotteryToStore(lotteryEntity);
         return lotteryEntity;
     }
 
+//    @GetMapping("/{id}")
+//    public Optional<LotteryEntity> findLotteryById(@PathVariable("id") Long id) {
+//        return ILotteryService.findLotteryById(id);
+//    }
 
 //    @PutMapping("")
 //    public LotteryEntity updateLottery(@RequestBody LotteryEntity lotteryEntity) {
 //        return ILotteryService.updateLottery(lotteryEntity);
 //    }
 
-
-    @DeleteMapping("/{id}")
-    public void deleteLotteryById(@PathVariable("id") Long id) {
-        impLotteryService.deleteLottery(id);
-    }
+//    @DeleteMapping("/{id}")
+//    public void deleteLotteryById(@PathVariable("id") Long id) {
+//        impLotteryService.deleteLottery(id);
+//    }
 }

@@ -2,57 +2,104 @@ package com.kbtg.bootcamp.posttest.controller;
 
 import com.kbtg.bootcamp.posttest.entity.LotteryEntity;
 import com.kbtg.bootcamp.posttest.entity.UserTicketEntity;
-import com.kbtg.bootcamp.posttest.repository.UserTicketRepository;
+import com.kbtg.bootcamp.posttest.service.UserTicketService;
 import com.kbtg.bootcamp.posttest.service.impl.ImpLotteryService;
-import com.kbtg.bootcamp.posttest.service.impl.ImpTicketService;
+import com.kbtg.bootcamp.posttest.service.impl.ImpUserTicketService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/user/lotteries")
 public class UserLotteryController {
 
     private final ImpLotteryService impLotteryService;
-    private final ImpTicketService impTicketService;
+    private final ImpUserTicketService impUserTicketService;
 
-    public UserLotteryController(ImpLotteryService ImpLotteryService, ImpTicketService impTicketService) {
-        this.impLotteryService = ImpLotteryService;
-        this.impTicketService = impTicketService;
+
+    public UserLotteryController(ImpLotteryService impLotteryService, ImpUserTicketService impUserTicketService) {
+        this.impLotteryService = impLotteryService;
+        this.impUserTicketService = impUserTicketService;
     }
 
-    @GetMapping("")
-    public List<LotteryEntity> findAllLottery() {
-        return impLotteryService.findAllLottery();
+    @GetMapping("/users/lotteries")
+    public List<LotteryEntity> getRemainLotteryFromStore() {
+
+        try {
+            List<LotteryEntity> lotteryRemain = impLotteryService.getRemainLotteryFromStore();
+            if (lotteryRemain == null) {
+
+                return Collections.emptyList();
+
+            } else {
+
+                return lotteryRemain;
+            }
+
+        } catch (Exception e) {
+
+            throw new RuntimeException(e);
+        }
+
     }
 
-    @GetMapping("/{id}")
-    public Optional<LotteryEntity> findLotteryById(@PathVariable("id") Long id) {
-        return impLotteryService.findLotteryById(id);
+    @GetMapping("/users/lotteries/{id}")
+    public List<UserTicketEntity> getAllOwnLotteryFromUser(@PathVariable("id") String user_Id) {
+
+        try {
+
+            List<UserTicketEntity> ownLottery = impUserTicketService.getAllOwnLotteryFromUser(user_Id);
+            if (ownLottery == null) {
+
+                return Collections.emptyList();
+            } else {
+                return ownLottery;
+            }
+
+        } catch (Exception e) {
+
+            throw new RuntimeException(e);
+
+        }
+
     }
 
-    @PostMapping("")
-    public void buyLottery(@RequestBody UserTicketEntity userTicketEntity) {
-        // update true/false
-//        impLotteryService.updateLottery(userTicketEntity.getTicket(), true);
+    @PostMapping("/users/lotteries")
+    public UserTicketEntity buyLotteryFromStore(@RequestBody UserTicketEntity userTicketEntity) {
 
-        // insert ticket to table user ticket
-        impTicketService.buyLottery(userTicketEntity);
+//        impLotteryService.updateStatusLottery(userTicketEntity.getTicket(), true); // error wait for fix
 
+        UserTicketEntity userTicketEntity1 = impUserTicketService.buyLotteryFromStore(userTicketEntity);
 
-
-        return;
+        return userTicketEntity1;
     }
 
 
-//    @PutMapping("")
-//    public LotteryEntity updateLottery(@RequestBody LotteryEntity lotteryEntity) {
-//        return ILotteryService.updateLottery(lotteryEntity);
-//    }
+    @DeleteMapping("/users/{userid}/lotteries/{ticket}")
+    public void refundLotteryToStore(@PathVariable String userid, @PathVariable String ticket) {
 
-    @DeleteMapping("/{id}")
-    public void deleteLotteryById(@PathVariable("id")Long id) {
-        impLotteryService.deleteLottery(id);
+
+        impUserTicketService.refundLotteryToStore(userid, ticket);
     }
 }
+
+
+//        public String getRemainLotteryAsJson() {
+//            List<LotteryEntity> lotteryList = getRemainLottery();
+//            Map<String, Object> result = new HashMap<>();
+//            if (lotteryList == null) {
+//                // If lotteryList is null, create a JSON object with specific key-value pairs
+//                result.put("Id", 1);
+//                result.put("userid", "mo");
+//            } else {
+//                // If lotteryList is not null, serialize it to JSON
+//                result.put("lotteryList", lotteryList);
+//            }
+//            try {
+//                ObjectMapper objectMapper = new ObjectMapper();
+//                return objectMapper.writeValueAsString(result);
+//            } catch (JsonProcessingException e) {
+//                // Handle the exception if JSON serialization fails
+//                e.printStackTrace();
+//                return "Error occurred while converting to JSON";
+//            }

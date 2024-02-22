@@ -7,12 +7,14 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ImpLotteryService {
-    List<LotteryEntity> findAllLottery();
-    Optional<LotteryEntity> findLotteryById(Long id);
-    LotteryEntity saveLottery(LotteryEntity lotteryEntity);
-//    LotteryEntity updateLottery(LotteryEntity lotteryEntity);
-    void deleteLottery(Long id);
+    List<LotteryEntity> getAllLottery();
 
-    void updateLottery(String ticketId, boolean active);
+    List<LotteryEntity> getRemainLotteryFromStore();
+
+    LotteryEntity addLotteryToStore(LotteryEntity lotteryEntity);
+
+//    void refundLotteryToStore(Long id);
+
+    void updateStatusLottery(String ticketId, boolean status);
 
 }

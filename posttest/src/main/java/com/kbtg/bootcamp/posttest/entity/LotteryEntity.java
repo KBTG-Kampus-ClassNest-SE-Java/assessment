@@ -8,14 +8,14 @@ import jakarta.persistence.Table;
 @Table(name = "lottery")
 public class LotteryEntity {
 
-    // properties
+
     @Id
     private String ticket;
     private int price;
     private int amount;
     private boolean status;
-    public LotteryEntity() {
 
+    public LotteryEntity() {
     }
 
     public LotteryEntity(String ticket, int price, int amount, boolean status) {
