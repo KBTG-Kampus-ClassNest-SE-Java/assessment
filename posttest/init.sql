@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS lottery CASCADE;
 CREATE TABLE lottery (
     id SERIAL PRIMARY KEY,
     ticket CHAR(6) NOT NULL UNIQUE CHECK (ticket ~ '^[0-9]{6}$'),
-    amount BIGINT NOT NULL  CHECK (amount > 0),
+    amount BIGINT NOT NULL,
     price DECIMAL NOT NULL,
     CONSTRAINT chk_ticket_size CHECK (LENGTH(ticket) = 6)
 );
