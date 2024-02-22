@@ -8,8 +8,10 @@ import com.kbtg.bootcamp.posttest.model.Lottery;
 import com.kbtg.bootcamp.posttest.model.Users;
 import com.kbtg.bootcamp.posttest.repositoty.LotteryRepository;
 import com.kbtg.bootcamp.posttest.service.LotteryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,10 +29,7 @@ public class LotteryController {
         return lotteryService.getAllLotteries();
     }
 
-    @PostMapping("/admin/lotteries")
-    public ResponseEntity<LotteryResponseDto> createLottery(@RequestBody LotteryRequestDto requestDto){
-        return lotteryService.createLottery(requestDto);
-    }
+
 
     @PostMapping("/users/{userId}/lotteries/{ticketId}")
     public ResponseEntity<UserTicketResponseDto> buyLottery(@PathVariable Integer userId, @PathVariable String ticketId){

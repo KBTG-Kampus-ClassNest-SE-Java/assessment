@@ -3,6 +3,9 @@ package com.kbtg.bootcamp.posttest.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,12 +22,11 @@ public class Lottery {
     @Column(name = "lottery_id")
     private Integer id;
 
-    @NonNull
     @Column(name = "lottery_number")
     private String lotteryNumber;
 
-    private int price;
 
+    private int price;
 
     private int amount;
 
