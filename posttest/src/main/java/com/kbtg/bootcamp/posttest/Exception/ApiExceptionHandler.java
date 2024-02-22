@@ -22,17 +22,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(apiExceptionResponse, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(value = {InternalServiceException.class})
-    public ResponseEntity<Object> handleInternalServiceException(InternalServiceException e) {
-
-        ApiExceptionResponse apiExceptionResponse = new ApiExceptionResponse(
-                e.getMessage(),
-                HttpStatus.INTERNAL_SERVER_ERROR,
-                ZonedDateTime.now()
-        );
-        return new ResponseEntity<>(apiExceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
     @ExceptionHandler(value = {ConflictException.class})
     public ResponseEntity<Object> handleConflictException(ConflictException e) {
 

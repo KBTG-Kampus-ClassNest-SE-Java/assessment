@@ -28,10 +28,10 @@ public class UserTicketService {
         if (!lottery.isPresent())
             throw new NotFoundException("Lottery with ticketId " + ticketId + " not found");
 
-        if (!user_ticketRepository.findByUserid(userId).isEmpty())
-            throw new ConflictException("User already has a ticket");
+        if (user_ticketRepository.findByUserIdAndTicket(userId, ticketId).isPresent())
+            throw new ConflictException("User already has a ticket " + ticketId);
 
-        UserTicket user_ticket = new UserTicket(userId,"buy", 1, lottery.get());
+        UserTicket user_ticket = new UserTicket(userId,"buy", 1L, lottery.get());
         user_ticketRepository.save(user_ticket);
         return user_ticket.getId().toString();
     }
@@ -40,25 +40,21 @@ public class UserTicketService {
         List<Lottery> lotteries = lotteryRepository.findByUserTicketUserId(userId);
         List<String> tickets = lotteries.stream().map(lottery -> lottery.getTicket()).toList();
 
-        if (!tickets.isEmpty()) {
-            Long count = tickets.stream().mapToLong(ticket -> 1).sum();
-            Double total = lotteries.stream().mapToDouble(lottery -> lottery.getPrice()).sum();
-            return new UserTicketResponseDto(tickets, count, total);
-        } else {
-            // Handle case where the user with the given userId is not found
-            throw new NotFoundException("User not found with userId: " + userId);
-        }
+        if (tickets.isEmpty())
+            throw new NotFoundException("No tickets found for user with userId: " + userId);
+
+        Long count = tickets.stream().mapToLong(ticket -> 1).sum();
+        Double total = lotteries.stream().mapToDouble(lottery -> lottery.getPrice()).sum();
+        return new UserTicketResponseDto(tickets, count, total);
     }
 
     public String deleteLottery(String userId, String ticketId) {
         Optional<UserTicket> user_tickets = user_ticketRepository.findByUserIdAndTicket(userId, ticketId);
 
-        if (user_tickets.isPresent()) {
-            user_ticketRepository.delete(user_tickets.get());
-            return ticketId;
-        } else {
-            // Handle case where the user with the given userId is not found
+        if (!user_tickets.isPresent())
             throw new NotFoundException("User with userId " + userId + " not found");
-        }
+
+        user_ticketRepository.delete(user_tickets.get());
+        return ticketId;
     }
 }

@@ -13,6 +13,8 @@ import java.util.Optional;
 public interface LotteryRepository extends JpaRepository<Lottery, Integer> {
     Optional<Lottery> findByTicket(String ticketId);
 
+    Optional<Lottery> findFirstByTicket(String ticketId);
+
     @Query("SELECT u from Lottery u JOIN FETCH u.user_tickets a WHERE a.userid = :userId")
     @Transactional
     List<Lottery> findByUserTicketUserId(String userId);

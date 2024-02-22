@@ -23,7 +23,7 @@ public class UserTicket {
     private String transaction_type;
 
     @NotNull
-    private Integer transaction_amount;
+    private Long transaction_amount;
 
     @ManyToOne(cascade = {CascadeType.DETACH})
     @ToString.Exclude
@@ -31,7 +31,7 @@ public class UserTicket {
 
     public UserTicket() {}
 
-    public UserTicket(String userId, String transaction_type, Integer transaction_amount, Lottery lottery) {
+    public UserTicket(String userId, String transaction_type, Long transaction_amount, Lottery lottery) {
         this.userid = userId;
         this.transaction_type = transaction_type;
         this.transaction_amount = transaction_amount;
@@ -50,7 +50,7 @@ public class UserTicket {
         return transaction_type;
     }
 
-    public Integer getTransaction_amount() {
+    public Long getTransaction_amount() {
         return transaction_amount;
     }
 
@@ -70,7 +70,7 @@ public class UserTicket {
         this.transaction_type = transaction_type;
     }
 
-    public void setTransaction_amount(Integer transaction_amount) {
+    public void setTransaction_amount(Long transaction_amount) {
         this.transaction_amount = transaction_amount;
     }
 

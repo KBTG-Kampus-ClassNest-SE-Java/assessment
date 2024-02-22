@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.Map;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("/users")
 public class UserController {
     @Autowired
     private final UserTicketService user_ticketService;
@@ -20,7 +20,7 @@ public class UserController {
         this.user_ticketService = user_ticketService;
     }
 
-    @PostMapping("/users/{userId}/lotteries/{ticketId}")
+    @PostMapping("/{userId}/lotteries/{ticketId}")
     public ResponseEntity<Map<String, String>> BuyTicket(@PathVariable String userId, @PathVariable String ticketId) {
         String transactionId = user_ticketService.BuyTicket(userId, ticketId);
         Map<String, String> response = Collections.singletonMap("id", transactionId);
@@ -28,14 +28,14 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping("/users/{userId}/lotteries")
+    @GetMapping("/{userId}/lotteries")
     public ResponseEntity<UserTicketResponseDto> getUserTicket(@PathVariable String userId) {
         UserTicketResponseDto userTicket = user_ticketService.getUserTicket(userId);
 
         return ResponseEntity.ok(userTicket);
     }
 
-    @DeleteMapping("/users/{userId}/lotteries/{ticketId}")
+    @DeleteMapping("/{userId}/lotteries/{ticketId}")
     public ResponseEntity<Map<String, String>> deleteLottery(@PathVariable String userId, @PathVariable String ticketId) {
         String SoldTicket = user_ticketService.deleteLottery(userId, ticketId);
         Map<String, String> response = Collections.singletonMap("ticket", SoldTicket);

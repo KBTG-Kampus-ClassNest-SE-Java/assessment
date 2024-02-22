@@ -1,4 +1,4 @@
-package com.kbtg.bootcamp.posttest.securityConfig;
+package com.kbtg.bootcamp.posttest.SecurityConfig;
 
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +29,9 @@ public class SecurityConfig {
 
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers("/lotteries/**").permitAll()
+                        .requestMatchers("/users/**").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated())
                 .httpBasic(withDefaults())
                 .build();

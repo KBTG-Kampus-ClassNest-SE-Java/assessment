@@ -24,13 +24,20 @@ public class AdminController {
         this.lotteryService = lotteryService;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/lotteries")
-    public ResponseEntity<Map<String, String>> createLottery(@Valid @RequestBody LotteryRequestDto lottery) {
+    public ResponseEntity<Map<String, String>> createLottery(@Valid @RequestBody LotteryRequestDto lottery, BindingResult result) {
         lottery.validate();
         String createdLottery = lotteryService.createLottery(lottery);
         Map<String, String> response = Collections.singletonMap("ticket", createdLottery);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @DeleteMapping("/lotteries/{ticketId}")
+    public ResponseEntity<Map<String, String>> deleteLottery(@PathVariable String ticketId) {
+        String DeletedLottery = lotteryService.deleteLottery(ticketId);
+        Map<String, String> response = Collections.singletonMap("ticket", DeletedLottery);
+
+        return ResponseEntity.ok(response);
     }
 }

@@ -1,8 +1,11 @@
 package com.kbtg.bootcamp.posttest.Lottery;
 
 import com.kbtg.bootcamp.posttest.Entity.Lottery;
+import com.kbtg.bootcamp.posttest.Exception.ConflictException;
 import com.kbtg.bootcamp.posttest.Exception.InternalServiceException;
+import com.kbtg.bootcamp.posttest.Exception.NotFoundException;
 import jakarta.validation.Valid;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,14 +21,12 @@ public class LotteryService {
     }
 
     public List<String> getLottery() {
-        try {
-            return lotteryRepository.findAll().stream().map(lottery -> lottery.getTicket()).toList();
-        } catch (Exception e) {
-            throw new InternalServiceException(e.getMessage());
-        }
+        return lotteryRepository.findAll().stream().map(lottery -> lottery.getTicket()).toList();
     }
 
     public String createLottery(LotteryRequestDto lottery) {
+        if (lotteryRepository.findFirstByTicket(lottery.ticket()).isPresent())
+            throw new ConflictException("Lottery with ticket " + lottery.ticket() + " already exists");
         Lottery newlottery = new Lottery(lottery.ticket(), lottery.amount(), lottery.price());
         lotteryRepository.save(newlottery);
 
@@ -35,14 +36,13 @@ public class LotteryService {
     public String deleteLottery(String ticketId) {
         Optional<Lottery> optionalLottery = lotteryRepository.findById(Integer.parseInt(ticketId));
 
-        if (optionalLottery.isPresent()) {
-            Lottery lottery = optionalLottery.get();
-            String ticket = lottery.getTicket();
-            lotteryRepository.delete(lottery);
-            return ticket;
-        } else {
-            // Handle case where the lottery with the given ticketId is not found
-            throw new NoSuchElementException("Lottery with ticketId " + ticketId + " not found");
-        }
+        if (!optionalLottery.isPresent())
+            throw new NotFoundException("Lottery with ticketId " + ticketId + " not found");
+
+        Lottery lottery = optionalLottery.get();
+        String ticket = lottery.getTicket();
+        lotteryRepository.delete(lottery);
+
+        return ticket;
     }
 }

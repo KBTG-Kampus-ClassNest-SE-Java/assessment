@@ -1,5 +1,6 @@
 package com.kbtg.bootcamp.posttest.Controller;
 
+import com.kbtg.bootcamp.posttest.Exception.NotFoundException;
 import com.kbtg.bootcamp.posttest.Lottery.LotteryRequestDto;
 import com.kbtg.bootcamp.posttest.Lottery.LotteryService;
 import jakarta.validation.Valid;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("/lotteries")
 public class LotteryController {
 
     @Autowired
@@ -24,24 +25,13 @@ public class LotteryController {
         this.lotteryService = lotteryService;
     }
 
-    @GetMapping("/test")
-    public String hello() {
-        return "Hello, ";
-    }
-
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    @GetMapping("/lotteries")
+    @GetMapping("")
     public ResponseEntity<Map<String, List<String>>> getLottery() {
-        Map<String, List<String>> response = Collections.singletonMap("ticket", lotteryService.getLottery());
-
-        return ResponseEntity.ok(response);
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("admin/lotteries/{ticketId}")
-    public ResponseEntity<Map<String, String>> deleteLottery(@PathVariable String ticketId) {
-        String DeletedLottery = lotteryService.deleteLottery(ticketId);
-        Map<String, String> response = Collections.singletonMap("ticket", DeletedLottery);
+        List<String> AllLotteries = lotteryService.getLottery();
+        if (AllLotteries.isEmpty()) {
+            throw new NotFoundException("Lotteries not found");
+        }
+        Map<String, List<String>> response = Collections.singletonMap("ticket", AllLotteries);
 
         return ResponseEntity.ok(response);
     }
