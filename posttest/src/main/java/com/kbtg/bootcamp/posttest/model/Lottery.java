@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.util.List;
 
@@ -17,22 +18,23 @@ public class Lottery {
     @Column(name = "lottery_id")
     private Integer id;
 
-    private String lottery_number;
+    @Column(name = "lottery_number")
+    private String lotteryNumber;
 
     private int price;
 
 
     private int amount;
 
-    public Lottery(String lottery_number, int price, int amount) {
-        this.lottery_number = lottery_number;
+    public Lottery(String lotteryNumber, int price, int amount) {
+        this.lotteryNumber = lotteryNumber;
         this.price = price;
         this.amount = amount;
     }
 
     @JsonIgnore
     @OneToMany(mappedBy = "lottery" )
-    List<OrderLine> orderLines;
+    List<UserTicket> userTickets;
 
 
 }

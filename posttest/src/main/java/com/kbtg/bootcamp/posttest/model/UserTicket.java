@@ -21,6 +21,7 @@ public class UserTicket {
     private Users users;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "userTickets")
-    List<OrderLine> orderLines;
+    @ManyToOne
+    @JoinColumn(name = "lottery_id")
+    private Lottery lottery;
 }
