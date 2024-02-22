@@ -1,8 +1,12 @@
 package com.kbtg.bootcamp.posttest.lottery;
 
+import com.kbtg.bootcamp.posttest.userTicket.UserTicket;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+
+import java.util.List;
 
 @Entity
 @Table(name = "lottery")
@@ -12,6 +16,9 @@ public class Lottery {
     private int price;
 
     private int amount;
+
+    @OneToMany(mappedBy = "lottery")
+    private List<UserTicket> userTickets;
 
     public Lottery(String ticket, int price, int amount) {
         this.ticket = ticket;
@@ -43,6 +50,15 @@ public class Lottery {
     public void setAmount(int amount) {
         this.amount = amount;
     }
+
+    public List<UserTicket> getUserTickets() {
+        return userTickets;
+    }
+
+    public void setUserTickets(List<UserTicket> userTickets) {
+        this.userTickets = userTickets;
+    }
 }
+
 
 

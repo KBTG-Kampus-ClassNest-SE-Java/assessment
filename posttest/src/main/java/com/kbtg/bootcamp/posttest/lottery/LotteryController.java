@@ -19,7 +19,7 @@ public class LotteryController {
     }
     @GetMapping("")
     public ResponseEntity<Object> getLottery(){
-        List<Lottery> lotteries = lotteryService.getAllLotteries();
+        List<Lottery> lotteries = lotteryService.getAllAvailableLotteries();
 
         Map<String,List<String>> data = new HashMap<>();
         data.put("tickets", lotteries.stream().map(lottery -> lottery.getTicket()).toList());

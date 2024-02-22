@@ -22,10 +22,10 @@ public class AdminController {
     }
 
     @PostMapping("/lotteries")
-    public ResponseEntity<Object> addLottery(@RequestBody LotteryRequest ticketRequest){
-        this.lotteryService.addTicket(ticketRequest);
+    public ResponseEntity<Object> addLottery(@RequestBody LotteryRequest lotteryRequest){
+        this.lotteryService.addLottery(lotteryRequest);
         Map<String, String> data = new HashMap<>();
-        data.put("ticket", ticketRequest.ticket());
+        data.put("ticket", lotteryRequest.ticket());
         return new ResponseEntity<>(data, HttpStatus.CREATED);
 
     }

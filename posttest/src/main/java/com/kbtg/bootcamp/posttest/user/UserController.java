@@ -4,10 +4,7 @@ import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +26,15 @@ public class UserController {
         Map<String,List<Lottery>> data = new HashMap<>();
         data.put("tickets", lotteries);
         return new ResponseEntity<>(data, HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/{userId}/lotteries/{ticketId}")
+    public ResponseEntity<Object>  buyLottery(@PathVariable("userId") String user_id,
+                                             @PathVariable("ticketId") String ticket_id){
+        String user_ticket_id  = lotteryService.buyLottery(user_id, ticket_id);
+        Map<String,String> data = new HashMap<>();
+        data.put("id", user_ticket_id);
+        return new ResponseEntity<>(data, HttpStatus.CREATED);
     }
 
 }
