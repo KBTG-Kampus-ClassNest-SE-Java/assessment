@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -16,13 +17,17 @@ import java.util.List;
 public class Lottery {
 
     @Id
+    @NotNull
     private String ticketNumber;
     @Column(name = "price")
+    @NotNull
     private BigDecimal ticketPrice;
 
     @Column(name = "amount_available")
+    @NotNull
     private Integer ticketAmount;
     @Column(name = "last_updated")
+    @NotNull
     private LocalDateTime lastUpdate;
 
     public Lottery() {
