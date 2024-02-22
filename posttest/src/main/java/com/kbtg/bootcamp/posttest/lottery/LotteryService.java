@@ -9,6 +9,7 @@ import com.kbtg.bootcamp.posttest.profile.ProfileRepository;
 import com.kbtg.bootcamp.posttest.user.UserRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -79,17 +80,12 @@ public class LotteryService {
     }
 
 
-    public Map<String, String> getAllLotteriesByUserId(String requestedUserId) {
+    public Map<String, String> getUserLotteryDetail(String requestedUserId) {
         Integer counter = 0;
         Double totalPrice = 0.0;
         responseBody = new LinkedHashMap<>();
         if (isUserExistsByUserId(requestedUserId)) {
-            List<Lottery> collect = getAllLotteries().stream()
-                    .filter(lottery -> {
-                        Profile profile = lottery.getProfile();
-                        return profile != null && profile.getUserId() != null && profile.getUserId().equals(requestedUserId);
-                    })
-                    .collect(Collectors.toList());
+            List<Lottery> collect = getAllLotteriesByUserId(requestedUserId);
 
             List<String> ticketList = collect.stream()
                     .map(Lottery::getTicket)
@@ -111,6 +107,16 @@ public class LotteryService {
         }
     }
 
+    private List<Lottery> getAllLotteriesByUserId(String requestedUserId) {
+        List<Lottery> collect = getAllLotteries().stream()
+                .filter(lottery -> {
+                    Profile profile = lottery.getProfile();
+                    return profile != null && profile.getUserId() != null && profile.getUserId().equals(requestedUserId);
+                })
+                .collect(Collectors.toList());
+        return collect;
+    }
+
     public boolean isUserExistsByUserId(String requestedUserId) {
         return
         profileRepository.findAll().stream()
@@ -123,5 +129,28 @@ public class LotteryService {
         lotteryRepository.findAll().stream()
                 .filter(lottery -> lottery.getTicket().equals(ticket))
                 .findFirst().isPresent();
+    }
+
+    public ResponseEntity<Void> sellLotteryByUsingUserIdAndLotteryTicket(String requestedUserID,
+                                                                      String requestedTicketId) {
+        try {
+            if (!isLotteryExistsByTicketNumber(requestedTicketId)) {
+                throw new NotExistLotteryException("Lottery does not exist");
+            } else if (!isUserExistsByUserId(requestedUserID)) {
+                throw new NotExistUserIdException("User does not exist");
+            }
+
+            // find the lottery that has the profile equal to requestedUserID
+            List<Lottery> allLotteriesByUserId = getAllLotteriesByUserId(requestedUserID);
+
+
+
+
+        } catch (NotExistLotteryException  | NotExistUserIdException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+        return null;
     }
 }

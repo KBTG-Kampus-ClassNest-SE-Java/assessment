@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryRepository;
+import com.kbtg.bootcamp.posttest.lottery.LotteryService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ class TestLotteryControllerTest {
 
     @Autowired
     LotteryRepository lotteryRepository;
+
+    @Autowired
+    LotteryService lotteryService;
 
     @Test
     void shouldNotReturnHttpStatusOK() {
@@ -109,6 +113,24 @@ class TestLotteryControllerTest {
         // Assert
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
+
+    @Test
+    @DisplayName("EXP05 : Should return the lottery associated with the given user ID")
+    void shouldReturnLotteryForExistingUserId() {
+        // Arrange
+        String requestedUserID = "1234567890"; // Existing user ID
+        String requestedTicketId = "111111"; // Existing ticket ID
+
+
+        // Act
+        ResponseEntity<Void> response = lotteryService.sellLotteryByUsingUserIdAndLotteryTicket(requestedUserID,
+                requestedTicketId);
+
+        // Assert
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        // Add assertions to verify the returned lottery
+    }
+
 
 
 

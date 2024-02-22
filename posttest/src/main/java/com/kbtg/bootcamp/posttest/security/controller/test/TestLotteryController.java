@@ -1,5 +1,7 @@
 package com.kbtg.bootcamp.posttest.security.controller.test;
 
+import com.kbtg.bootcamp.posttest.exception.NotExistLotteryException;
+import com.kbtg.bootcamp.posttest.exception.NotExistUserIdException;
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryRepository;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
@@ -29,6 +31,7 @@ public class TestLotteryController {
     public void setup() {
 
     }
+
     @GetMapping("/{requestedId}")
     public Lottery getLotteryPage(
             @PathVariable Long requestedId
@@ -59,15 +62,14 @@ public class TestLotteryController {
         return ResponseEntity.ok().body(allLotteries);
     }
 
+
     @DeleteMapping("/{requestedUserID}/lotteries/{requestedTicketId}")
-    public ResponseEntity<Void> sellingBackALotteryWithTicketId(
+    public ResponseEntity<Void> sellingBackALotteryPage(
+            @PathVariable(name = "requestedUserID") String requestedUserID,
             @PathVariable(name = "requestedTicketId") String requestedTicketId
     ) {
-        if (!lotteryService.isLotteryExistsByTicketNumber(requestedTicketId)) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok().build();
+        return
+        lotteryService.sellLotteryByUsingUserIdAndLotteryTicket(requestedUserID, requestedTicketId);
     }
 
 

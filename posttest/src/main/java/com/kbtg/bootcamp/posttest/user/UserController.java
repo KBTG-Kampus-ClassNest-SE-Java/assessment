@@ -1,6 +1,5 @@
 package com.kbtg.bootcamp.posttest.user;
 
-import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,7 @@ public class UserController {
             @PathVariable(name = "requestedUserId") String requestedUserId
     ) {
         return
-        lotteryService.getAllLotteriesByUserId(requestedUserId);
+        lotteryService.getUserLotteryDetail(requestedUserId);
     }
 
     @GetMapping("/lotteries")
