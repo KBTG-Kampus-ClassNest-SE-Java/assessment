@@ -1,6 +1,5 @@
 package com.kbtg.bootcamp.posttest.dto;
 
-import com.kbtg.bootcamp.posttest.model.Lottery;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -8,8 +7,11 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class UserTicketResponseDto {
+public class TicketResponseDto {
 
-    private Integer id;
+    private List<String> tickets;
 
+    private int count;
+
+    private int cost;
 }

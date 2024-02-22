@@ -2,10 +2,11 @@ package com.kbtg.bootcamp.posttest.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
+
+import org.springframework.lang.NonNull;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class Lottery {
     @Column(name = "lottery_id")
     private Integer id;
 
+    @NonNull
     @Column(name = "lottery_number")
     private String lotteryNumber;
 

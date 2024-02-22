@@ -2,6 +2,7 @@ package com.kbtg.bootcamp.posttest.service;
 
 import com.kbtg.bootcamp.posttest.dto.LotteryRequestDto;
 import com.kbtg.bootcamp.posttest.dto.LotteryResponseDto;
+import com.kbtg.bootcamp.posttest.dto.TicketResponseDto;
 import com.kbtg.bootcamp.posttest.dto.UserTicketResponseDto;
 import com.kbtg.bootcamp.posttest.exception.NotFoundException;
 import com.kbtg.bootcamp.posttest.model.Lottery;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -72,4 +74,17 @@ public class LotteryService {
         return user;
     }
 
+    public ResponseEntity<TicketResponseDto> findLotteryByUserId(Integer userId){
+       Optional<List<Lottery>> list = userTicketRepository.findDistinctLotteriesByUserId(userId);
+       List<String> ticket = list.get().stream()
+               .map(Lottery::getLotteryNumber)
+               .toList();
+
+       int count = list.stream().flatMap(Collection::stream).mapToInt(Lottery::getAmount).sum();
+       int cost = list.stream().flatMap(Collection::stream).mapToInt(Lottery::getPrice).sum();
+
+       TicketResponseDto responseDto = new TicketResponseDto(ticket, count, cost);
+
+        return ResponseEntity.ok().body(responseDto);
+    }
 }
