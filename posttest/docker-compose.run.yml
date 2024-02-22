@@ -1,0 +1,37 @@
+#file: noinspection YAMLSchemaValidation
+version: '3.8'
+
+networks:
+  lottery_application:
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: lottery
+      POSTGRES_USER: lottery
+      POSTGRES_PASSWORD: Plottery001!@#
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - lottery_application
+  lottery_app:
+    image: amazoncorretto:17.0.9-alpine3.18
+    volumes:
+      - $PWD:/app
+    working_dir: /app
+    environment:
+      - DATABASE_URL=jdbc:postgresql://postgres:5432/lottery
+      - DATABASE_USERNAME=lottery
+      - DATABASE_PASSWORD=Plottery001!@#
+    depends_on:
+      - postgres
+    ports:
+      - "8888:8888"
+    networks:
+      - lottery_application
+    command: [ "./gradlew", "clean", "bootRun"]
+volumes:
+  data:
