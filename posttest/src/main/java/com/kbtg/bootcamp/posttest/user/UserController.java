@@ -1,10 +1,9 @@
 package com.kbtg.bootcamp.posttest.user;
 
-import com.kbtg.bootcamp.posttest.lottery.Lottery;
+import com.kbtg.bootcamp.posttest.lottery.dto.LotteryListResponseDto;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 public class UserController {
@@ -16,7 +15,9 @@ public class UserController {
     }
 
     @GetMapping("/lotteries")
-    public List<Lottery> getLotteryList(){
-        return this.userService.getLottery();
+    public LotteryListResponseDto getLotteryList(){
+        return this.userService.getAllLotteries();
     }
+
+
 }

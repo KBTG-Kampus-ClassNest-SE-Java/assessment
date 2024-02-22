@@ -1,6 +1,7 @@
 package com.kbtg.bootcamp.posttest.user;
 
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
+import com.kbtg.bootcamp.posttest.lottery.dto.LotteryListResponseDto;
 import com.kbtg.bootcamp.posttest.lottery.LotteryRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +16,13 @@ public class UserService {
         this.lotteryRepository = lotteryRepository;
     }
 
-    public List<Lottery> getLottery(){
-        List<Lottery> lotteries = lotteryRepository.findAll();
-        return lotteries;
+    public LotteryListResponseDto getAllLotteries() {
+        List<String> tickets = lotteryRepository.findAll()
+                                                .stream()
+                                                .map(Lottery::getTicket)
+                                                .toList();
+        return new LotteryListResponseDto(tickets);
     }
+
+
 }

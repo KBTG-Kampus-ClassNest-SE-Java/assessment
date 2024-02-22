@@ -1,14 +1,16 @@
-package com.kbtg.bootcamp.posttest.lottery;
+package com.kbtg.bootcamp.posttest.lottery.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-//@AllArgsConstructor
-//@NoArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class LotteryRequestDto {
 
     @NotNull
@@ -21,5 +23,13 @@ public class LotteryRequestDto {
 
     public String getTicket() {
         return ticket;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public Integer getAmount() {
+        return amount;
     }
 }

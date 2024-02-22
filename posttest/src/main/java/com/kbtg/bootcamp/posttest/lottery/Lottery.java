@@ -1,5 +1,7 @@
 package com.kbtg.bootcamp.posttest.lottery;
 
+
+import com.kbtg.bootcamp.posttest.user.UserTicket;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.Size;
@@ -8,19 +10,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Entity
 @Table(name = "lottery")
 @Getter
 @Setter
-//@AllArgsConstructor
-//@NoArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class Lottery {
 
+    // Main entity
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "lottery_id")
+    private Integer lotteryId;
 
-    @Column(name = "lottery_number", length = 6)
+    @Column (name = "lottery_number")
     @Size(min = 6, max = 6)
     private String ticket;
 
@@ -28,15 +33,10 @@ public class Lottery {
 
     private Integer amount;
 
-    public Lottery(Integer id, String ticket, Integer price, Integer amount) {
-        this.id = id;
-        this.ticket = ticket;
-        this.price = price;
-        this.amount = amount;
-    }
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "user_id")
+    private UserTicket userTicket;
 
-    public Lottery() {
-    }
 
     public String getTicket() {
         return ticket;
