@@ -63,10 +63,10 @@ public class TestLotteryController {
     public ResponseEntity<Void> sellingBackALotteryWithTicketId(
             @PathVariable(name = "requestedTicketId") String requestedTicketId
     ) {
-//        if (!lotteryService.isLotteryExistsByTicketNumber(requestedTicketId)) {
-//            return ResponseEntity.notFound().build();
-//        }
-//
+        if (!lotteryService.isLotteryExistsByTicketNumber(requestedTicketId)) {
+            return ResponseEntity.notFound().build();
+        }
+
         return ResponseEntity.ok().build();
     }
 
