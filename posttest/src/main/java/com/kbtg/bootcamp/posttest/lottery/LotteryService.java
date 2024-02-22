@@ -20,7 +20,7 @@ public class LotteryService {
     public List<String> getAllLotteryTickets() {
         List<String> tickets = new ArrayList<>();
         for (Lottery lottery : lotteries) {
-            tickets.add(lottery.getId());
+            tickets.add(String.valueOf(lottery.getId()));
         }
         return tickets;
     }

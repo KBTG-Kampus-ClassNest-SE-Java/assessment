@@ -52,7 +52,7 @@ public class UserService {
         List<String> tickets = new ArrayList<>();
         List<Lottery> userLotteries = user.getLotteries();
         for (Lottery lottery : userLotteries) {
-            tickets.add(lottery.getId());
+            tickets.add(String.valueOf(lottery.getId()));
         }
         return tickets;
     }

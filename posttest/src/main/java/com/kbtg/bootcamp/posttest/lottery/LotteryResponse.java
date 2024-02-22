@@ -8,4 +8,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class LotteryResponse {
     private String ticket;
+
+    public LotteryResponse(Long id) {
+    }
 }
