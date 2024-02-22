@@ -151,6 +151,6 @@ public class LotteryService {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return null;
+        return ResponseEntity.ok().build();
     }
 }
