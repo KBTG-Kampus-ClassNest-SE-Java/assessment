@@ -92,5 +92,24 @@ class TestLotteryControllerTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
+    @Test
+    @DisplayName("Should return NOT_FOUND when selling back a non-existent lottery ticket")
+    void sellingBackNonExistentLotteryTicket() {
+        // Arrange
+        String nonExistentTicketId = "999999"; // this ticket doesn't exist
+
+        // Act
+        ResponseEntity<Void> response = restTemplate.exchange(
+                "/test/1234567890/lotteries/" + nonExistentTicketId,
+                HttpMethod.DELETE,
+                null,
+                Void.class
+        );
+
+        // Assert
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+
 
 }

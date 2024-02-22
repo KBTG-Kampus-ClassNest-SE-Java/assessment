@@ -1,9 +1,11 @@
 package com.kbtg.bootcamp.posttest.security.controller.test;
 
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
+import com.kbtg.bootcamp.posttest.lottery.LotteryRepository;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
 import com.kbtg.bootcamp.posttest.user.UserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +17,9 @@ import java.util.Optional;
 public class TestLotteryController {
     @Autowired
     private final LotteryService lotteryService;
+
+    @Autowired
+    private LotteryRepository lotteryRepository;
 
     public TestLotteryController(LotteryService lotteryService) {
         this.lotteryService = lotteryService;
@@ -55,8 +60,14 @@ public class TestLotteryController {
     }
 
     @DeleteMapping("/{requestedUserID}/lotteries/{requestedTicketId}")
-    public void sellingBackALotteryWithTicketId() {
-
+    public ResponseEntity<Void> sellingBackALotteryWithTicketId(
+            @PathVariable(name = "requestedTicketId") String requestedTicketId
+    ) {
+//        if (!lotteryService.isLotteryExistsByTicketNumber(requestedTicketId)) {
+//            return ResponseEntity.notFound().build();
+//        }
+//
+        return ResponseEntity.ok().build();
     }
 
 
