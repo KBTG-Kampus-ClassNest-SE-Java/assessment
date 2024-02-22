@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -23,18 +24,18 @@ public class UserController {
         this.lotteryService = lotteryService;
     }
 
-    @GetMapping("/users")
+    @GetMapping
     public List<User> getAllUser(){
         return userService.getAllUsers();
     }
 
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public User getUserById(@PathVariable("id") String id) {
         return (User) userService.getUserById(id);
     }
 
-    @GetMapping("/users/lotteries/list")
+    @GetMapping("/lotteries/list")
     public LotteryListResponse getAllLotteries() {
         List<String> tickets = lotteryService.getAllLotteryTickets();
         return new LotteryListResponse(tickets);
@@ -42,22 +43,22 @@ public class UserController {
 
 
 
-    @GetMapping("/users/{userId}/lotteries")
+    @GetMapping("/{userId}/lotteries")
     public UserLotteryResponse getUserLotteries(@PathVariable("userId") String userId) {
-        List<String> tickets = userService.getUserLotteries(userId);
+        List<String> tickets = userService.getUserLotteryTickets(userId);
         int count = tickets.size();
         int cost = count * 80;
 
         return new UserLotteryResponse(tickets, count, cost);
     }
 
-    @PostMapping("/users")
+    @PostMapping
     @ApiResponse(responseCode = "201", description = "User Created")
     public User createUser(@RequestBody UserRequest request) {
         return userService.createUser(request);
     }
 
-    @PostMapping("/users/lotteries/buy")
+    @PostMapping("/lotteries/buy")
     public void buyLottery(@RequestBody UserLotteryRequest userLotteryRequest) {
         Lottery lottery = lotteryService.getLotteryById(userLotteryRequest.lotteryId());
         if (lottery == null) {
@@ -67,7 +68,7 @@ public class UserController {
         userService.buyLottery(userLotteryRequest.userId(), userLotteryRequest.lotteryId());
     }
 
-    @DeleteMapping("/users/{userId}/lotteries/{ticketId}")
+    @DeleteMapping("/{userId}/lotteries/{ticketId}")
     public List<Lottery> sellAllLotteries(@PathVariable String userId, @PathVariable String ticketId) {
         return userService.deleteLottery(userId, ticketId);
     }

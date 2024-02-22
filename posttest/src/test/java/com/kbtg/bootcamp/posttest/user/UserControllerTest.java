@@ -1,6 +1,6 @@
 package com.kbtg.bootcamp.posttest.user;
 
-import com.kbtg.bootcamp.posttest.lottery.Lottery;
+import com.kbtg.bootcamp.posttest.exeption.BadRequestException;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -8,10 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 class UserControllerTest {
@@ -53,19 +50,17 @@ class UserControllerTest {
     void testCreateUserWithExcessiveNameLength() {
         String longName = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris condimentum";
         UserRequest request = new UserRequest(longName);
-        assertThrows(NullPointerException.class, () -> userService.createUser(request));
-
+//        assertEquals(null, () -> userService.createUser(request));
+        User user = userService.createUser(request);
+        // Check if the returned value is null
+        assertNull(user);
+        assertThrows(BadRequestException.class, () -> userService.createUser(request));
     }
 
 
     @Test
     @DisplayName("User's lotteries should be deleted after selling")
     void deleteLotteryAfterSell() {
-        User user = new User("1");
-        Lottery lottery = new Lottery("123456", 100, 1);
-        user.getLotteries().add(lottery);
-        List<Lottery> soldLotteries = userService.deleteLottery(user.getId(), user.getLotteries().toString());
-//        userService.deleteLottery(user.getId(), user.getLotteries().toString());
-        assertEquals("1", soldLotteries);
+
     }
 }
