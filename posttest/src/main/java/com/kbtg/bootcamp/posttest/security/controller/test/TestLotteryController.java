@@ -64,7 +64,7 @@ public class TestLotteryController {
 
 
     @DeleteMapping("/{requestedUserID}/lotteries/{requestedTicketId}")
-    public ResponseEntity<Void> sellingBackALotteryPage(
+    public ResponseEntity<?> sellingBackALotteryPage(
             @PathVariable(name = "requestedUserID") String requestedUserID,
             @PathVariable(name = "requestedTicketId") String requestedTicketId
     ) {

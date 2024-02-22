@@ -123,13 +123,32 @@ class TestLotteryControllerTest {
 
 
         // Act
-        ResponseEntity<Void> response = lotteryService.sellLotteryByUsingUserIdAndLotteryTicket(requestedUserID,
+        ResponseEntity<Void> response = (ResponseEntity<Void>) lotteryService.sellLotteryByUsingUserIdAndLotteryTicket(requestedUserID,
                 requestedTicketId);
 
         // Assert
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         // Add assertions to verify the returned lottery
     }
+
+    @Test
+    @DisplayName("EXP05 :Should return a list of lotteries associated with the given user ID")
+    void shouldReturnListOfLotteriesForExistingUserId() {
+        // Arrange
+        String requestedUserID = "1234567890"; // Existing user ID
+        String requestedTicketId1 = "111111";
+
+        // Act
+        ResponseEntity<List<Lottery>> response = (ResponseEntity<List<Lottery>>) lotteryService.sellLotteryByUsingUserIdAndLotteryTicket(requestedUserID,
+                requestedTicketId1);
+
+        // Assert
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull(); // Check if the body is not null
+        assertThat(response.getBody()).isNotEmpty(); // Check if the body contains at least one lottery
+        // Add additional assertions to verify the content of the list of lotteries
+    }
+
 
 
 

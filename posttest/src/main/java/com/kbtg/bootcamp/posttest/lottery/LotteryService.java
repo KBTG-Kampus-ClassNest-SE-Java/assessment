@@ -131,8 +131,9 @@ public class LotteryService {
                 .findFirst().isPresent();
     }
 
-    public ResponseEntity<Void> sellLotteryByUsingUserIdAndLotteryTicket(String requestedUserID,
+    public ResponseEntity<?> sellLotteryByUsingUserIdAndLotteryTicket(String requestedUserID,
                                                                       String requestedTicketId) {
+        List<Lottery> allLotteriesByUserId = new ArrayList<>();
         try {
             if (!isLotteryExistsByTicketNumber(requestedTicketId)) {
                 throw new NotExistLotteryException("Lottery does not exist");
@@ -141,7 +142,7 @@ public class LotteryService {
             }
 
             // find the lottery that has the profile equal to requestedUserID
-            List<Lottery> allLotteriesByUserId = getAllLotteriesByUserId(requestedUserID);
+//            allLotteriesByUserId = getAllLotteriesByUserId(requestedUserID);
 
 
 
@@ -151,6 +152,6 @@ public class LotteryService {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(allLotteriesByUserId);
     }
 }
