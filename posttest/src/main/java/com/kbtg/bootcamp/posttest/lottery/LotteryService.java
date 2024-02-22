@@ -142,7 +142,7 @@ public class LotteryService {
             }
 
             // find the lottery that has the profile equal to requestedUserID
-//            allLotteriesByUserId = getAllLotteriesByUserId(requestedUserID);
+            allLotteriesByUserId = getAllLotteriesByUserId(requestedUserID);
 
 
 
