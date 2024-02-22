@@ -62,20 +62,16 @@ public class LotteryService {
         UserTicket userTicket = new UserTicket(1, user, lottery);
         userTicketRepository.save(userTicket);
 
-
         UserTicketResponseDto responseDto = new UserTicketResponseDto(userTicket.getId());
         return ResponseEntity.ok().body(responseDto);
 
     }
 
-    public Users test(Integer userId){
-        Users user = usersRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User not found with ID: " + userId));
-        return user;
-    }
-
     public ResponseEntity<TicketResponseDto> findLotteryByUserId(Integer userId){
-       Optional<List<Lottery>> list = userTicketRepository.findDistinctLotteriesByUserId(userId);
+        Users users = usersRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found with ID: " + userId));
+
+       Optional<List<Lottery>> list = userTicketRepository.findDistinctLotteriesByUserId(users.getId());
        List<String> ticket = list.get().stream()
                .map(Lottery::getLotteryNumber)
                .toList();
@@ -85,6 +81,19 @@ public class LotteryService {
 
        TicketResponseDto responseDto = new TicketResponseDto(ticket, count, cost);
 
+        return ResponseEntity.ok().body(responseDto);
+    }
+
+    public ResponseEntity<LotteryResponseDto> deleteTicketByUserId(Integer userId, String ticketNumber){
+        Users users = usersRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found with ID: " + userId));
+
+        Lottery lottery = lotteryRepository.findByLotteryNumber(ticketNumber)
+                .orElseThrow(() ->new NotFoundException("Ticket not found with ID: " + ticketNumber));
+
+        userTicketRepository.deleteUserTicketByUserIdAndTicketId(users.getId(), lottery.getId());
+
+        LotteryResponseDto responseDto = new LotteryResponseDto(lottery.getLotteryNumber());
         return ResponseEntity.ok().body(responseDto);
     }
 }

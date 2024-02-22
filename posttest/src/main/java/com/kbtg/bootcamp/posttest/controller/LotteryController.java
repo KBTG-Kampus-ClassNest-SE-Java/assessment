@@ -19,8 +19,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class LotteryController {
 
-    private final LotteryRepository lotteryRepository;
-
     private final LotteryService lotteryService;
 
     @GetMapping("/lotteries")
@@ -39,16 +37,14 @@ public class LotteryController {
         return lotteryService.buyLottery(userId, ticketId);
     }
 
-    @PostMapping("/users/{userId}")
-    public Users test(@PathVariable Integer userId){
-        return lotteryService.test(userId);
-
-    }
-
     @GetMapping("/users/{userId}/lotteries")
     public ResponseEntity<TicketResponseDto> findLotteryByUserId(@PathVariable Integer userId){
         return lotteryService.findLotteryByUserId(userId);
     }
 
+    @DeleteMapping("/users/{userId}/lotteries/{ticketId}")
+    public ResponseEntity<LotteryResponseDto> deleteTicketByUserId(@PathVariable Integer userId, @PathVariable String ticketId){
+        return lotteryService.deleteTicketByUserId(userId, ticketId);
+    }
 
 }
