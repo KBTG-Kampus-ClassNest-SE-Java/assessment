@@ -82,6 +82,7 @@ class TestLotteryControllerTest {
     @Test
     @DisplayName("EXP05 : shouldReturnStatus OK")
     void testEXP05p0() {
+
         ResponseEntity<Void> response =
                 restTemplate.exchange("/test/1234567890/lotteries/555555",
                         HttpMethod.DELETE,
