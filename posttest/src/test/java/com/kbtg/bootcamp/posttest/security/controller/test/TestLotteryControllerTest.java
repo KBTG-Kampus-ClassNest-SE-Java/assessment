@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import java.util.*;
@@ -75,6 +76,18 @@ class TestLotteryControllerTest {
     void testEXP04p1() {
         ResponseEntity<String> response =
                 restTemplate.getForEntity("/test",String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
+    @DisplayName("EXP05 : shouldReturnStatus OK")
+    void testEXP05p0() {
+        ResponseEntity<Void> response =
+                restTemplate.exchange("/test/1234567890/lotteries/555555",
+                        HttpMethod.DELETE,
+                        null,
+                        Void.class);
+
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 

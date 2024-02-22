@@ -53,4 +53,6 @@ public class TestLotteryController {
 
         return ResponseEntity.ok().body(allLotteries);
     }
+
+
 }
