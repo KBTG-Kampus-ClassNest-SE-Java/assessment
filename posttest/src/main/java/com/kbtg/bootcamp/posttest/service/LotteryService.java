@@ -4,6 +4,7 @@ import com.kbtg.bootcamp.posttest.dto.LotteryRequestDto;
 import com.kbtg.bootcamp.posttest.dto.LotteryResponseDto;
 import com.kbtg.bootcamp.posttest.dto.TicketResponseDto;
 import com.kbtg.bootcamp.posttest.dto.UserTicketResponseDto;
+import com.kbtg.bootcamp.posttest.exception.BadRequestException;
 import com.kbtg.bootcamp.posttest.exception.NotFoundException;
 import com.kbtg.bootcamp.posttest.model.Lottery;
 import com.kbtg.bootcamp.posttest.model.UserTicket;
@@ -15,11 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.*;
+
 
 @Service
 @RequiredArgsConstructor
@@ -43,12 +41,24 @@ public class LotteryService {
     }
 
     public ResponseEntity<LotteryResponseDto> createLottery(LotteryRequestDto requestDto){
-        Lottery lottery = new Lottery(requestDto.getTickets(), requestDto.getPrice(), requestDto.getAmount());
-        lotteryRepository.save(lottery);
+        if(Objects.isNull(requestDto)){
+            throw new BadRequestException("Request body is null");
+        }
 
-        String tickets = lottery.getLotteryNumber();
-        LotteryResponseDto responseDto = new LotteryResponseDto(tickets);
-        return ResponseEntity.ok().body(responseDto);
+
+        try {
+            Lottery lottery = new Lottery(requestDto.getTickets(), requestDto.getPrice(), requestDto.getAmount());
+            lotteryRepository.save(lottery);
+
+            String tickets = lottery.getLotteryNumber();
+            LotteryResponseDto responseDto = new LotteryResponseDto(tickets);
+            return ResponseEntity.ok().body(responseDto);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+
+
+
 
 
     }

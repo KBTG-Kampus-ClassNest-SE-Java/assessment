@@ -20,4 +20,14 @@ public class ApiExceptionHandler extends ResponseStatusExceptionHandler {
         );
         return new ResponseEntity<>(exceptionHandler, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(value = {BadRequestException.class})
+    public ResponseEntity<Object> handleBadRequestException(BadRequestException e){
+        ExceptionResponse exceptionHandler = new ExceptionResponse(
+                e.getMessage(),
+                HttpStatus.NOT_FOUND,
+                ZonedDateTime.now()
+        );
+        return new ResponseEntity<>(exceptionHandler, HttpStatus.BAD_REQUEST);
+    }
 }
