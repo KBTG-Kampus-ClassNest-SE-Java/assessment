@@ -1,6 +1,9 @@
-package com.kbtg.bootcamp.posttest.lottery;
+package com.kbtg.bootcamp.posttest.Controller;
 
+import com.kbtg.bootcamp.posttest.Lottery.LotteryRequestDto;
+import com.kbtg.bootcamp.posttest.Lottery.LotteryService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,6 +17,7 @@ import java.util.Map;
 @RequestMapping("")
 public class LotteryController {
 
+    @Autowired
     private final LotteryService lotteryService;
 
     public LotteryController(LotteryService lotteryService) {
@@ -31,15 +35,6 @@ public class LotteryController {
         Map<String, List<String>> response = Collections.singletonMap("ticket", lotteryService.getLottery());
 
         return ResponseEntity.ok(response);
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("admin/lotteries")
-    public ResponseEntity<Map<String, String>> createLottery(@Valid @RequestBody LotteryRequestDto lottery) {
-        String createdLottery = lotteryService.createLottery(lottery);
-        Map<String, String> response = Collections.singletonMap("ticket", createdLottery);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

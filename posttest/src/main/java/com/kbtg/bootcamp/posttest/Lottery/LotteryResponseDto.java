@@ -1,4 +1,4 @@
-package com.kbtg.bootcamp.posttest.lottery;
+package com.kbtg.bootcamp.posttest.Lottery;
 
 public record LotteryResponseDto(String ticket) {
 

@@ -6,8 +6,8 @@ DROP TABLE IF EXISTS lottery CASCADE;
 CREATE TABLE lottery (
     id SERIAL PRIMARY KEY,
     ticket CHAR(6) NOT NULL UNIQUE CHECK (ticket ~ '^[0-9]{6}$'),
-    amount INTEGER NOT NULL,
-    price FLOAT NOT NULL,
+    amount BIGINT NOT NULL  CHECK (amount > 0),
+    price DECIMAL NOT NULL,
     CONSTRAINT chk_ticket_size CHECK (LENGTH(ticket) = 6)
 );
 
@@ -16,7 +16,7 @@ CREATE TABLE user_ticket (
     id SERIAL PRIMARY KEY,
     userId CHAR(10) NOT NULL CHECK (userId ~ '^[0-9]{10}$'),
     transaction_type VARCHAR NOT NULL,
-    transaction_amount INTEGER NOT NULL,
-    lottery_id INTEGER NOT NULL, -- Foreign key column
+    transaction_amount BIGINT NOT NULL,
+    lottery_id BIGINT NOT NULL, -- Foreign key column
     CONSTRAINT fk_lottery FOREIGN KEY (lottery_id) REFERENCES lottery(id) -- Foreign key relationship
 );

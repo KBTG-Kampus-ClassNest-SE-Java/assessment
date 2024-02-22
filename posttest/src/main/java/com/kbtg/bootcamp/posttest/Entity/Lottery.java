@@ -1,9 +1,12 @@
-package com.kbtg.bootcamp.posttest.lottery;
+package com.kbtg.bootcamp.posttest.Entity;
 
-import com.kbtg.bootcamp.posttest.user_ticket.User_ticket;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 import org.antlr.v4.runtime.misc.NotNull;
 
 import java.util.List;
@@ -22,18 +25,20 @@ public class Lottery {
     private String ticket;
 
     @NotNull
-    private Integer amount;
+    @Min(value = 0, message = "Amount must be greater than or equal to 0")
+    @Digits(integer = Integer.MAX_VALUE, fraction = 0, message = "Amount must be an integer")
+    private Long amount;
 
     @NotNull
-    private Float price;
+    private Double price;
 
     @OneToMany(mappedBy = "lottery")
-    private List<User_ticket> user_tickets;
+    private List<UserTicket> user_tickets;
 
     public Lottery() {
     }
 
-    public Lottery(String ticket, Integer amount, Float price) {
+    public Lottery(String ticket, Long amount, Double price) {
         this.ticket = ticket;
         this.amount = amount;
         this.price = price;
@@ -47,11 +52,11 @@ public class Lottery {
         return ticket;
     }
 
-    public Integer getAmount() {
+    public Long getAmount() {
         return amount;
     }
 
-    public Float getPrice() {
+    public Double getPrice() {
         return price;
     }
 
@@ -63,11 +68,11 @@ public class Lottery {
         this.ticket = ticket;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Long amount) {
         this.amount = amount;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

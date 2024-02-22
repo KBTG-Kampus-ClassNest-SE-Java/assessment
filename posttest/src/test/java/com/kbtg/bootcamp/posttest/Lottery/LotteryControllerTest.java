@@ -1,29 +1,23 @@
-package com.kbtg.bootcamp.posttest.lottery;
+package com.kbtg.bootcamp.posttest.Lottery;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kbtg.bootcamp.posttest.Controller.LotteryController;
+import com.kbtg.bootcamp.posttest.Entity.Lottery;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.http.MediaType;
 
 import static org.hamcrest.Matchers.is;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -33,9 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.springframework.security.test.context.support.WithMockUser;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 @ExtendWith(MockitoExtension.class)
 class LotteryControllerTest {
@@ -58,8 +50,8 @@ class LotteryControllerTest {
     void ViewLotterbyUser() throws Exception {
         Lottery lottery = new Lottery();
         lottery.setTicket("123456");
-        lottery.setAmount(10);
-        lottery.setPrice(100.0f);
+        lottery.setAmount(10L);
+        lottery.setPrice(100.0);
 
         when(lotteryService.getLottery()).thenReturn(List.of(lottery.getTicket()));
 
@@ -75,8 +67,8 @@ class LotteryControllerTest {
     void ViewLotterybyAdmin() throws Exception {
         Lottery lottery = new Lottery();
         lottery.setTicket("123456");
-        lottery.setAmount(10);
-        lottery.setPrice(100.0f);
+        lottery.setAmount(10L);
+        lottery.setPrice(100.0);
 
         when(lotteryService.getLottery()).thenReturn(List.of(lottery.getTicket()));
 
@@ -92,8 +84,8 @@ class LotteryControllerTest {
     void ViewLotterybyPublic() throws Exception {
         Lottery lottery = new Lottery();
         lottery.setTicket("123456");
-        lottery.setAmount(10);
-        lottery.setPrice(100.0f);
+        lottery.setAmount(10L);
+        lottery.setPrice(100.0);
 
         when(lotteryService.getLottery()).thenReturn(List.of(lottery.getTicket()));
 
@@ -105,7 +97,7 @@ class LotteryControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("ADMIN on POST:/lotteries should return ticket")
     void CreateLotteryAdmin() throws Exception {
-        LotteryRequestDto requestDto = new LotteryRequestDto("777777", 14, 60.0f);
+        LotteryRequestDto requestDto = new LotteryRequestDto("777777", 14L, 60.0);
         String expectedResponse = "777777";
 
         when(lotteryService.createLottery(any())).thenReturn(expectedResponse);

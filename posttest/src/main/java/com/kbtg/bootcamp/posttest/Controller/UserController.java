@@ -1,18 +1,21 @@
-package com.kbtg.bootcamp.posttest.user_ticket;
+package com.kbtg.bootcamp.posttest.Controller;
 
+import com.kbtg.bootcamp.posttest.UserTicket.UserTicketResponseDto;
+import com.kbtg.bootcamp.posttest.UserTicket.UserTicketService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("")
-public class User_ticketController {
-    private final User_ticketService user_ticketService;
+public class UserController {
+    @Autowired
+    private final UserTicketService user_ticketService;
 
-    public User_ticketController(User_ticketService user_ticketService) {
+    public UserController(UserTicketService user_ticketService) {
         this.user_ticketService = user_ticketService;
     }
 
@@ -25,8 +28,8 @@ public class User_ticketController {
     }
 
     @GetMapping("/users/{userId}/lotteries")
-    public ResponseEntity<User_ticketResponseDto> getUserTicket(@PathVariable String userId) {
-        User_ticketResponseDto userTicket = user_ticketService.getUserTicket(userId);
+    public ResponseEntity<UserTicketResponseDto> getUserTicket(@PathVariable String userId) {
+        UserTicketResponseDto userTicket = user_ticketService.getUserTicket(userId);
 
         return ResponseEntity.ok(userTicket);
     }

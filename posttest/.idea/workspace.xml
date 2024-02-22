@@ -5,34 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d3c5dfd1-fff7-44cd-9734-6bd894cf88ff" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Entity/Lottery.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Entity/UserTicket.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/posttest/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/posttest/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/posttest/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/posttest/docker-compose.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/posttest/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/posttest/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/posttest/gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/posttest/gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/posttest/hs_err_pid12128.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/posttest/init.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/posttest/settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/PosttestApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/lottery/Lottery.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/lottery/LotteryController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/lottery/LotteryRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/lottery/LotteryRequestDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/lottery/LotteryResponseDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/lottery/LotteryService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/securityconfig/SecurityConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/user_ticket/User_ticket.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/user_ticket/User_ticketController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/user_ticket/User_ticketRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/user_ticket/User_ticketResponseDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/user_ticket/User_ticketService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/posttest/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/posttest/src/test/java/com/kbtg/bootcamp/posttest/PosttestApplicationTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/posttest/src/test/java/com/kbtg/bootcamp/posttest/lottery/LotteryControllerTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/init.sql" beforeDir="false" afterPath="$PROJECT_DIR$/init.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/lottery/Lottery.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/lottery/LotteryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Controller/LotteryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/lottery/LotteryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Lottery/LotteryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/lottery/LotteryRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Lottery/LotteryRequestDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/lottery/LotteryResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Lottery/LotteryResponseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/lottery/LotteryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Lottery/LotteryService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/securityconfig/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/securityConfig/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/user_ticket/User_ticket.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/user_ticket/User_ticketController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/user_ticket/User_ticketRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/UserTicket/UserTicketRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/user_ticket/User_ticketResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/UserTicket/UserTicketResponseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/user_ticket/User_ticketService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/UserTicket/UserTicketService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/kbtg/bootcamp/posttest/lottery/LotteryControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/kbtg/bootcamp/posttest/Lottery/LotteryControllerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,6 +44,13 @@
         </projects_view>
       </state>
     </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />

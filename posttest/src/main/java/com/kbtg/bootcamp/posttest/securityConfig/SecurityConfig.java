@@ -1,4 +1,4 @@
-package com.kbtg.bootcamp.posttest.securityconfig;
+package com.kbtg.bootcamp.posttest.securityConfig;
 
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;

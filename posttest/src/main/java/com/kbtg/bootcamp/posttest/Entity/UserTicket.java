@@ -1,15 +1,14 @@
-package com.kbtg.bootcamp.posttest.user_ticket;
+package com.kbtg.bootcamp.posttest.Entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import lombok.ToString;
 
 @Entity
 @Table(name = "user_ticket")
-public class User_ticket {
+public class UserTicket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,9 +29,9 @@ public class User_ticket {
     @ToString.Exclude
     private Lottery lottery;
 
-    public User_ticket() {}
+    public UserTicket() {}
 
-    public User_ticket( String userId, String transaction_type, Integer transaction_amount, Lottery lottery) {
+    public UserTicket(String userId, String transaction_type, Integer transaction_amount, Lottery lottery) {
         this.userid = userId;
         this.transaction_type = transaction_type;
         this.transaction_amount = transaction_amount;
