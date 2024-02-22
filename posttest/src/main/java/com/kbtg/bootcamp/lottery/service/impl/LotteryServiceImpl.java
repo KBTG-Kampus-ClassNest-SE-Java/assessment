@@ -37,7 +37,6 @@ public class LotteryServiceImpl implements LotteryService {
     }
 
     @Override
-    @Transactional
     public LotteryResponseDto createLottery(LotteryRequestDto lotteryDTO) throws Exception {
         Optional<Lottery> optionalLottery = lotteryRepository.findById(lotteryDTO.getTicketNumber());
         if (optionalLottery.isPresent()) {
@@ -91,7 +90,6 @@ public class LotteryServiceImpl implements LotteryService {
 
 
     @Override
-    @Transactional
     public LotteryUserResponseDto getUserLotteryTickets(String userId) throws Exception {
         Users user = new Users(userId);
         List<UserTicket> userTickets = userTicketRepository.findByUserId(user);

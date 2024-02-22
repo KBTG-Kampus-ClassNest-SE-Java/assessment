@@ -22,6 +22,10 @@ public class LotteryRequestDto {
     @JsonProperty("amount")
     private Integer ticketAmount;
 
+    public LotteryRequestDto(String ticketNumber, BigDecimal totalPrice, Integer amount) {
+    }
+    public LotteryRequestDto() {
+    }
     public Integer getTicketAmount() {
         return ticketAmount;
     }
@@ -34,16 +38,16 @@ public class LotteryRequestDto {
         return ticketNumber;
     }
 
+    public void setTicketNumber(String ticketNumber) {
+        this.ticketNumber = ticketNumber;
+    }
+
     public BigDecimal getTicketPrice() {
         return ticketPrice;
     }
 
     public void setTicketPrice(BigDecimal ticketPrice) {
         this.ticketPrice = ticketPrice;
-    }
-
-    public void setTicketNumber(String ticketNumber) {
-        this.ticketNumber = ticketNumber;
     }
 }
 

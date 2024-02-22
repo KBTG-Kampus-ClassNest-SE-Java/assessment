@@ -4,6 +4,7 @@ import com.kbtg.bootcamp.lottery.request.LotteryRequestDto;
 import com.kbtg.bootcamp.lottery.response.LotteryResponseDto;
 import com.kbtg.bootcamp.lottery.service.LotteryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,8 +26,9 @@ public class AdminController {
 
     @PostMapping("/lotteries")
     @PreAuthorize("hasRole('ADMIN')")
-    public LotteryResponseDto createLottery(@Validated @RequestBody LotteryRequestDto lotteryDTO) throws Exception {
-        return lotteryService.createLottery(lotteryDTO);
+    public ResponseEntity<LotteryResponseDto> createLottery(@Validated @RequestBody LotteryRequestDto lotteryDTO) throws Exception {
+        LotteryResponseDto createdLottery = lotteryService.createLottery(lotteryDTO);
+        return  ResponseEntity.status(201).body(createdLottery);
     }
 
 }

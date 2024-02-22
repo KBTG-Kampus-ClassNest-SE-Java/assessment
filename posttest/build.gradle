@@ -27,8 +27,21 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.postgresql:postgresql'
-
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+configurations {
+	integrationTestCompile.extendsFrom testCompile
+	integrationTestRuntime.extendsFrom testRuntime
+	integrationTestImplementation.extendsFrom testImplementation
+}
+
+tasks.register('integrationTest', Test) {
+	jvmArgs('-Djdk.attach.allowAttachSelf=true', '-XX:+StartAttachListener')
+
+	description = 'Runs the integration tests.'
+	group = 'verification'
+	useJUnitPlatform()
 }
 
 tasks.named('test') {

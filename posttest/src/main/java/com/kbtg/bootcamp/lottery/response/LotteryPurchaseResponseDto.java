@@ -12,4 +12,7 @@ public class LotteryPurchaseResponseDto {
     }
 
 
+    public String getTicketId () {
+        return this.ticketId;
+    }
 }
