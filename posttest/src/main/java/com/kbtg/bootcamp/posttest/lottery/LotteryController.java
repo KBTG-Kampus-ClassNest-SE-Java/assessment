@@ -22,7 +22,7 @@ public class LotteryController {
         return lotteryService.getLotteryById(request.getTicket());
     }
     @PostMapping
-    public LotteryResponse addLottery(@Validated @RequestBody LotteryRequest request) {
+    public LotteryResponse addLottery(@Validated @RequestBody LotteryRequest request) throws Exception {
         return lotteryService.addLottery(request);
     }
 }

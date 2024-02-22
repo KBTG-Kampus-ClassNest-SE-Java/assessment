@@ -1,9 +1,9 @@
 package com.kbtg.bootcamp.posttest.user;
 
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,18 +18,19 @@ import java.util.List;
 public class User {
 
     @Id
-    private String id;
+    private Long id;
+
+    @NotNull
+    @Size(min = 3, max = 20)
     private String name;
 
-    @OneToMany(targetEntity = Lottery.class)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Lottery> lotteries = new ArrayList<>();
-
 
     private static int userCount = 0;
 
-
     public User(String name) {
-        this.id = String.format("%010d", userCount++);
+        this.id = Long.valueOf(String.format("%010d", userCount++));
         this.name = name;
     }
 

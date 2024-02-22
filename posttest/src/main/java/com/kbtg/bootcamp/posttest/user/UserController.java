@@ -7,11 +7,13 @@ import com.kbtg.bootcamp.posttest.userLottery.UserLotteryRequest;
 import com.kbtg.bootcamp.posttest.userLottery.UserLotteryResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -23,51 +25,41 @@ public class UserController {
         this.lotteryService = lotteryService;
     }
 
-    @GetMapping("/users")
+    @GetMapping
     public List<User> getAllUser(){
         return userService.getAllUsers();
     }
 
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public User getUserById(@PathVariable("id") String id) {
         return (User) userService.getUserById(id);
     }
 
-    @GetMapping("/users/lotteries/list")
+    @GetMapping("/lotteries/list")
     public LotteryListResponse getAllLotteries() {
-        List<String> tickets = lotteryService.getAllLotteryTickets();
-        return new LotteryListResponse(tickets);
+        return new LotteryListResponse(lotteryService.getAllLotteryTickets());
     }
 
 
 
-    @GetMapping("/users/{userId}/lotteries")
+    @GetMapping("/{userId}/lotteries")
     public UserLotteryResponse getUserLotteries(@PathVariable("userId") String userId) {
-        List<String> tickets = userService.getUserLotteries(userId);
-        int count = tickets.size();
-        int cost = count * 80;
-
-        return new UserLotteryResponse(tickets, count, cost);
+        return userService.showUserLotteriesList(userId);
     }
 
-    @PostMapping("/users")
+    @PostMapping
     @ApiResponse(responseCode = "201", description = "User Created")
-    public User createUser(@RequestBody UserRequest request) {
+    public User createUser(@Validated @RequestBody UserRequest request) {
         return userService.createUser(request);
     }
 
-    @PostMapping("/users/lotteries/buy")
-    public void buyLottery(@RequestBody UserLotteryRequest userLotteryRequest) {
-        Lottery lottery = lotteryService.getLotteryById(userLotteryRequest.lotteryId());
-        if (lottery == null) {
-            throw new IllegalArgumentException("Lottery not found with ID: " + userLotteryRequest.lotteryId());
-        }
-
-        userService.buyLottery(userLotteryRequest.userId(), userLotteryRequest.lotteryId());
+    @PostMapping("/lotteries/buy")
+    public Lottery buyLottery(@RequestBody UserLotteryRequest userLotteryRequest) {
+        return userService.buyLottery(userLotteryRequest.userId(), userLotteryRequest.lotteryId());
     }
 
-    @DeleteMapping("/users/{userId}/lotteries/{ticketId}")
+    @DeleteMapping("/{userId}/lotteries/{ticketId}")
     public List<Lottery> sellAllLotteries(@PathVariable String userId, @PathVariable String ticketId) {
         return userService.deleteLottery(userId, ticketId);
     }
