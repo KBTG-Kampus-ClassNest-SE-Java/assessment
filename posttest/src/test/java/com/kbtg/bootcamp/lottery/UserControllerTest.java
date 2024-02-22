@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -25,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class UserControllerTest {
 
@@ -41,8 +43,8 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("when user purchase lottery on POST: /api/wallets should return status 200 and body contain ticket id.")
-    void createLottery() throws Exception {
+    @DisplayName("when user purchase lottery on POST: /users/:userId/lotteries/:ticketId should return status 200 and body contain ticket id.")
+    void purchaseLottery() throws Exception {
         LotteryPurchaseResponseDto lottery = new LotteryPurchaseResponseDto(1);
         when(lotteryService.purchaseLotteryTicket("2024022100", "123456")
         ).thenReturn(lottery);

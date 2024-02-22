@@ -22,6 +22,10 @@ public class LotteryRequestDto {
     @JsonProperty("amount")
     private Integer ticketAmount;
 
+    public LotteryRequestDto(String ticketNumber, BigDecimal totalPrice, Integer amount) {
+    }
+    public LotteryRequestDto() {
+    }
     public Integer getTicketAmount() {
         return ticketAmount;
     }
