@@ -11,7 +11,7 @@ services:
 #    depends_on:
 #      - db
 #    environment:
-#      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/lottery
+#      SPRING_DATASOURCE_URL: jdbc:${DATABASE_URL}
 #      SPRING_DATASOURCE_USERNAME: user
 #      SPRING_DATASOURCE_PASSWORD: password
 #    networks:
