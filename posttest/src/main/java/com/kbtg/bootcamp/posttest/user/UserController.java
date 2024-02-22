@@ -15,7 +15,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/GET/lotteries")
+    @GetMapping("/lotteries")
     public List<Lottery> getLotteryList(){
         return this.userService.getLottery();
     }

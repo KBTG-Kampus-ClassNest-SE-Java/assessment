@@ -12,21 +12,45 @@ import lombok.Setter;
 @Table(name = "lottery")
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+//@AllArgsConstructor
+//@NoArgsConstructor
 public class Lottery {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "lottery_id")
-    private int lotteryId;
+    private Integer id;
 
     @Column(name = "lottery_number", length = 6)
     @Size(min = 6, max = 6)
-    private String lotteryNumber;
+    private String ticket;
 
     private Integer price;
 
     private Integer amount;
 
+    public Lottery(Integer id, String ticket, Integer price, Integer amount) {
+        this.id = id;
+        this.ticket = ticket;
+        this.price = price;
+        this.amount = amount;
+    }
+
+    public Lottery() {
+    }
+
+    public String getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(String ticket) {
+        this.ticket = ticket;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
 }
