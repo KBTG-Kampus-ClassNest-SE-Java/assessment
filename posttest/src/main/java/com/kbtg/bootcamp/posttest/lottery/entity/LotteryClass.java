@@ -1,4 +1,4 @@
-package com.kbtg.bootcamp.posttest.lottery;
+package com.kbtg.bootcamp.posttest.lottery.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -18,9 +18,11 @@ public class LotteryClass {
     private String ticket;
 
     @Column(name = "amount")
+    //Todo value >=0
     private Integer amount;
 
     @Column(name = "price")
+    //Todo value >=0
     private Integer price;
 
     public LotteryClass() {
