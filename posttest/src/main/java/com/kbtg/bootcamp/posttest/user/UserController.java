@@ -7,6 +7,7 @@ import com.kbtg.bootcamp.posttest.userLottery.UserLotteryRequest;
 import com.kbtg.bootcamp.posttest.userLottery.UserLotteryResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,35 +38,25 @@ public class UserController {
 
     @GetMapping("/lotteries/list")
     public LotteryListResponse getAllLotteries() {
-        List<String> tickets = lotteryService.getAllLotteryTickets();
-        return new LotteryListResponse(tickets);
+        return new LotteryListResponse(lotteryService.getAllLotteryTickets());
     }
 
 
 
     @GetMapping("/{userId}/lotteries")
     public UserLotteryResponse getUserLotteries(@PathVariable("userId") String userId) {
-        List<String> tickets = userService.getUserLotteryTickets(userId);
-        int count = tickets.size();
-        int cost = count * 80;
-
-        return new UserLotteryResponse(tickets, count, cost);
+        return userService.showUserLotteriesList(userId);
     }
 
     @PostMapping
     @ApiResponse(responseCode = "201", description = "User Created")
-    public User createUser(@RequestBody UserRequest request) {
+    public User createUser(@Validated @RequestBody UserRequest request) {
         return userService.createUser(request);
     }
 
     @PostMapping("/lotteries/buy")
-    public void buyLottery(@RequestBody UserLotteryRequest userLotteryRequest) {
-        Lottery lottery = lotteryService.getLotteryById(userLotteryRequest.lotteryId());
-        if (lottery == null) {
-            throw new IllegalArgumentException("Lottery not found with ID: " + userLotteryRequest.lotteryId());
-        }
-
-        userService.buyLottery(userLotteryRequest.userId(), userLotteryRequest.lotteryId());
+    public Lottery buyLottery(@RequestBody UserLotteryRequest userLotteryRequest) {
+        return userService.buyLottery(userLotteryRequest.userId(), userLotteryRequest.lotteryId());
     }
 
     @DeleteMapping("/{userId}/lotteries/{ticketId}")

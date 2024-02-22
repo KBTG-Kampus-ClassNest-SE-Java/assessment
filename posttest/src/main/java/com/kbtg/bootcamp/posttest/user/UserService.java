@@ -3,6 +3,7 @@ package com.kbtg.bootcamp.posttest.user;
 import com.kbtg.bootcamp.posttest.exeption.NotFoundException;
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
+import com.kbtg.bootcamp.posttest.userLottery.UserLotteryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,10 +40,11 @@ public class UserService {
     }
 
 
-    public void buyLottery(String userId, String lotteryId) {
+    public Lottery buyLottery(String userId, String lotteryId) {
         User user = getUserById(userId);
         Lottery lottery = lotteryService.getLotteryById(lotteryId);
         user.getLotteries().add(lottery);
+        return lottery;
     }
 
     public List<String> getUserLotteryTickets(String userId) {
@@ -65,6 +67,14 @@ public class UserService {
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("Lottery ticket no." + ticketId + " not exist")));
         return soldTickets;
+    }
+
+    public UserLotteryResponse showUserLotteriesList(String userId){
+        List<String> tickets = getUserLotteryTickets(userId);
+        int count = tickets.size();
+        int cost = count * 80;
+
+        return new UserLotteryResponse(tickets, count, cost);
     }
 }
 

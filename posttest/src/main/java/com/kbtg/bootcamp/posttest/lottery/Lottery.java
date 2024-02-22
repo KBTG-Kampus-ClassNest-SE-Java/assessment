@@ -13,15 +13,15 @@ import lombok.Setter;
 @Data
 public class Lottery {
 
-    @Id
-    @JsonProperty("ticket")
-    private String id;
-    private Integer price;
-    private Integer amount;
+@Id
+@JsonProperty("ticket")
+private String id;
+private Integer price;
+private Integer amount;
 
-    public Lottery(String ticket,Integer price, Integer amount) {
-        this.id = ticket;
-        this.price = price;
-        this.amount = amount;
-    }
+public Lottery(String ticket,Integer price, Integer amount) {
+    this.id = ticket;
+    this.price = price;
+    this.amount = amount;
+}
 }

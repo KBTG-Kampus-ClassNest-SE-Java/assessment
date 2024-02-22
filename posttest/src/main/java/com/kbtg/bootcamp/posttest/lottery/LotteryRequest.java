@@ -1,7 +1,10 @@
 // LotteryRequest.java
 package com.kbtg.bootcamp.posttest.lottery;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
@@ -19,4 +22,5 @@ public class LotteryRequest {
     @Min(value = 1,message = "price can not be negative ")
     @Max(value = 80, message = "price can not be over 80")
     private Integer amount;
+
 }
