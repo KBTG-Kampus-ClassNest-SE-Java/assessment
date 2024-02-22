@@ -2,6 +2,7 @@ package com.kbtg.bootcamp.posttest.user.controller;
 
 import com.kbtg.bootcamp.posttest.app.helper.ResponseHandler;
 import com.kbtg.bootcamp.posttest.user.service.UserService;
+import jakarta.validation.constraints.Size;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,7 +22,7 @@ public class UserController {
     this.userService = userService;
   }
   @PostMapping("/{userId}/lotteries/{ticketId}")
-  public ResponseEntity<Object> buyLottery(@PathVariable String ticketId, @PathVariable String userId) {
+  public ResponseEntity<Object> buyLottery(@PathVariable String ticketId,@PathVariable String userId) {
       return ResponseHandler.generateResponse(
           "Buy lottery success.",
           HttpStatus.OK,

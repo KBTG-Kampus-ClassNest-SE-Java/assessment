@@ -18,8 +18,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+@SpringBootTest
+
 @ExtendWith(MockitoExtension.class)
 class LotteryControllerTest {
 
@@ -36,7 +40,7 @@ class LotteryControllerTest {
   }
 
   @Test
-  @DisplayName("when perform GET request to /lotteries, should be returnee 200 list of lotteries")
+  @DisplayName("when preform on GET /lotteries, should be returnee 200 list of lotteries")
   void getLotteries() throws Exception{
     LotteryListResponse lotteries = new LotteryListResponse();
     lotteries.setTickets(List.of("0000001", "0000002", "0000003"));

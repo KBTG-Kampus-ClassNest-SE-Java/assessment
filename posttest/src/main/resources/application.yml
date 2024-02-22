@@ -34,4 +34,3 @@ spring:
     show-sql: false
   liquibase:
     enabled: true
-

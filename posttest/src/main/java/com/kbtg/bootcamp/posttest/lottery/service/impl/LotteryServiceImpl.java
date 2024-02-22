@@ -21,9 +21,11 @@ public class LotteryServiceImpl implements LotteryService {
 
   @Override
   public LotteryListResponse getLotteries() {
+
     List<String> tickets = lotteryRepository.findAll().stream()
         .map(Lottery::getTicket)
         .collect(Collectors.toList());
+
     return new LotteryListResponse(tickets);
   }
 

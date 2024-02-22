@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
     validateUserId(userId);
     validateTicketId(ticketId);
 
-    Lottery lottery = lotteryRepository.findByTicket(String.valueOf(ticketId))
+    Lottery lottery = lotteryRepository.findByTicket(ticketId)
         .orElseThrow(() -> new NotFoundException("Lottery not found"));
 
     if (lottery.getAmount() <= 0) {
@@ -91,11 +91,11 @@ public class UserServiceImpl implements UserService {
     validateUserId(userId);
     validateTicketId(ticketId);
 
-    Lottery lottery = lotteryRepository.findByTicket(String.valueOf(ticketId))
+    Lottery lottery = lotteryRepository.findByTicket(ticketId)
         .orElseThrow(() -> new NotFoundException("Lottery not found"));
 
     UserTicket userTicket = userTicketRepository.findByUserIdAndLotteryId(Integer.parseInt(userId), lottery.getId()
-    ).orElseThrow(() -> new NotFoundException("User did not buy this lottery"));
+    ).orElseThrow(() -> new IllegalArgumentException("User did not buy this lottery"));
 
     userTicketRepository.delete(userTicket);
     lottery.setAmount(lottery.getAmount() + 1);

@@ -3,6 +3,10 @@ WORKDIR /app
 ADD . .
 RUN ["./gradlew","bootJar"]
 
+# Step to run tests
+FROM builder as test
+RUN ["./gradlew", "test"]
+
 FROM gcr.io/distroless/java21-debian12:latest
 WORKDIR /app
 COPY --from=builder /app/build/libs/posttest-0.0.1-SNAPSHOT.jar posttest-0.0.1-SNAPSHOT.jar

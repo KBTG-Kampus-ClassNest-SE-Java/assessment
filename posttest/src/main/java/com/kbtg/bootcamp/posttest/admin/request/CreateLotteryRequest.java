@@ -1,6 +1,5 @@
 package com.kbtg.bootcamp.posttest.admin.request;
 
-import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
