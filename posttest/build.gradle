@@ -42,9 +42,6 @@ tasks.register('integrationTest', Test) {
 	description = 'Runs the integration tests.'
 	group = 'verification'
 	useJUnitPlatform()
-	filter {
-		include '**/*IntegrationTest.*'
-	}
 }
 
 tasks.named('test') {
