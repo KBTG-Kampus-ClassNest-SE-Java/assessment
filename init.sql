@@ -15,7 +15,7 @@ CREATE TABLE user_ticket (
                              user_ticket_id SERIAL PRIMARY KEY,
                              user_id INTEGER REFERENCES users(user_id),
                              lottery_id INTEGER REFERENCES lottery(lottery_id),
-                             amount VARCHAR(255)  NOT NULL
+                             amount INT NOT NULL
 
 );
 

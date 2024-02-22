@@ -49,7 +49,6 @@ public class LotteryService {
         return ResponseEntity.ok().body(responseDto);
 
 
-
     }
 
     public ResponseEntity<UserTicketResponseDto> buyLottery(Integer userId, String ticketNumber){
@@ -58,9 +57,11 @@ public class LotteryService {
         Lottery lottery = lotteryRepository.findByLotteryNumber(ticketNumber)
                 .orElseThrow(() ->new NotFoundException("Ticket not found with ID: " + ticketNumber));
 
+        UserTicket userTicket = new UserTicket(1, user, lottery);
+        userTicketRepository.save(userTicket);
 
 
-        UserTicketResponseDto responseDto = new UserTicketResponseDto();
+        UserTicketResponseDto responseDto = new UserTicketResponseDto(userTicket.getId());
         return ResponseEntity.ok().body(responseDto);
 
     }
