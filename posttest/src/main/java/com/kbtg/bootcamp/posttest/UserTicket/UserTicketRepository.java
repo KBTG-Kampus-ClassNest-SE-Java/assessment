@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface UserTicketRepository extends JpaRepository<UserTicket, Integer> {
     List<UserTicket> findByUserid(String userId);
 
-    @Query("SELECT ut FROM User_ticket ut INNER JOIN ut.lottery l WHERE ut.userid = :userid AND l.ticket = :ticket")
+    @Query("SELECT ut FROM UserTicket ut INNER JOIN ut.lottery l WHERE ut.userid = :userid AND l.ticket = :ticket")
     @Transactional
     Optional<UserTicket> findByUserIdAndTicket(@Param("userid") String userId, @Param("ticket") String ticketId);
 

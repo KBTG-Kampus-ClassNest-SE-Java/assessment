@@ -1,6 +1,8 @@
 package com.kbtg.bootcamp.posttest.Lottery;
 
 import com.kbtg.bootcamp.posttest.Entity.Lottery;
+import com.kbtg.bootcamp.posttest.Exception.InternalServiceException;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +18,11 @@ public class LotteryService {
     }
 
     public List<String> getLottery() {
-        return lotteryRepository.findAll().stream().map(lottery -> lottery.getTicket()).toList();
+        try {
+            return lotteryRepository.findAll().stream().map(lottery -> lottery.getTicket()).toList();
+        } catch (Exception e) {
+            throw new InternalServiceException(e.getMessage());
+        }
     }
 
     public String createLottery(LotteryRequestDto lottery) {

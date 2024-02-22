@@ -26,7 +26,7 @@ public class Lottery {
 
     @NotNull
     @Min(value = 0, message = "Amount must be greater than or equal to 0")
-    @Digits(integer = Integer.MAX_VALUE, fraction = 0, message = "Amount must be an integer")
+    @Digits( integer = 10, fraction = 0, message = "Amount must be an integer")
     private Long amount;
 
     @NotNull

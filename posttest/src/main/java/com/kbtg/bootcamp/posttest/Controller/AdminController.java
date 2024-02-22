@@ -26,7 +26,7 @@ public class AdminController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("admin/lotteries")
+    @PostMapping("/lotteries")
     public ResponseEntity<Map<String, String>> createLottery(@Valid @RequestBody LotteryRequestDto lottery) {
         String createdLottery = lotteryService.createLottery(lottery);
         Map<String, String> response = Collections.singletonMap("ticket", createdLottery);
