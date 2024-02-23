@@ -7,7 +7,6 @@ import com.kbtg.bootcamp.posttest.Exception.NotFoundException;
 import com.kbtg.bootcamp.posttest.Lottery.LotteryRepository;
 import com.kbtg.bootcamp.posttest.UserTicket.UserTicketRepository;
 import com.kbtg.bootcamp.posttest.UserTicket.UserTicketResponseDto;
-import com.kbtg.bootcamp.posttest.UserTicket.UserTicketService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

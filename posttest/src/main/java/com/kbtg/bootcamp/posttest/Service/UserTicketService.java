@@ -1,9 +1,11 @@
-package com.kbtg.bootcamp.posttest.UserTicket;
+package com.kbtg.bootcamp.posttest.Service;
 
 import com.kbtg.bootcamp.posttest.Entity.Lottery;
 import com.kbtg.bootcamp.posttest.Entity.UserTicket;
 import com.kbtg.bootcamp.posttest.Exception.ConflictException;
 import com.kbtg.bootcamp.posttest.Exception.NotFoundException;
+import com.kbtg.bootcamp.posttest.UserTicket.UserTicketRepository;
+import com.kbtg.bootcamp.posttest.UserTicket.UserTicketResponseDto;
 import org.springframework.stereotype.Service;
 import com.kbtg.bootcamp.posttest.Lottery.LotteryRepository;
 
@@ -12,7 +14,7 @@ import java.util.Optional;
 
 @Service
 public class UserTicketService {
-    private final UserTicketRepository UserTicketRepository;
+    private final com.kbtg.bootcamp.posttest.UserTicket.UserTicketRepository UserTicketRepository;
     private final LotteryRepository lotteryRepository;
 
     public UserTicketService(UserTicketRepository user_ticketRepository, LotteryRepository lotteryRepository) {
@@ -44,8 +46,8 @@ public class UserTicketService {
             throw new NotFoundException("No tickets found for user with userId: " + userId);
 
         Long count = tickets.stream().mapToLong(ticket -> 1).sum();
-        Double total = lotteries.stream().mapToDouble(Lottery::getPrice).sum();
-        return new UserTicketResponseDto(tickets, count, total);
+        Double cost = lotteries.stream().mapToDouble(Lottery::getPrice).sum();
+        return new UserTicketResponseDto(tickets, count, cost);
     }
 
     public String deleteLottery(String userId, String ticketId) {

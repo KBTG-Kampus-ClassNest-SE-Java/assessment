@@ -5,7 +5,6 @@ import com.kbtg.bootcamp.posttest.Exception.ConflictException;
 import com.kbtg.bootcamp.posttest.Exception.NotFoundException;
 import com.kbtg.bootcamp.posttest.Lottery.LotteryRepository;
 import com.kbtg.bootcamp.posttest.Lottery.LotteryRequestDto;
-import com.kbtg.bootcamp.posttest.Lottery.LotteryService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

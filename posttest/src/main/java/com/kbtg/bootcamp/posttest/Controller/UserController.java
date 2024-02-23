@@ -1,7 +1,7 @@
 package com.kbtg.bootcamp.posttest.Controller;
 
 import com.kbtg.bootcamp.posttest.UserTicket.UserTicketResponseDto;
-import com.kbtg.bootcamp.posttest.UserTicket.UserTicketService;
+import com.kbtg.bootcamp.posttest.Service.UserTicketService;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;

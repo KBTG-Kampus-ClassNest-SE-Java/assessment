@@ -1,6 +1,6 @@
 package com.kbtg.bootcamp.posttest.Controller;
 
-import com.kbtg.bootcamp.posttest.Lottery.LotteryService;
+import com.kbtg.bootcamp.posttest.Service.LotteryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

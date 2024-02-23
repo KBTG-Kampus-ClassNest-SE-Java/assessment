@@ -1,8 +1,10 @@
-package com.kbtg.bootcamp.posttest.Lottery;
+package com.kbtg.bootcamp.posttest.Service;
 
 import com.kbtg.bootcamp.posttest.Entity.Lottery;
 import com.kbtg.bootcamp.posttest.Exception.ConflictException;
 import com.kbtg.bootcamp.posttest.Exception.NotFoundException;
+import com.kbtg.bootcamp.posttest.Lottery.LotteryRepository;
+import com.kbtg.bootcamp.posttest.Lottery.LotteryRequestDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
