@@ -27,15 +27,15 @@ public class LotteryRequestDto {
     @Max(value = 1, message = "increase one lottery at a time")
     private Integer amount;
 
-    public String getTicket() {
-        return ticket;
-    }
-
-    public Integer getPrice() {
-        return price;
-    }
-
-    public Integer getAmount() {
-        return amount;
-    }
+//    public String getTicket() {
+//        return ticket;
+//    }
+//
+//    public Integer getPrice() {
+//        return price;
+//    }
+//
+//    public Integer getAmount() {
+//        return amount;
+//    }
 }

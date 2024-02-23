@@ -25,7 +25,7 @@ public class LotteryController {
     public LotteryResponseDto createLottery(@Validated @RequestBody LotteryRequestDto requestDto){
         try {
             LotteryResponseDto response = lotteryService.createLottery(requestDto);
-            return new ResponseEntity<>(response, HttpStatus.OK).getBody();
+            return new ResponseEntity<>(response, HttpStatus.CREATED).getBody();
         } catch (Exception exception) {
             throw new InternalServiceException("Internal service exception with Normal service");
         }

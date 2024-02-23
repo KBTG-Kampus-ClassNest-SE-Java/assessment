@@ -2,6 +2,8 @@ package com.kbtg.bootcamp.posttest.user;
 
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,8 +23,9 @@ public class UserTicket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    @Size(min = 10, max = 10)
-    private Long userId;
+    @Min(10)
+    @Max(10)
+    private int userId;
 
     @OneToMany(mappedBy = "userTicket")
     private List<Lottery> lotteries;
@@ -31,9 +34,10 @@ public class UserTicket {
     @Column (name = "lottery_number")
     private String ticket;
 
-    public void setUserId(Long userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
+
     public void setTicket(String ticket) {
         this.ticket = ticket;
     }
