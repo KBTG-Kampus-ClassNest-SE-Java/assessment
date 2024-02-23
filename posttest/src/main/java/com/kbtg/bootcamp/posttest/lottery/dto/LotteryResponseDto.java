@@ -4,20 +4,21 @@ import java.util.List;
 
 public class LotteryResponseDto {
 
-    private List<String> tickets;
+    private String ticket;
 
     public LotteryResponseDto() {
+
     }
 
-    public LotteryResponseDto(List<String> tickets) {
-        this.tickets = tickets;
+    public LotteryResponseDto(String ticket) {
+        this.ticket = ticket;
     }
 
-    public List<String> getTickets() {
-        return tickets;
+    public String getTicket() {
+        return ticket;
     }
 
-    public void setTickets(List<String> tickets) {
-        this.tickets = tickets;
+    public void setTicket(String ticket) {
+        this.ticket = ticket;
     }
 }

@@ -1,34 +1,33 @@
 package com.kbtg.bootcamp.posttest.lottery.entity;
 
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import org.antlr.v4.runtime.misc.NotNull;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "lottery")
-public class LotteryClass {
+public class Lottery {
 
     @Id
-    @Column(name = "ticket",length = 6)
-    //Todo num 0-9
+    @Column(name = "ticket_id",length = 6)
+    @Size(min = 6, max = 6)
     private String ticket;
 
     @Column(name = "amount")
-    //Todo value >=0
+    @NotNull
     private Integer amount;
 
     @Column(name = "price")
-    //Todo value >=0
+    @NotNull
     private Integer price;
 
-    public LotteryClass() {
+    public Lottery() {
     }
 
-    public LotteryClass(String ticket, Integer amount, Integer price) {
+    public Lottery(String ticket, Integer amount, Integer price) {
         this.ticket = ticket;
         this.amount = amount;
         this.price = price;

@@ -1,15 +1,15 @@
 package com.kbtg.bootcamp.posttest.lottery.dto;
 
-public class LottoryRequestDto {
+public class LotteryRequestDto {
 
     private String ticket;
     private Integer price;
     private Integer amount;
 
-    public LottoryRequestDto() {
+    public LotteryRequestDto() {
     }
 
-    public LottoryRequestDto(String ticket, Integer price, Integer amount) {
+    public LotteryRequestDto(String ticket, Integer price, Integer amount) {
         this.ticket = ticket;
         this.price = price;
         this.amount = amount;

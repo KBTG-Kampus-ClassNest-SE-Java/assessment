@@ -1,32 +1,35 @@
 package com.kbtg.bootcamp.posttest.lottery.controller;
 
 
-import com.kbtg.bootcamp.posttest.lottery.LotteryRequest;
+import com.kbtg.bootcamp.posttest.lottery.dto.LotteryListResDto;
+import com.kbtg.bootcamp.posttest.lottery.dto.LotteryRequestDto;
+import com.kbtg.bootcamp.posttest.lottery.dto.LotteryResponseDto;
 import com.kbtg.bootcamp.posttest.lottery.service.LotteryServiceImp;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class LotteryController {
 
     private final LotteryServiceImp lotteryServiceImp;
+    @Autowired
     public LotteryController(LotteryServiceImp lotteryServiceImp) {
         this.lotteryServiceImp = lotteryServiceImp;
     }
 
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin/lotteries")
-    public Object LottoryAdminPost(@RequestParam LotteryRequest request){
-        return lotteryServiceImp.createLotteryAdmin(request);
+    public ResponseEntity<LotteryResponseDto> lotteryAdminPost(@RequestBody LotteryRequestDto request){
+        return new ResponseEntity<>(new LotteryResponseDto(lotteryServiceImp.createLottery(request).getTicket()), HttpStatus.OK);
     }
 
     @GetMapping("/lotteries")
-    public ResponseEntity<LotteryResponseDto> listLotteries(){
-        return new ResponseEntity<String>(lotteryServiceImp.listAllLotteries(), HttpStatus.OK);
+    public ResponseEntity<LotteryListResDto> listLotteries(){
+        return new ResponseEntity<>(lotteryServiceImp.listAllLotteries(), HttpStatus.OK);
     }
 }
