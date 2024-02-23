@@ -3,11 +3,10 @@ package com.kbtg.bootcamp.posttest.user;
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.dto.LotteryListResponseDto;
 import com.kbtg.bootcamp.posttest.lottery.LotteryRepository;
-import com.kbtg.bootcamp.posttest.user.dto.UserTicketsRequestDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class UserService {

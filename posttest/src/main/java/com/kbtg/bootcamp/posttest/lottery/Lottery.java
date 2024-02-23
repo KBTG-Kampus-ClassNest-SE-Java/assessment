@@ -37,20 +37,4 @@ public class Lottery {
     @JoinColumn(name = "user_id")
     private UserTicket userTicket;
 
-
-    public String getTicket() {
-        return ticket;
-    }
-
-    public void setTicket(String ticket) {
-        this.ticket = ticket;
-    }
-
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
-
-    public void setAmount(Integer amount) {
-        this.amount = amount;
-    }
 }

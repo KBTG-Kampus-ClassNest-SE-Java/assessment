@@ -4,7 +4,7 @@ import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Size;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,15 +34,4 @@ public class UserTicket {
     @Column (name = "lottery_number")
     private String ticket;
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public void setTicket(String ticket) {
-        this.ticket = ticket;
-    }
-
-    public String getTicket() {
-        return ticket;
-    }
 }

@@ -1,6 +1,5 @@
 package com.kbtg.bootcamp.posttest.lottery.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,13 +9,10 @@ import java.util.List;
 
 @Getter
 @Setter
-//@AllArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 public class LotteryListResponseDto {
-    @JsonProperty("tickets")
+
     private List<String> tickets;
 
-    public LotteryListResponseDto(List<String> tickets) {
-        this.tickets = tickets;
-    }
 }

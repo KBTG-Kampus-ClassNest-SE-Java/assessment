@@ -2,15 +2,11 @@ package com.kbtg.bootcamp.posttest.user;
 
 import com.kbtg.bootcamp.posttest.exception.InternalServiceException;
 import com.kbtg.bootcamp.posttest.lottery.dto.LotteryListResponseDto;
-import com.kbtg.bootcamp.posttest.user.dto.UserTicketsRequestDto;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Null;
-import jakarta.validation.constraints.Size;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController

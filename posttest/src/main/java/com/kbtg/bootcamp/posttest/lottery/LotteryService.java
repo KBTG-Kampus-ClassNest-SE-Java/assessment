@@ -1,6 +1,5 @@
 package com.kbtg.bootcamp.posttest.lottery;
 
-//import jakarta.transaction.Transactional;
 import com.kbtg.bootcamp.posttest.lottery.dto.LotteryRequestDto;
 import com.kbtg.bootcamp.posttest.lottery.dto.LotteryResponseDto;
 import org.springframework.stereotype.Service;
