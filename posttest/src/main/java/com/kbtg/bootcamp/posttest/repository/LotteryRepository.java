@@ -25,5 +25,8 @@ public interface LotteryRepository extends JpaRepository<LotteryEntity, Long> {
     @Query(value = "UPDATE lottery SET status = true WHERE ticket = :ticket", nativeQuery = true)
     void updateStatusLottery(@Param("ticket") String ticket);
 
+    @Modifying
+    @Query(value = "SELECT * FROM lottery WHERE ticket = :ticket", nativeQuery = true)
+    List<LotteryEntity> getTicketEntity(@Param("ticket") String ticket);
 
 }

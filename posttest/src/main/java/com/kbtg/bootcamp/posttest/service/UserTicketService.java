@@ -1,5 +1,6 @@
 package com.kbtg.bootcamp.posttest.service;
 
+import com.kbtg.bootcamp.posttest.entity.LotteryEntity;
 import com.kbtg.bootcamp.posttest.entity.UserTicketEntity;
 import com.kbtg.bootcamp.posttest.repository.UserTicketRepository;
 import com.kbtg.bootcamp.posttest.service.impl.ImpUserTicketService;
@@ -31,6 +32,7 @@ public class UserTicketService implements ImpUserTicketService {
     public void refundLotteryToStore(String userid, String ticket) {
         userTicketRepository.refundLotteryToStore(userid, ticket);  // รอ database มาใส่
     }
+
 
 
 

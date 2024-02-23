@@ -35,7 +35,6 @@ public class LotteryService implements ImpLotteryService {
 
     @Override
     public List<LotteryEntity> getRemainLotteryFromStore() {
-
         return lotteryRepository.getRemainLotteryFromStore();
     }
 
@@ -55,5 +54,11 @@ public class LotteryService implements ImpLotteryService {
 
 
     }
+
+    @Override
+    public List<LotteryEntity> getLotteryEntity(String ticket) {
+        return lotteryRepository.getTicketEntity(ticket);
+    }
+
 
 }

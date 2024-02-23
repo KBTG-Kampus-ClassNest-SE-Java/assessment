@@ -26,9 +26,13 @@ public class AdminLotteryController {
 
     @Description("USE BY ADMIN FOR ADDING LOTTERY TO THE STORE")
     @PostMapping("")
-    public LotteryEntity addLotteryToStore(@RequestBody LotteryEntity lotteryEntity) {
-        impLotteryService.addLotteryToStore(lotteryEntity);
-        return lotteryEntity;
+    public String addLotteryToStore(@RequestBody LotteryEntity lotteryEntity) {
+//        public LotteryEntity addLotteryToStore(@RequestBody LotteryEntity lotteryEntity) {
+
+            impLotteryService.addLotteryToStore(lotteryEntity);
+//        return lotteryEntity;
+
+        return  "\"ticket\": " + "\"" + lotteryEntity.getTicket() + "\"";
     }
 
 }

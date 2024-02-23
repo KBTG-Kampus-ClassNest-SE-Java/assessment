@@ -13,4 +13,6 @@ public interface ImpUserTicketService {
 
     void refundLotteryToStore(String userid, String ticket);
 
+
+
 }
