@@ -31,5 +31,4 @@ public class AdminController {
           adminService.createLottery(createLotteryRequest));
   }
 
-
 }
