@@ -2,6 +2,8 @@ package com.kbtg.bootcamp.posttest.Controller;
 
 import com.kbtg.bootcamp.posttest.UserTicket.UserTicketResponseDto;
 import com.kbtg.bootcamp.posttest.UserTicket.UserTicketService;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/lotteries/{ticketId}")
-    public ResponseEntity<Map<String, String>> BuyTicket(@PathVariable String userId, @PathVariable String ticketId) {
+    public ResponseEntity<Map<String, String>> BuyTicket(@PathVariable @NotBlank @Pattern(regexp = "\\d{10}") String userId, @PathVariable @NotBlank @Pattern(regexp = "\\d{6}", message = "Value must be a 6-digit number") String ticketId) {
         String transactionId = user_ticketService.BuyTicket(userId, ticketId);
         Map<String, String> response = Collections.singletonMap("id", transactionId);
 
@@ -29,14 +31,14 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/lotteries")
-    public ResponseEntity<UserTicketResponseDto> getUserTicket(@PathVariable String userId) {
+    public ResponseEntity<UserTicketResponseDto> getUserTicket(@PathVariable @NotBlank @Pattern(regexp = "\\d{10}") String userId) {
         UserTicketResponseDto userTicket = user_ticketService.getUserTicket(userId);
 
         return ResponseEntity.ok(userTicket);
     }
 
     @DeleteMapping("/{userId}/lotteries/{ticketId}")
-    public ResponseEntity<Map<String, String>> deleteLottery(@PathVariable String userId, @PathVariable String ticketId) {
+    public ResponseEntity<Map<String, String>> deleteLottery(@PathVariable @NotBlank @Pattern(regexp = "\\d{10}") String userId, @PathVariable String ticketId) {
         String SoldTicket = user_ticketService.deleteLottery(userId, ticketId);
         Map<String, String> response = Collections.singletonMap("ticket", SoldTicket);
 

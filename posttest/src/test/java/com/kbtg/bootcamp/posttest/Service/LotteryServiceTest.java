@@ -40,6 +40,7 @@ class LotteryServiceTest {
 
         assertEquals(Collections.emptyList(), result);
         assertNotNull(result);
+
         verify(lotteryRepository).findAll();
     }
 
@@ -55,6 +56,7 @@ class LotteryServiceTest {
 
         assertEquals(Collections.emptyList(), result);
         assertNotNull(result);
+
         verify(lotteryRepository).findAll();
     }
 
@@ -70,6 +72,7 @@ class LotteryServiceTest {
 
         assertEquals(Arrays.asList("123456"), result);
         assertNotNull(result);
+
         verify(lotteryRepository).findAll();
     }
 
@@ -84,6 +87,7 @@ class LotteryServiceTest {
         List<String> result = lotteryService.getLottery();
 
         assertEquals(Arrays.asList("123456", "654321"), result);
+
         verify(lotteryRepository).findAll();
     }
 
@@ -100,6 +104,7 @@ class LotteryServiceTest {
         String result = lotteryService.createLottery(lotteryRequestDto);
 
         assertEquals(ticket, result);
+
         verify(lotteryRepository).findFirstByTicket(ticket);
         verify(lotteryRepository).save(any(Lottery.class));
     }
@@ -116,6 +121,7 @@ class LotteryServiceTest {
         when(lotteryRepository.findFirstByTicket(ticket)).thenReturn(java.util.Optional.of(new Lottery()));
 
         assertThrows(ConflictException.class, () -> lotteryService.createLottery(lotteryRequestDto));
+
         verify(lotteryRepository).findFirstByTicket(ticket);
         verify(lotteryRepository, never()).save(any());
     }
@@ -135,6 +141,7 @@ class LotteryServiceTest {
         String result = lotteryService.deleteLottery(ticketID);
 
         assertEquals(ticket, result);
+
         verify(lotteryRepository).findById(Integer.parseInt(ticketID));
         verify(lotteryRepository).delete(lottery);
     }
@@ -147,6 +154,7 @@ class LotteryServiceTest {
         when(lotteryRepository.findById(ticketID)).thenReturn(Optional.empty());
 
         assertThrows(NotFoundException.class, () -> lotteryService.deleteLottery(String.valueOf(ticketID)));
+
         verify(lotteryRepository).findById(ticketID);
         verify(lotteryRepository, never()).delete(any());
     }

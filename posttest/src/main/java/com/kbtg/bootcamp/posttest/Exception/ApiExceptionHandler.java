@@ -43,4 +43,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         );
         return new ResponseEntity<>(apiExceptionResponse, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(value = {MethodArgumentNotValidException.class})
+    public ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+
+        ApiExceptionResponse apiExceptionResponse = new ApiExceptionResponse(
+                e.getMessage(),
+                HttpStatus.BAD_REQUEST,
+                ZonedDateTime.now()
+        );
+        return new ResponseEntity<>(apiExceptionResponse, HttpStatus.BAD_REQUEST);
+    }
 }

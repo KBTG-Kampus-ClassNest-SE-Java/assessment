@@ -3,6 +3,9 @@ package com.kbtg.bootcamp.posttest.Controller;
 import com.kbtg.bootcamp.posttest.Lottery.LotteryRequestDto;
 import com.kbtg.bootcamp.posttest.Lottery.LotteryService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +26,7 @@ public class AdminController {
     }
 
     @PostMapping("/lotteries")
-    public ResponseEntity<Map<String, String>> createLottery(@Valid @RequestBody LotteryRequestDto lottery, BindingResult result) {
+    public ResponseEntity<Map<String, String>> createLottery(@Valid @RequestBody LotteryRequestDto lottery) {
         lottery.validate();
         String createdLottery = lotteryService.createLottery(lottery);
         Map<String, String> response = Collections.singletonMap("ticket", createdLottery);
