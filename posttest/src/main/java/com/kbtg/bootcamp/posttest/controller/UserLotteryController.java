@@ -26,7 +26,7 @@ public class UserLotteryController {
     @Description("USE BY USER FOR GET ALL LOTTERY THAT STILL REMAIN IN STORE")
     @GetMapping("/users/lotteries")
     public String getRemainLotteryFromStore() {
-        //"tickets": ["000001","000002","123456"]
+        String msg = "";
         try {
             List<LotteryEntity> lotteryRemain = impLotteryService.getRemainLotteryFromStore();
 
@@ -36,13 +36,12 @@ public class UserLotteryController {
                 for (LotteryEntity lotteryEntity : lotteryRemain) {
                     tmp = tmp + "\"" + lotteryEntity.getTicket() + "\",";
                 }
-                return listTicket + tmp.substring(0, tmp.length() - 1) + "]";
-            } else {
-                return "don't have lottery in store";
+                msg = listTicket + tmp.substring(0, tmp.length() - 1) + "]";
             }
         } catch (Exception e) {
-            return "don't have lottery in store";
+            msg = "don't have lottery in store";
         }
+        return msg;
     }
 
     @Description("USE BY USER FOR GET ALL LOTTERY THAT ALREADY BOUGHT ")
@@ -51,10 +50,6 @@ public class UserLotteryController {
         String msg = "";
         int count = 0;
         int cost = 0;
-        //        return JSON body
-//                tickets = list of ticket e.g. ["000001","000002","123456"]
-//                            count = number
-//                           cost = number
 
         List<UserTicketEntity> ownLottery = impUserTicketService.getAllOwnLotteryFromUser(user_Id);
 
@@ -65,11 +60,8 @@ public class UserLotteryController {
             if (ownLottery != null) {
                 for (UserTicketEntity userTicketEntity : ownLottery) {
                     tmp = tmp + "\"" + userTicketEntity.getTicket() + "\",";
-
                     count = count + 1;
                     cost = cost + (userTicketEntity.getAmount() * userTicketEntity.getPrice());
-
-
                 }
                 msg = listTicket + tmp.substring(0, tmp.length() - 1) + "], count = " + count + ", cost = " + cost;
             }
@@ -112,8 +104,6 @@ public class UserLotteryController {
         // Update status to false in lottery table
         boolean status = false;
         impLotteryService.updateStatusLottery(ticket, status);
-
-//        "ticket": "000001",
 
         return "\"ticket\": " + "\"" + ticket + "\"";
 
