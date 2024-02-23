@@ -2,79 +2,98 @@ package com.kbtg.bootcamp.posttest.user;
 
 import com.kbtg.bootcamp.posttest.exeption.NotFoundException;
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
+import com.kbtg.bootcamp.posttest.lottery.LotteryRepository;
+import com.kbtg.bootcamp.posttest.lottery.LotteryResponse;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
 import com.kbtg.bootcamp.posttest.userLottery.UserLotteryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
     private final LotteryService lotteryService;
-    private List<User> users = new ArrayList<>(List.of(
-            new User("SirA")
-    ));
 
     @Autowired
-    public UserService(LotteryService lotteryService) {
+    private LotteryRepository lotteryRepository;
+    private UserRepository userRepository;
+
+
+    public UserService(LotteryService lotteryService, UserRepository userRepository) {
         this.lotteryService = lotteryService;
-        // Initialize users list as needed
+        this.userRepository = userRepository;
+
     }
 
     public List<User> getAllUsers() {
-        return users;
+        return userRepository.findAll();
     }
 
-    public User getUserById(String userId) {
-        return users.stream().filter(user -> user.getId().equals(userId))
-                .findFirst()
-                .orElseThrow(() -> new NotFoundException("User : " + userId + " doesn't exist"));
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found with ID: " + userId));
     }
 
     public User createUser(UserRequest request) {
         User user = new User(request.name());
-        users.add(user);
+        userRepository.save(user);
         return user;
     }
 
+    @Transactional
+    public UserResponse buyLottery(String userId, String lotteryId) {
+        User user = userRepository.findById(Long.valueOf(userId))
+                .orElseThrow(() -> new NotFoundException("User not found with ID: " + userId));
+        Lottery lottery = lotteryRepository.findById(Long.valueOf(lotteryId))
+                .orElseThrow(() -> new NotFoundException("Lottery not found with ID: " + lotteryId));
 
-    public Lottery buyLottery(String userId, String lotteryId) {
-        User user = getUserById(userId);
-        Lottery lottery = lotteryService.getLotteryById(lotteryId);
         user.getLotteries().add(lottery);
-        return lottery;
+        lottery.setUser(user);
+
+        userRepository.save(user);
+        lotteryRepository.save(lottery);
+
+        return new UserResponse(lottery.getUser().getId().toString());
     }
 
-    public List<String> getUserLotteryTickets(String userId) {
-        User user = getUserById(userId);
-        List<String> tickets = new ArrayList<>();
-        List<Lottery> userLotteries = user.getLotteries();
-        for (Lottery lottery : userLotteries) {
-            tickets.add(String.valueOf(lottery.getId()));
-        }
-        return tickets;
-    }
-
-    public List<Lottery> deleteLottery(String userId, String ticketId) {
-        User user = getUserById(userId);
+    public LotteryResponse deleteLottery(String userId, String ticketId) {
+        User user = userRepository.findById(Long.valueOf(userId))
+                .orElseThrow(() -> new NotFoundException("User not found with ID: " + userId));
 
         List<Lottery> userLotteries = user.getLotteries();
         List<Lottery> soldTickets = new ArrayList<>();
 
-         soldTickets.add(userLotteries.stream().filter(lotteries -> lotteries.getId().equals(ticketId))
+        Lottery lotteryToDelete = user.getLotteries().stream()
+                .filter(lottery -> lottery.getId().equals(Long.valueOf(ticketId)))
                 .findFirst()
-                .orElseThrow(() -> new NotFoundException("Lottery ticket no." + ticketId + " not exist")));
-        return soldTickets;
+                .orElseThrow(() -> new NotFoundException("Lottery ticket no." + ticketId + " not found for user"));
+        user.getLotteries().remove(lotteryToDelete);
+        userRepository.save(user);
+        lotteryRepository.delete(lotteryToDelete);
+
+        return new LotteryResponse(String.valueOf(lotteryToDelete.getId()));
     }
 
-    public UserLotteryResponse showUserLotteriesList(String userId){
-        List<String> tickets = getUserLotteryTickets(userId);
-        int count = tickets.size();
-        int cost = count * 80;
+    public UserLotteryResponse showUserLotteriesList(String userId) {
 
-        return new UserLotteryResponse(tickets, count, cost);
+        User user = userRepository.findById(Long.valueOf(userId))
+                .orElseThrow(() -> new NotFoundException("User not found with ID: " + userId));
+        List<Lottery> userLotteries = user.getLotteries();
+
+        List<String> lotteryIds = userLotteries.stream()
+                .map(lottery -> String.valueOf(lottery.getId()))
+                .collect(Collectors.toList());
+        List<Integer> prices = userLotteries.stream()
+                .map(Lottery::getPrice)
+                .toList();
+
+        int count = lotteryIds.size();
+        int cost = prices.stream().mapToInt(Integer::intValue).sum();
+        return new UserLotteryResponse(lotteryIds, count, cost);
     }
 }
 

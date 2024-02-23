@@ -17,12 +17,18 @@ public class LotteryController {
     }
 
 
-    @GetMapping
-    public Lottery getLotteryById(@RequestBody LotteryRequest request){
-        return lotteryService.getLotteryById(request.getTicket());
+    @GetMapping("/{id}")
+    public LotteryResponse getLotteryById(@PathVariable("id") String id){
+        return lotteryService.getLotteryById(id);
     }
+
     @PostMapping
     public LotteryResponse addLottery(@Validated @RequestBody LotteryRequest request) throws Exception {
         return lotteryService.addLottery(request);
+    }
+
+    @DeleteMapping
+    public void DeleteLottery() {
+        lotteryService.deleteAllLotteries();
     }
 }
