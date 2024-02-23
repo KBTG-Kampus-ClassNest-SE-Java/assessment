@@ -13,8 +13,6 @@ public interface ImpLotteryService {
 
     LotteryEntity addLotteryToStore(LotteryEntity lotteryEntity);
 
-//    void refundLotteryToStore(Long id);
-
     void updateStatusLottery(String ticketId, boolean status);
 
 }

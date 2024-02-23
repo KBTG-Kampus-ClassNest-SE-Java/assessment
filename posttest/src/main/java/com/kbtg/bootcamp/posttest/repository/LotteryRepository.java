@@ -13,16 +13,17 @@ import java.util.List;
 
 
 @Repository
-//@EnableJpaRepositories
 public interface LotteryRepository extends JpaRepository<LotteryEntity, Long> {
 
-    //todo USE FOR USER to get remain lottery from store
+    //TODO USE BY USER TO GET REMAIN LOTTERY FROM STORE
     @Query(value = "SELECT * FROM lottery where status = false", nativeQuery = true)
     List<LotteryEntity> getRemainLotteryFromStore();
 
 
-    //todo USE FOR UPDATE STATUS THAT ALREADY BOUGHT OR NOT
-    @Query(value = "update lottery set status = true where ticket = '3'", nativeQuery = true)
-    void updateStatusLottery(String ticket, boolean status);
+    //TODO USE FOR UPDATE STATUS THAT ALREADY BOUGHT OR NOT -> CHECK BY TRUE/FALSE
+    @Modifying
+    @Query(value = "UPDATE lottery SET status = true WHERE ticket = :ticket", nativeQuery = true)
+    void updateStatusLottery(@Param("ticket") String ticket);
+
 
 }

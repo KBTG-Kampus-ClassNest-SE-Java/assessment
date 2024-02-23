@@ -29,7 +29,7 @@ public class SecurityConfig {
         return http
                 .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
                 .authorizeHttpRequests((requests) -> requests
-//                        .requestMatchers("/users/lotteries/**").permitAll()
+                        .requestMatchers("/users/lotteries/**").permitAll()
                         .requestMatchers("/users/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/admin/lotteries").hasAuthority("ADMIN_CREATE")
                         .requestMatchers(HttpMethod.GET, "/admin/lotteries").hasAuthority("ADMIN_READ")

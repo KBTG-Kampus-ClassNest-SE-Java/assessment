@@ -5,6 +5,8 @@ import com.kbtg.bootcamp.posttest.entity.UserTicketEntity;
 import com.kbtg.bootcamp.posttest.service.UserTicketService;
 import com.kbtg.bootcamp.posttest.service.impl.ImpLotteryService;
 import com.kbtg.bootcamp.posttest.service.impl.ImpUserTicketService;
+import jdk.jfr.Description;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -22,6 +24,7 @@ public class UserLotteryController {
         this.impUserTicketService = impUserTicketService;
     }
 
+    @Description("USE BY USER FOR GET ALL LOTTERY THAT STILL REMAIN IN STORE")
     @GetMapping("/users/lotteries")
     public List<LotteryEntity> getRemainLotteryFromStore() {
 
@@ -30,12 +33,9 @@ public class UserLotteryController {
             if (lotteryRemain == null) {
 
                 return Collections.emptyList();
-
             } else {
-
                 return lotteryRemain;
             }
-
         } catch (Exception e) {
 
             throw new RuntimeException(e);
@@ -43,63 +43,42 @@ public class UserLotteryController {
 
     }
 
+    @Description("USE BY USER FOR GET ALL LOTTERY THAT ALREADY BOUGHT ")
     @GetMapping("/users/lotteries/{id}")
     public List<UserTicketEntity> getAllOwnLotteryFromUser(@PathVariable("id") String user_Id) {
 
-        try {
+        List<UserTicketEntity> ownLottery = impUserTicketService.getAllOwnLotteryFromUser(user_Id);
+        if (ownLottery == null) {
 
-            List<UserTicketEntity> ownLottery = impUserTicketService.getAllOwnLotteryFromUser(user_Id);
-            if (ownLottery == null) {
-
-                return Collections.emptyList();
-            } else {
-                return ownLottery;
-            }
-
-        } catch (Exception e) {
-
-            throw new RuntimeException(e);
-
+            return Collections.emptyList();
+        } else {
+            return ownLottery;
         }
-
     }
 
+    @Description("USE BY USER FOR BUY LOTTERY FROM STORE")
     @PostMapping("/users/lotteries")
-    public UserTicketEntity buyLotteryFromStore(@RequestBody UserTicketEntity userTicketEntity) {
+    public ResponseEntity<UserTicketEntity> buyLotteryFromStore(@RequestBody UserTicketEntity userTicketEntity) {
 
-//        impLotteryService.updateStatusLottery(userTicketEntity.getTicket(), true); // error wait for fix
+        boolean status = true;
+        impLotteryService.updateStatusLottery(userTicketEntity.getTicket(), status);
 
-        UserTicketEntity userTicketEntity1 = impUserTicketService.buyLotteryFromStore(userTicketEntity);
+        UserTicketEntity savedUserTicket = impUserTicketService.buyLotteryFromStore(userTicketEntity);
+        return ResponseEntity.ok(savedUserTicket);
 
-        return userTicketEntity1;
     }
 
-
+    @Description("USE BY USER FOR REFUND LOTTERY TO STORE")
     @DeleteMapping("/users/{userid}/lotteries/{ticket}")
     public void refundLotteryToStore(@PathVariable String userid, @PathVariable String ticket) {
 
-
+        // Remove record from user_ticket table
         impUserTicketService.refundLotteryToStore(userid, ticket);
+
+        // Update status to false in lottery table
+        boolean status = false;
+        impLotteryService.updateStatusLottery(ticket, status);
     }
+
+
 }
-
-
-//        public String getRemainLotteryAsJson() {
-//            List<LotteryEntity> lotteryList = getRemainLottery();
-//            Map<String, Object> result = new HashMap<>();
-//            if (lotteryList == null) {
-//                // If lotteryList is null, create a JSON object with specific key-value pairs
-//                result.put("Id", 1);
-//                result.put("userid", "mo");
-//            } else {
-//                // If lotteryList is not null, serialize it to JSON
-//                result.put("lotteryList", lotteryList);
-//            }
-//            try {
-//                ObjectMapper objectMapper = new ObjectMapper();
-//                return objectMapper.writeValueAsString(result);
-//            } catch (JsonProcessingException e) {
-//                // Handle the exception if JSON serialization fails
-//                e.printStackTrace();
-//                return "Error occurred while converting to JSON";
-//            }

@@ -17,17 +17,17 @@ public class UserTicketService implements ImpUserTicketService {
 
     }
 
-    @Override  //todo USE BY USER for buy lottery
+    @Override
     public UserTicketEntity buyLotteryFromStore(UserTicketEntity userTicketEntity) {
         return userTicketRepository.save(userTicketEntity);
     }
 
-    @Override  //todo USE BY USER to list all lottery that already bought
+    @Override
     public List<UserTicketEntity> getAllOwnLotteryFromUser(String user_id) {
         return userTicketRepository.getAllOwnLotteryFromUser(user_id);
     }
 
-    @Override  //todo USE BY USER refund lottery to store
+    @Override
     public void refundLotteryToStore(String userid, String ticket) {
         userTicketRepository.refundLotteryToStore(userid, ticket);  // รอ database มาใส่
     }

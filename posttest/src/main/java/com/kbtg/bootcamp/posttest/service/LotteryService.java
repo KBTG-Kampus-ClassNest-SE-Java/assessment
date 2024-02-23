@@ -3,6 +3,7 @@ package com.kbtg.bootcamp.posttest.service;
 import com.kbtg.bootcamp.posttest.entity.LotteryEntity;
 import com.kbtg.bootcamp.posttest.repository.LotteryRepository;
 import com.kbtg.bootcamp.posttest.service.impl.ImpLotteryService;
+import jdk.jfr.Description;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -16,33 +17,43 @@ public class LotteryService implements ImpLotteryService {
     private final LotteryRepository lotteryRepository;
 
     public LotteryService(LotteryRepository lotteryRepository) {
+
         this.lotteryRepository = lotteryRepository;
     }
 
-    @Override  //todo USE BY ADMIN for list all lottery that exist, no consider where is it now
+    @Override
     public List<LotteryEntity> getAllLottery() {
+
         return lotteryRepository.findAll();
     }
 
-    @Override  //todo USE BY ADMIN for add lottery to the store
+    @Override
     public LotteryEntity addLotteryToStore(LotteryEntity lotteryEntity) {
+
         return lotteryRepository.save(lotteryEntity);
     }
 
-    @Override  //todo USE BY ADMIN for list all lottery that still available in the shop
+    @Override
     public List<LotteryEntity> getRemainLotteryFromStore() {
+
         return lotteryRepository.getRemainLotteryFromStore();
     }
 
-//    @Override  //todo USE BY USER refund lottery to store
-//    public void refundLotteryToStore(Long id) {
-//        lotteryRepository.deleteById(id);
-//    }
 
-    @Override  //todo USE FOR STATUS CHECK THAT IS ALREADY BOUGHT OR NOT
+    @Override
     public void updateStatusLottery(String ticketId, boolean status) {
-        lotteryRepository.updateStatusLottery(ticketId, status);
+        Long ticketIdLong = Long.parseLong(ticketId); // Convert ticketId from String to Long
+
+        Optional<LotteryEntity> optionalLottery = lotteryRepository.findById(ticketIdLong);
+        if (optionalLottery.isPresent()) {
+            LotteryEntity lottery = optionalLottery.get();
+            lottery.setStatus(status); // Set status to true
+            lotteryRepository.save(lottery); // Save the updated lottery entity
+        } else {
+            // Handle if the lottery ticket is not found
+        }
+
+
     }
-//    public int updateStatusLottery(String ticketId, boolean status)
-//    return lotteryRepository.updateLottery(ticketId, status);
+
 }
