@@ -15,13 +15,13 @@ class UserControllerTest {
 
     @Autowired
     private UserController userController;
-
+    private UserRepository userRepository;
     @MockBean
     private UserService userService;
     @BeforeEach
     void setUp() {
         LotteryService lotteryService = new LotteryService();
-        UserService userService = new UserService(lotteryService);
+        UserService userService = new UserService(lotteryService, userRepository);
         userController = new UserController(userService, lotteryService);
 
     }

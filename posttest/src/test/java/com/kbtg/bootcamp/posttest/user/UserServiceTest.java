@@ -5,19 +5,21 @@ import com.kbtg.bootcamp.posttest.lottery.LotteryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class UserServiceTest {
 
-    ;
-    private UserService userService;
 
+    @Autowired
+    private UserService userService;
+    private UserRepository userRepository;
     @BeforeEach
     void setUp() {
         LotteryService lotteryService = new LotteryService();
-        userService = new UserService(lotteryService);
+        UserService userService = new UserService(lotteryService, userRepository);
     }
 
     @Test

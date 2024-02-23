@@ -29,6 +29,9 @@ public class User {
 
     private static int userCount = 0;
 
+    public User(){
+
+    }
     public User(String name) {
         this.id = Long.valueOf(String.format("%010d", userCount++));
         this.name = name;

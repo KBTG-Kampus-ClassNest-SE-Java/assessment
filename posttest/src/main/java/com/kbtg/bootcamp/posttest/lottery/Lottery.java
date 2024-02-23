@@ -1,5 +1,6 @@
 package com.kbtg.bootcamp.posttest.lottery;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kbtg.bootcamp.posttest.user.User;
 import jakarta.persistence.Entity;
@@ -23,13 +24,21 @@ public class Lottery {
     private Integer price;
     private Integer amount;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User user;
+
+    public Lottery() {
+    }
 
     public Lottery(String ticket, Integer price, Integer amount) {
         this.id = Long.valueOf(ticket);
         this.price = price;
         this.amount = amount;
+    }
+
+    public String getIdAsString() {
+        return String.valueOf(id);
     }
 }
