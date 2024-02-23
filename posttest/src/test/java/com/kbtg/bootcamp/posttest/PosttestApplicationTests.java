@@ -1,13 +1,15 @@
 package com.kbtg.bootcamp.posttest;
 
-import org.junit.jupiter.api.Test;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 
+@TestConfiguration(proxyBeanMethods = false)
 @SpringBootTest
 class PosttestApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+  public static void main(String[] args) {
+    SpringApplication.from(PosttestApplication::main).with(PosttestApplication.class).run(args);
+  }
 
 }

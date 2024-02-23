@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: load user data
+      author: siwakon.dev
+      changes:
+        - loadData:
+            catalogName: user
+            columns:
+              - column:
+                  header: id
+                  name: id
+                  type: NUMERIC
+              - column:
+                  header: name
+                  name: name
+                  type: varchar
+              - column:
+                  header: username
+                  name: username
+                  type: varchar
+              - column:
+                  header: password
+                  name: password
+                  type: varchar
+              - column:
+                  header: created_date
+                  name: created_date
+                  type: datetime
+              - column:
+                  header: modified_date
+                  name: modified_date
+                  type: datetime
+            commentLineStartsWith: //
+            encoding: UTF-8
+            file: data/user.csv
+            quotchar: ''''
+            relativeToChangelogFile: true
+            schemaName: public
+            separator: ','
+            tableName: user
+            usePreparedStatements: true
