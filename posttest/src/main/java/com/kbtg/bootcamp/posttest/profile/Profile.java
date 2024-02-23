@@ -24,6 +24,12 @@ public class Profile {
     public Profile() {
     }
 
+    public Profile(String userId, String name, String phone) {
+        this.userId = userId;
+        this.name = name;
+        this.phone = phone;
+    }
+
     public Profile(String name) {
         this.name = name;
     }

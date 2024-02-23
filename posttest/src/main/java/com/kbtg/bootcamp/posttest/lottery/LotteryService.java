@@ -107,7 +107,7 @@ public class LotteryService {
         }
     }
 
-    private List<Lottery> getAllLotteriesByUserId(String requestedUserId) {
+    public List<Lottery> getAllLotteriesByUserId(String requestedUserId) {
         List<Lottery> collect = getAllLotteries().stream()
                 .filter(lottery -> {
                     Profile profile = lottery.getProfile();
@@ -134,6 +134,7 @@ public class LotteryService {
     public ResponseEntity<?> sellLotteryByUsingUserIdAndLotteryTicket(String requestedUserID,
                                                                       String requestedTicketId) {
         List<Lottery> allLotteriesByUserId = new ArrayList<>();
+        responseBody = new LinkedHashMap<>();
         try {
             if (!isLotteryExistsByTicketNumber(requestedTicketId)) {
                 throw new NotExistLotteryException("Lottery does not exist");
@@ -144,8 +145,14 @@ public class LotteryService {
             // find the lottery that has the profile equal to requestedUserID
             allLotteriesByUserId = getAllLotteriesByUserId(requestedUserID);
 
-
-
+            // delete profile and amount from lottery that match Lottery number
+            allLotteriesByUserId.stream()
+                    .filter(lottery -> lottery.getTicket().equals(requestedTicketId))
+                    .collect(Collectors.toList()).stream()
+                    .forEach(lottery -> {
+                        lottery.setProfile(null);
+                        lottery.setAmount(0L);
+                    });
 
         } catch (NotExistLotteryException  | NotExistUserIdException e) {
             return ResponseEntity.notFound().build();

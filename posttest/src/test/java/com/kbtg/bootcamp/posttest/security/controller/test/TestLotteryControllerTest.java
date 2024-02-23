@@ -5,11 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryRepository;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
+import com.kbtg.bootcamp.posttest.profile.Profile;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,9 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
@@ -141,13 +146,55 @@ class TestLotteryControllerTest {
         // Act
         ResponseEntity<List<Lottery>> response = (ResponseEntity<List<Lottery>>) lotteryService.sellLotteryByUsingUserIdAndLotteryTicket(requestedUserID,
                 requestedTicketId1);
-
+        System.out.println("response = " + response);
         // Assert
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull(); // Check if the body is not null
         assertThat(response.getBody()).isNotEmpty(); // Check if the body contains at least one lottery
         // Add additional assertions to verify the content of the list of lotteries
     }
+
+    @Test
+    @DisplayName("Should remove profile and set amount to 0 for the lottery with the given ticket ID")
+    void shouldModifyLotteryWithGivenTicketID() {
+        // Arrange
+        String requestedUserID = "1234567890";
+        String requestedTicketId = "111111";
+
+        // Mock the lottery service
+        LotteryService lotteryService = mock(LotteryService.class);
+
+        // Create a list of lotteries
+        List<Lottery> lotteries = new ArrayList<>();
+        lotteries.add(new Lottery("111111", 100.0, 1L, new Profile("1234567890", "John", "123")));
+        lotteries.add(new Lottery("222222", 200.0, 2L, new Profile("1234567890", "John", "123")));
+        lotteries.add(new Lottery("555555", 300.0, 3L, new Profile("1234567890", "John", "123")));
+
+        // Stub the getAllLotteriesByUserId method to return the list of lotteries
+        when(lotteryService.getAllLotteriesByUserId(requestedUserID)).thenReturn(lotteries);
+
+        // Create the controller with the mocked lottery service
+        TestLotteryController controller = new TestLotteryController(lotteryService);
+        // Act
+        ResponseEntity<List<Lottery>> response = (ResponseEntity<List<Lottery>>) lotteryService.sellLotteryByUsingUserIdAndLotteryTicket(requestedUserID,
+                requestedTicketId);
+
+        List<Lottery> result = response.getBody();
+
+        // Assert
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        // Verify that the correct lottery is modified
+        Lottery modifiedLottery = lotteries.stream()
+                .filter(lottery -> lottery.getTicket().equals(requestedTicketId))
+                .findFirst()
+                .orElse(null);
+        assertThat(modifiedLottery).isNotNull();
+        assertThat(modifiedLottery.getProfile()).isNull();
+        assertThat(modifiedLottery.getAmount()).isEqualTo(0L);
+    }
+
+
 
 
 

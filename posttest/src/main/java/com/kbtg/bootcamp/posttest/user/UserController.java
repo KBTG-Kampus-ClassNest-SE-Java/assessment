@@ -41,6 +41,15 @@ public class UserController {
         return lotteryService.buyLotteries(request);
     }
 
+    @DeleteMapping("/{requestedUserID}/lotteries/{requestedTicketId}")
+    public ResponseEntity<?> sellingBackALotteryPage(
+            @PathVariable(name = "requestedUserID") String requestedUserID,
+            @PathVariable(name = "requestedTicketId") String requestedTicketId
+    ) {
+        return
+                lotteryService.sellLotteryByUsingUserIdAndLotteryTicket(requestedUserID, requestedTicketId);
+    }
+
 
 
 

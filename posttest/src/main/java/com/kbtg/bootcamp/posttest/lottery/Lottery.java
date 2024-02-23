@@ -41,6 +41,13 @@ public class Lottery {
         this.amount = amount;
     }
 
+    public Lottery(String ticket, Double price, Long amount, Profile profile) {
+        this.ticket = ticket;
+        this.price = price;
+        this.amount = amount;
+        this.profile =profile;
+    }
+
     public String getTicket() {
         return ticket;
     }
