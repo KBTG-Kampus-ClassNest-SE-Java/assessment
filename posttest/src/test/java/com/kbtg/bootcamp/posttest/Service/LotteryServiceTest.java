@@ -33,7 +33,7 @@ class LotteryServiceTest {
 
     @Test
     @DisplayName("Initial state should return Empty List")
-    public void TestgetInitLottery() {
+    public void TestGetInitLottery() {
         when(lotteryRepository.findAll()).thenReturn(Collections.emptyList());
 
         List<String> result = lotteryService.getLottery();
@@ -44,8 +44,38 @@ class LotteryServiceTest {
     }
 
     @Test
+    @DisplayName("Zero amount of Lottery should return Empty List")
+    public void TestGetZeroLottery() {
+        when(lotteryRepository.findAll()).thenReturn(Arrays.asList(
+                new Lottery("123456", 0L, 10.0),
+                new Lottery("654321", 0L, 15.0)
+        ));
+
+        List<String> result = lotteryService.getLottery();
+
+        assertEquals(Collections.emptyList(), result);
+        assertNotNull(result);
+        verify(lotteryRepository).findAll();
+    }
+
+    @Test
+    @DisplayName("Mixed Zero and Non Zero amount of Lottery should return List of Non Zero Ticket")
+    public void TestGetMixedLottery() {
+        when(lotteryRepository.findAll()).thenReturn(Arrays.asList(
+                new Lottery("123456", 100L, 10.0),
+                new Lottery("654321", 0L, 15.0)
+        ));
+
+        List<String> result = lotteryService.getLottery();
+
+        assertEquals(Arrays.asList("123456"), result);
+        assertNotNull(result);
+        verify(lotteryRepository).findAll();
+    }
+
+    @Test
     @DisplayName("Non Zero amount of Lottery should return List of Ticket")
-    public void TestgetLottery() {
+    public void TestGetLottery() {
         when(lotteryRepository.findAll()).thenReturn(Arrays.asList(
                 new Lottery("123456", 100L, 10.0),
                 new Lottery("654321", 150L, 15.0)
@@ -59,7 +89,7 @@ class LotteryServiceTest {
 
     @Test
     @DisplayName("Create lottery should success and return ticket Id as string")
-    public void TestcreateLotterySuccess() {
+    public void TestCreateLotterySuccess() {
         String ticket = "123456";
         Long amount = 100L;
         double price = 10.0;
@@ -76,7 +106,7 @@ class LotteryServiceTest {
 
     @Test
     @DisplayName("Create lottery that already exists should throw ConflictException")
-    public void TestcreateDuplicateTicket() {
+    public void TestCreateDuplicateTicket() {
         String ticket = "123456";
         Long amount = 100L;
         double price = 10.0;
@@ -85,16 +115,14 @@ class LotteryServiceTest {
 
         when(lotteryRepository.findFirstByTicket(ticket)).thenReturn(java.util.Optional.of(new Lottery()));
 
-        assertThrows(ConflictException.class, () -> {
-            lotteryService.createLottery(lotteryRequestDto);
-        });
+        assertThrows(ConflictException.class, () -> lotteryService.createLottery(lotteryRequestDto));
         verify(lotteryRepository).findFirstByTicket(ticket);
         verify(lotteryRepository, never()).save(any());
     }
 
     @Test
     @DisplayName("Delete existing lottery should success")
-    public void TestdeleteLotterySuccess() {
+    public void TestDeleteLotterySuccess() {
         String ticketID = "123456";
         String ticket = "123456";
         Long amount = 100L;
@@ -113,14 +141,12 @@ class LotteryServiceTest {
 
     @Test
     @DisplayName("Delete non existing lottery should throw NotFoundException")
-    public void TestdeleteLotteryNotFound() {
+    public void TestDeleteLotteryNotFound() {
         int ticketID = 123456;
 
         when(lotteryRepository.findById(ticketID)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> {
-            lotteryService.deleteLottery(String.valueOf(ticketID));
-        });
+        assertThrows(NotFoundException.class, () -> lotteryService.deleteLottery(String.valueOf(ticketID)));
         verify(lotteryRepository).findById(ticketID);
         verify(lotteryRepository, never()).delete(any());
     }

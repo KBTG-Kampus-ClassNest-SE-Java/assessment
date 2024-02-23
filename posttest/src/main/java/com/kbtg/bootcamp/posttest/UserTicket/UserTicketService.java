@@ -12,31 +12,28 @@ import java.util.Optional;
 
 @Service
 public class UserTicketService {
-    private final UserTicketRepository user_ticketRepository;
+    private final UserTicketRepository UserTicketRepository;
     private final LotteryRepository lotteryRepository;
 
     public UserTicketService(UserTicketRepository user_ticketRepository, LotteryRepository lotteryRepository) {
-        this.user_ticketRepository = user_ticketRepository;
+        this.UserTicketRepository = user_ticketRepository;
         this.lotteryRepository = lotteryRepository;
     }
 
     public String BuyTicket(String userId, String ticketId) {
         Optional<Lottery> lottery = lotteryRepository.findByTicket(ticketId);
 
-        if (lottery.isEmpty())
-            throw new NotFoundException("Lottery with ticketId " + ticketId + " not found");
+        if (lottery.isEmpty() || lottery.get().getAmount() == 0)
+            throw new NotFoundException("Lottery with ticketId " + ticketId + " not found or ticket is sold out");
 
-        if (user_ticketRepository.findByUserIdAndTicket(userId, ticketId).isPresent())
+        if (UserTicketRepository.findByUserIdAndTicket(userId, ticketId).isPresent())
             throw new ConflictException("User already has a ticket " + ticketId);
 
-        if (lottery.get().getAmount() == 1)
-            lotteryRepository.delete(lottery.get());
-        else
-            lottery.get().setAmount(lottery.get().getAmount() - 1);
+        lottery.get().setAmount(lottery.get().getAmount() - 1);
+        lotteryRepository.save(lottery.get());
+        UserTicket userticket = new UserTicket(userId,"buy", 1L, lottery.get());
 
-        UserTicket user_ticket = new UserTicket(userId,"buy", 1L, lottery.get());
-        user_ticketRepository.save(user_ticket);
-        return user_ticket.getId().toString();
+        return UserTicketRepository.save(userticket).getId().toString();
     }
 
     public UserTicketResponseDto getUserTicket(String userId) {
@@ -52,12 +49,12 @@ public class UserTicketService {
     }
 
     public String deleteLottery(String userId, String ticketId) {
-        Optional<UserTicket> user_tickets = user_ticketRepository.findByUserIdAndTicket(userId, ticketId);
+        Optional<UserTicket> user_tickets = UserTicketRepository.findByUserIdAndTicket(userId, ticketId);
 
         if (user_tickets.isEmpty())
             throw new NotFoundException("User with userId " + userId + " not found");
 
-        user_ticketRepository.delete(user_tickets.get());
+        UserTicketRepository.delete(user_tickets.get());
         return ticketId;
     }
 }
