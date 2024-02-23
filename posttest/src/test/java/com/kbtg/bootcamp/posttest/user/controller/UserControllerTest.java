@@ -162,9 +162,9 @@ class UserControllerTest {
     String userId = "0000000001";
 
     UserLotteryResponse userLotteryResponse = UserLotteryResponse.builder()
-        .tickets(List.of("123456"))
-        .count(1)
-        .cost(80)
+        .tickets(List.of("000001","000002","123456"))
+        .count(3)
+        .cost(240)
         .build();
     when(userService.getLotteriesByUserId(userId)).thenReturn(userLotteryResponse);
 
@@ -174,9 +174,11 @@ class UserControllerTest {
             .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message", Is.is("Get lotteries success.")))
-        .andExpect(jsonPath("$.data.tickets[0]", Is.is("123456")))
-        .andExpect(jsonPath("$.data.count", Is.is(1)))
-        .andExpect(jsonPath("$.data.cost", Is.is(80)));
+        .andExpect(jsonPath("$.data.tickets[0]", Is.is("000001")))
+        .andExpect(jsonPath("$.data.tickets[1]", Is.is("000002")))
+        .andExpect(jsonPath("$.data.tickets[2]", Is.is("123456")))
+        .andExpect(jsonPath("$.data.count", Is.is(3)))
+        .andExpect(jsonPath("$.data.cost", Is.is(240)));
   }
   @Test
   @DisplayName("when preform on GET /users/:userId/lotteries with invalid userId should return 400")
@@ -200,20 +202,20 @@ class UserControllerTest {
   @DisplayName("when preform on DELETE /users/:userId/lotteries/:ticketId should be returnee 200 and return ticket")
   @Order(8)
   void sellLottery() throws Exception {
-    String ticket = "123456";
+    String ticket = "000001";
     String userId = "0000000001";
 
     TicketResponse ticketResponse = TicketResponse.builder()
-        .ticket("123456")
+        .ticket("000001")
         .build();
     when(userService.sellLottery(ticket, userId)).thenReturn(ticketResponse);
 
-    mockMvc.perform(delete("/users/0000000001/lotteries/123456")
+    mockMvc.perform(delete("/users/0000000001/lotteries/000001")
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message", Is.is("Sell lottery success.")))
-        .andExpect(jsonPath("$.data.ticket", Is.is("123456")));
+        .andExpect(jsonPath("$.data.ticket", Is.is("000001")));
   }
   @Test
   @DisplayName("when preform on DELETE /users/:userId/lotteries/:ticketId with invalid ticketId should return 400")

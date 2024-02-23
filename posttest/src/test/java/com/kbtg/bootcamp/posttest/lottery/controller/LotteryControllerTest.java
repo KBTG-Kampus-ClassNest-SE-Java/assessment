@@ -23,7 +23,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 @SpringBootTest
-
 @ExtendWith(MockitoExtension.class)
 class LotteryControllerTest {
 
@@ -40,17 +39,17 @@ class LotteryControllerTest {
   }
 
   @Test
-  @DisplayName("when preform on GET /lotteries, should be returnee 200 list of lotteries")
+  @DisplayName("when preform on GET /lotteries, should be return 200 list of lotteries")
   void getLotteries() throws Exception{
     LotteryListResponse lotteries = new LotteryListResponse();
-    lotteries.setTickets(List.of("0000001", "0000002", "0000003"));
+    lotteries.setTickets(List.of("000001", "000002", "123456"));
 
     when(lotteryService.getLotteries()).thenReturn(lotteries);
 
     mockMvc.perform(get("/lotteries"))
-        .andExpect(jsonPath("$.data.tickets[0]", is("0000001")))
-        .andExpect(jsonPath("$.data.tickets[1]", is("0000002")))
-        .andExpect(jsonPath("$.data.tickets[2]", is("0000003")))
+        .andExpect(jsonPath("$.data.tickets[0]", is("000001")))
+        .andExpect(jsonPath("$.data.tickets[1]", is("000002")))
+        .andExpect(jsonPath("$.data.tickets[2]", is("123456")))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message", is("Get lotteries success.")));
   }

@@ -3,7 +3,6 @@ package com.kbtg.bootcamp.posttest.admin.controller;
 import com.kbtg.bootcamp.posttest.admin.request.CreateLotteryRequest;
 import com.kbtg.bootcamp.posttest.admin.service.AdminService;
 import com.kbtg.bootcamp.posttest.app.exception.BadRequestException;
-import com.kbtg.bootcamp.posttest.app.exception.IllegalArgumentException;
 import com.kbtg.bootcamp.posttest.lottery.responese.TicketResponse;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
