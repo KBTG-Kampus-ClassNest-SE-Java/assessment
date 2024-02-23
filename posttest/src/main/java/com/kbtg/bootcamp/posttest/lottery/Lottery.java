@@ -38,7 +38,15 @@ public class Lottery {
         this.amount = amount;
     }
 
+
+    @JsonProperty("ticket")
     public String getIdAsString() {
         return String.valueOf(id);
+    }
+
+    // Getter for 'id' without 'idAsString' field
+    @JsonIgnore
+    public Long getId() {
+        return id;
     }
 }

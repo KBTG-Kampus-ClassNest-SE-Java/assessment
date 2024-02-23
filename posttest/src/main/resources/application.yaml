@@ -10,5 +10,9 @@ spring:
     url: ${DATABASE_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+#  security:
+#    user:
+#      name: test
+#      password: testt
 server:
   port: 8888

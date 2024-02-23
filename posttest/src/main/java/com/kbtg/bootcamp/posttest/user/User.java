@@ -18,6 +18,7 @@ import java.util.List;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -27,13 +28,13 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Lottery> lotteries = new ArrayList<>();
 
-    private static int userCount = 0;
+//    private static int userCount = 0;
 
     public User(){
 
     }
     public User(String name) {
-        this.id = Long.valueOf(String.format("%010d", userCount++));
+
         this.name = name;
     }
 
