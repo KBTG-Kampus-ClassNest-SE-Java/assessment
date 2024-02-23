@@ -2,13 +2,13 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.2.2'
     id 'io.spring.dependency-management' version '1.1.4'
+    id 'org.jetbrains.kotlin.jvm'
 }
 
 group = 'com.kbtg.bootcamp'
 version = '0.0.1-SNAPSHOT'
 
 java {
-    sourceCompatibility = '21'
 }
 
 configurations {
@@ -36,8 +36,14 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.testcontainers:junit-jupiter'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+//    testImplementation 'com.h2database:h2:2.2.224'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+kotlin {
+    jvmToolchain(21)
 }

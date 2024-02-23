@@ -73,7 +73,6 @@ public class UserServiceImpl implements UserService {
     User user = validateUser(userId);
 
     List<UserTicket> userTickets = userTicketRepository.findAllByUser(user);
-    GetAllTicketResponse getAllTicketResponse = new GetAllTicketResponse();
 
     List<String> tickets = userTickets.stream().map(UserTicket::getLottery).map(Lottery::getTicket)
         .toList();
