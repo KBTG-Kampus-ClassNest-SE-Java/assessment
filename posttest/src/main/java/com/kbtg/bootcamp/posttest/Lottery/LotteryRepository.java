@@ -11,9 +11,6 @@ import java.util.Optional;
 
 @Repository
 public interface LotteryRepository extends JpaRepository<Lottery, Integer> {
-
-    @Query("SELECT l.ticket FROM Lottery l WHERE l.amount > 0")
-    List<String> findTicketsWithAmountGreaterThanZero();
     Optional<Lottery> findByTicket(String ticketId);
 
     Optional<Lottery> findFirstByTicket(String ticketId);

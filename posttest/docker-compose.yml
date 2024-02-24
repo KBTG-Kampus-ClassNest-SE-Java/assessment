@@ -4,18 +4,18 @@ networks:
   integration-service:
 
 services:
-  app:
-    build: .
-    ports:
-      - "8888:8888"
-    depends_on:
-      - db
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:${DATABASE_URL}
-      SPRING_DATASOURCE_USERNAME: user
-      SPRING_DATASOURCE_PASSWORD: password
-    networks:
-      - integration-service
+#  app:
+#    build: .
+#    ports:
+#      - "8888:8888"
+#    depends_on:
+#      - db
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:${DATABASE_URL}
+#      SPRING_DATASOURCE_USERNAME: user
+#      SPRING_DATASOURCE_PASSWORD: password
+#    networks:
+#      - integration-service
 
   db:
     image: postgres:13
