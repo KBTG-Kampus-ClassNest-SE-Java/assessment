@@ -2,13 +2,13 @@ package com.kbtg.bootcamp.posttest.controller;
 
 import com.kbtg.bootcamp.posttest.entity.LotteryEntity;
 import com.kbtg.bootcamp.posttest.entity.UserTicketEntity;
+import com.kbtg.bootcamp.posttest.lotteryResponse.LotteryOwnershipResponse;
 import com.kbtg.bootcamp.posttest.service.impl.ImpLotteryService;
 import com.kbtg.bootcamp.posttest.service.impl.ImpUserTicketService;
 import jdk.jfr.Description;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,10 +18,12 @@ public class UserLotteryController {
     private final ImpUserTicketService impUserTicketService;
 
 
+
     public UserLotteryController(ImpLotteryService impLotteryService, ImpUserTicketService impUserTicketService) {
         this.impLotteryService = impLotteryService;
         this.impUserTicketService = impUserTicketService;
     }
+
 
     @Description("USE BY USER FOR GET ALL LOTTERY THAT STILL REMAIN IN STORE")
     @GetMapping("/users/lotteries")
@@ -43,6 +45,24 @@ public class UserLotteryController {
         }
         return msg;
     }
+
+//    @GetMapping("/users/lotteries/{id}")
+//    public LotteryOwnershipResponse getAllOwnLotteryFromUser(@PathVariable("id") String userId) {
+//        List<UserTicketEntity> ownLottery = impUserTicketService.getAllOwnLotteryFromUser(userId);
+//
+//        List<String> ticket = new ArrayList<>();
+//        int count = 0;
+//        int cost = 0;
+//
+//        for (UserTicketEntity userTicketEntity : ownLottery) {
+//            ticket.add(userTicketEntity.getTicket());
+//            count++;
+//            cost += userTicketEntity.getAmount() * userTicketEntity.getPrice();
+//        }
+//
+//        return new LotteryOwnershipResponse(ticket, count, cost);
+//    }
+
 
     @Description("USE BY USER FOR GET ALL LOTTERY THAT ALREADY BOUGHT ")
     @GetMapping("/users/lotteries/{id}")
