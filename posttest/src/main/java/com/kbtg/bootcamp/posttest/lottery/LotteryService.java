@@ -44,7 +44,7 @@ public class LotteryService {
             LotteryResponse lotteryResponse =  new LotteryResponse(newLottery.getTicket());
             return ResponseEntity.ok(lotteryResponse);
         } catch (DuplicateTickerException e) {
-            return ResponseEntity.badRequest().body("Lottery does not exist");
+            return ResponseEntity.badRequest().body("Duplicate Lottery!");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -55,23 +55,51 @@ public class LotteryService {
         return lotteryRepository.findAll();
     }
 
+    public List<Lottery> getLotteriesWithNullProfile() {
+        return getAllLotteries().stream()
+                .filter(lottery -> lottery.getProfile() == null).collect(Collectors.toList());
+    }
     @Transactional
     public ResponseEntity<?> buyLotteries(UserRequest request) {
         Objects.requireNonNull(request);
         responseBody = new HashMap<>();
 
         try {
-            validateLotteryOwnership(request.userId(), request.ticketId());
-            Lottery result = lotteryRepository.findByTicket(request.ticketId());
+            validateInputInformation(request.userId(), request.ticketId());
+            // userId && lotteryNumber exists and User don't have this lottery
+            if  (!isLotteryTicketBelongsToUser(request.userId(), request.ticketId())) {
+                List<Lottery> lotteriesWithNullProfile = getLotteriesWithNullProfile();
+                Optional<Lottery> lotteryThatWeWantToBuy = lotteriesWithNullProfile.stream()
+                        .filter(lottery -> lottery.getTicket().equals(request.ticketId())).findFirst();
 
-            result.setProfile(profileRepository.findByUserIdEquals(request.userId()));
-            lotteryRepository.save(result);
+                if (lotteryThatWeWantToBuy.isPresent()) {
 
-            responseBody.put("id", request.userId());
+                    // Create or retrieve the profile for the given userId
+                    Profile profile = profileRepository.findByUserIdEquals(request.userId());
+                    if (profile == null) {
+                        // If the profile doesn't exist, create a new one
+                        profile = new Profile();
+                        profile.setUserId(request.userId());
+                        profile = profileRepository.save(profile); // Save the profile
+                    }
+                    Lottery lotteryToBuy = lotteryThatWeWantToBuy.get();
+                    lotteryToBuy.setProfile(profile);
+                    lotteryRepository.save(lotteryToBuy);
+                    responseBody.put("id", request.userId());
+                }
+            } else {
+                throw new DuplicateTickerException("You already have one");
+            }
             return ResponseEntity.ok().body(responseBody);
 
+        } catch (DuplicateTickerException e) {
+            return ResponseEntity.badRequest().body("You already have one");
+        } catch (NotExistLotteryException e) {
+            return ResponseEntity.badRequest().body("Lottery does not exist");
+        } catch (NotExistUserIdException e) {
+            return ResponseEntity.badRequest().body("UserId does not exist");
         } catch (Exception e) {
-            return handleException(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -104,7 +132,7 @@ public class LotteryService {
                 throw new NotExistUserIdException("Wrong user id");
             }
         } catch (NotExistUserIdException e) {
-            return ResponseEntity.badRequest().body("Lottery does not exist");
+            return ResponseEntity.badRequest().body("Wrong user id");
         }
     }
 
@@ -136,6 +164,16 @@ public class LotteryService {
 
     public void validateLotteryOwnership(String userId, String lotteryNumber) {
         // Check if the lottery exists
+        validateInputInformation(userId, lotteryNumber);
+
+        // Check if the lottery belongs to the user
+        boolean lotteryBelongsToUser = isLotteryTicketBelongsToUser(userId, lotteryNumber);
+        if (!lotteryBelongsToUser) {
+            throw new LotteryNotBelongToUserException("Lottery does not belong to user");
+        }
+    }
+
+    public void validateInputInformation(String userId, String lotteryNumber) {
         boolean lotteryExists = isLotteryExistsByTicketNumber(lotteryNumber);
         if (!lotteryExists) {
             throw new NotExistLotteryException("Lottery does not exist");
@@ -146,18 +184,14 @@ public class LotteryService {
         if (!userExists) {
             throw new NotExistUserIdException("User does not exist");
         }
-
-        // Check if the lottery belongs to the user
-        boolean lotteryBelongsToUser = isLotteryTicketBelongsToUser(userId, lotteryNumber);
-        if (!lotteryBelongsToUser) {
-            throw new LotteryNotBelongToUserException("Lottery does not belong to user");
-        }
     }
 
 
     @Transactional
     public ResponseEntity<?> sellLotteryByUsingUserIdAndLotteryTicket(String requestedUserID,
                                                                       String requestedLotteryId) {
+        Objects.requireNonNull(requestedLotteryId);
+        Objects.requireNonNull(requestedLotteryId);
         try {
             validateLotteryOwnership(requestedUserID, requestedLotteryId);
             List<Lottery> allLotteriesByUserId = new ArrayList<>();

@@ -1,5 +1,6 @@
 package com.kbtg.bootcamp.posttest.user;
 
+import com.kbtg.bootcamp.posttest.exception.DuplicateTickerException;
 import com.kbtg.bootcamp.posttest.exception.LotteryNotBelongToUserException;
 import com.kbtg.bootcamp.posttest.exception.NotExistLotteryException;
 import com.kbtg.bootcamp.posttest.exception.NotExistUserIdException;
@@ -22,6 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,6 +44,7 @@ class UserControllerTest {
 
     @Autowired
     MockMvc mockMvc;
+
     @Autowired
     TestRestTemplate testRestTemplate;
 
@@ -76,6 +79,7 @@ class UserControllerTest {
         assertThat(userResponse.getTickets()).isEqualTo(expectedTickets);
     }
 
+
     @Test
     @DisplayName("EXP03 test: shouldReturn HTTPStatusOK and Body")
     void test() {
@@ -84,6 +88,41 @@ class UserControllerTest {
                 testRestTemplate.postForEntity("/users/1234567890/lotteries/111111",request, Object.class );
         // assert
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
+    @DisplayName("EXP03 : Return lottery that has null Profile")
+    void shouldReturnLotteryThatHasNullProfile() {
+        List<Lottery> lotteriesWithNullProfile = lotteryService.getAllLotteries().stream()
+                .filter(lottery -> lottery.getProfile() == null).collect(Collectors.toList());
+
+        // Assert that the list is not empty
+        assertThat(lotteriesWithNullProfile).isNotEmpty();
+
+        // Assert that all lotteries in the list have a null profile
+        assertThat(lotteriesWithNullProfile)
+                .allMatch(lottery -> lottery.getProfile() == null);
+    }
+
+    @Test
+    @DisplayName("EXP03 : Return Exception when user buy the possessions lottery")
+    void shouldReturnDuplicateException() {
+        // Arrange
+        String userId = "1234567890";
+        String lotteryId = "111111";
+
+
+        // Act & Assert
+        ResponseEntity<?> responseEntity = lotteryService.buyLotteries(new UserRequest(userId, lotteryId));
+
+
+        // Assert
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(responseEntity.getBody()).isEqualTo("You already have one");
+    }
+    @Test
+    void testtest() {
+        lotteryService.validateInputInformation("1234567890","111111");
     }
 
 
