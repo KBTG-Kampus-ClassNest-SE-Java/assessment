@@ -1,4 +1,4 @@
-package com.kbtg.bootcamp.posttest.lottery.dto;
+package com.kbtg.bootcamp.posttest.lottery.rest.dto;
 
 import java.util.List;
 
