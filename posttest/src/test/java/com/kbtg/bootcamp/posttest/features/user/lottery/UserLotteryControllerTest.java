@@ -2,6 +2,7 @@ package com.kbtg.bootcamp.posttest.features.user.lottery;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kbtg.bootcamp.posttest.features.user.lottery.model.buy_lottery.BuyLotteryResDto;
+import com.kbtg.bootcamp.posttest.features.user.lottery.model.get_my_lottery.GetMyLotteryResDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,14 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -67,6 +72,33 @@ class UserLotteryControllerTest {
         // Assert
         assertEquals(expectedBodyJson, contentAsString);
         verify(mockUserLotteryService).buy(mockUserId, mockTicketId);
+    }
+
+    // getMyLottery
+    @Test
+    public void GetMyLottery_ShouldSuccess_WhenRequestCorrectly() throws Exception {
+        // Arrange
+        final String mockUserId = "1";
+
+        final GetMyLotteryResDto mockRes = new GetMyLotteryResDto(
+                List.of("123456", "123456", "333333"),
+                3,
+                new BigDecimal("350")
+        );
+        final String expectedBodyJson = objectMapper.writeValueAsString(mockRes);
+        when(mockUserLotteryService.getMyLottery(any())).thenReturn(mockRes);
+
+        // Act
+        MvcResult mvcResult = mockMvc.perform(get("/users/" + mockUserId + "/lotteries")
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+        String contentAsString = mvcResult.getResponse().getContentAsString();
+
+        // Assert
+        assertEquals(expectedBodyJson, contentAsString);
+        verify(mockUserLotteryService).getMyLottery(mockUserId);
     }
 
 }

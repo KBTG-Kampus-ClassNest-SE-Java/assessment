@@ -6,8 +6,10 @@ import com.kbtg.bootcamp.posttest.exceptions.BadRequestException;
 import com.kbtg.bootcamp.posttest.features.date.DateTimeProviderService;
 import com.kbtg.bootcamp.posttest.features.lottery.LotteryRepository;
 import com.kbtg.bootcamp.posttest.features.user.lottery.model.buy_lottery.BuyLotteryResDto;
+import com.kbtg.bootcamp.posttest.features.user.lottery.model.get_my_lottery.GetMyLotteryResDto;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -53,6 +55,20 @@ public class UserLotteryService {
 
         return new BuyLotteryResDto(
                 savedUserTicket.getId().toString()
+        );
+    }
+
+    public GetMyLotteryResDto getMyLottery(String userId) {
+        List<UserTicket> myLotteries = userTicketRepository.findByUserIdOrderByTicketIdAsc(userId);
+
+        final List<String> tickets = myLotteries.stream().map(UserTicket::getTicketId).toList();
+        final Integer count = tickets.size();
+        final BigDecimal cost = myLotteries.stream().map(UserTicket::getBuyPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        return new GetMyLotteryResDto(
+                tickets,
+                count,
+                cost
         );
     }
 }
