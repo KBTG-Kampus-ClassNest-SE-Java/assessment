@@ -6,9 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="d3c5dfd1-fff7-44cd-9734-6bd894cf88ff" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Lottery/LotteryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Lottery/LotteryRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/kbtg/bootcamp/posttest/PosttestApplicationTests.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,7 +74,20 @@
       <recent name="com.kbtg.bootcamp.posttest.Controller" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.LotteryRepositoryTest">
+  <component name="RunManager" selected="Gradle.UserTicketRepositoryTest">
+    <configuration name="PosttestApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.kbtg.bootcamp.posttest.PosttestApplication" />
+      <module name="posttest.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.kbtg.bootcamp.posttest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="LotteryRepositoryTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -102,7 +112,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="LotteryRepositoryTest.testFindByTicket" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="UserTicketRepositoryTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -115,7 +125,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;com.kbtg.bootcamp.posttest.Repository.LotteryRepositoryTest.testFindByTicket&quot;" />
+            <option value="&quot;com.kbtg.bootcamp.posttest.Repository.UserTicketRepositoryTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -126,7 +136,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="LotteryRepositoryTest.testFindByUserTicketUserId" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="UserTicketRepositoryTest.testFindByUserIdAndTicket" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -139,7 +149,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;com.kbtg.bootcamp.posttest.Repository.LotteryRepositoryTest.testFindByUserTicketUserId&quot;" />
+            <option value="&quot;com.kbtg.bootcamp.posttest.Repository.UserTicketRepositoryTest.testFindByUserIdAndTicket&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -150,7 +160,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="LotteryRepositoryTest.testSave" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="UserTicketRepositoryTest.testFindByUserIdAndTicketButNoUserTicket" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -163,31 +173,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;com.kbtg.bootcamp.posttest.Repository.LotteryRepositoryTest.testSave&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="LotteryRepositoryTest.testSaveLotteryTicket" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;com.kbtg.bootcamp.posttest.Repository.LotteryRepositoryTest.testSaveLotteryTicket&quot;" />
+            <option value="&quot;com.kbtg.bootcamp.posttest.Repository.UserTicketRepositoryTest.testFindByUserIdAndTicketButNoUserTicket&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -211,11 +197,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.UserTicketRepositoryTest" />
+        <item itemvalue="Gradle.UserTicketRepositoryTest.testFindByUserIdAndTicketButNoUserTicket" />
+        <item itemvalue="Gradle.UserTicketRepositoryTest.testFindByUserIdAndTicket" />
         <item itemvalue="Gradle.LotteryRepositoryTest" />
-        <item itemvalue="Gradle.LotteryRepositoryTest.testSave" />
-        <item itemvalue="Gradle.LotteryRepositoryTest.testFindByUserTicketUserId" />
-        <item itemvalue="Gradle.LotteryRepositoryTest.testFindByTicket" />
-        <item itemvalue="Gradle.LotteryRepositoryTest.testSaveLotteryTicket" />
+        <item itemvalue="Application.PosttestApplication" />
       </list>
     </recent_temporary>
   </component>
