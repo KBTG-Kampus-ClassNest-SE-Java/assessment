@@ -1,10 +1,12 @@
 package com.kbtg.bootcamp.posttest.userticket.service;
 
+import com.kbtg.bootcamp.posttest.lottery.rest.dto.LotteryResponseDto;
+import com.kbtg.bootcamp.posttest.userticket.rest.dto.UserTicketReqDto;
 import com.kbtg.bootcamp.posttest.userticket.rest.dto.UserTicketResDto;
 
 public interface UserTicketService {
 
-    String buyLottery(String userId, String ticketId);
-    UserTicketResDto getLotteries(String userId);
-    String sellLottery(String userId, String ticketId);
+    UserTicketReqDto buyLottery(String userId, String ticketId);
+    UserTicketResDto getLotteryById(String userId);
+    LotteryResponseDto sellLottery(String userId, String ticketId);
 }

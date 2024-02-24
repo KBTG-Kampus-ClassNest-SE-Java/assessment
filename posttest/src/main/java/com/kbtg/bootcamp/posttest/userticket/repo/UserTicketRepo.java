@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public class UserTicketRepo extends JpaRepository<UserTicket, Integer> {
+public interface UserTicketRepo extends JpaRepository<UserTicket, Integer> {
     List<UserTicket> findByUserIdAndTicketId(String userId, String ticketId);
-}
+
+    List<UserTicket> findByUserId(String userId);
+    }

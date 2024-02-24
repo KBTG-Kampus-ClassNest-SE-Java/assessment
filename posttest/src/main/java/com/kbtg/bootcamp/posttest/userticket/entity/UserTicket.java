@@ -49,4 +49,6 @@ public class UserTicket {
     public void setLottery(Lottery lottery) {
         this.lottery = lottery;
     }
+
+
 }
