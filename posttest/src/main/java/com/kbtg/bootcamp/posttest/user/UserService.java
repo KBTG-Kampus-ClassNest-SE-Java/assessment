@@ -4,8 +4,10 @@ import com.kbtg.bootcamp.posttest.exeption.NotFoundException;
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryRepository;
 import com.kbtg.bootcamp.posttest.lottery.LotteryResponse;
-import com.kbtg.bootcamp.posttest.lottery.LotteryService;
-import com.kbtg.bootcamp.posttest.userLottery.UserLotteryResponse;
+import com.kbtg.bootcamp.posttest.userTicket.UserLotteryResponse;
+import com.kbtg.bootcamp.posttest.userTicket.UserTicket;
+import com.kbtg.bootcamp.posttest.userTicket.UserTicketRepository;
+import com.kbtg.bootcamp.posttest.userTicket.UserTicketResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,22 +18,21 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService {
-    private final LotteryService lotteryService;
+
+
+    private final LotteryRepository lotteryRepository;
+    private final UserRepository userRepository;
+    private final UserTicketRepository userTicketRepository;
 
     @Autowired
-    private LotteryRepository lotteryRepository;
-    private UserRepository userRepository;
-
-
-    public UserService(LotteryService lotteryService, UserRepository userRepository) {
-        this.lotteryService = lotteryService;
+    public UserService(LotteryRepository lotteryRepository, UserRepository userRepository, UserTicketRepository userTicketRepository) {
+        this.lotteryRepository = lotteryRepository;
         this.userRepository = userRepository;
-
+        this.userTicketRepository = userTicketRepository;
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
+
+
 
     public User getUserById(Long userId) {
         return userRepository.findById(userId)
@@ -39,61 +40,64 @@ public class UserService {
     }
 
     public User createUser(UserRequest request) {
-        User user = new User(request.name());
+        String name = request.getName();
+        User user = new User(name);
         userRepository.save(user);
         return user;
     }
 
     @Transactional
-    public UserResponse buyLottery(String userId, String lotteryId) {
+    public UserTicketResponse buyLottery(String userId, String lottery_id) {
         User user = userRepository.findById(Long.valueOf(userId))
                 .orElseThrow(() -> new NotFoundException("User not found with ID: " + userId));
-        Lottery lottery = lotteryRepository.findById(Long.valueOf(lotteryId))
-                .orElseThrow(() -> new NotFoundException("Lottery not found with ID: " + lotteryId));
-
-        user.getLotteries().add(lottery);
-        lottery.setUser(user);
+        Lottery lottery = lotteryRepository.findById(Long.valueOf(lottery_id))
+                .orElseThrow(() -> new NotFoundException("Lottery not found with ID: " + lottery_id));
 
         userRepository.save(user);
         lotteryRepository.save(lottery);
+        UserTicket userTicket = new UserTicket(user.getUser_id(), lottery.getLottery_id());
+        userTicketRepository.save(userTicket);
+        return new UserTicketResponse(userId);
 
-        return new UserResponse(lottery.getUser().getId().toString());
     }
 
     public LotteryResponse deleteLottery(String userId, String ticketId) {
-        User user = userRepository.findById(Long.valueOf(userId))
-                .orElseThrow(() -> new NotFoundException("User not found with ID: " + userId));
+        Lottery deletedLottery = lotteryRepository.findById(Long.valueOf(ticketId))
+                .orElseThrow(() -> new NotFoundException("Lottery ticket not found"));
 
-        List<Lottery> userLotteries = user.getLotteries();
-        List<Lottery> soldTickets = new ArrayList<>();
+        // Delete the corresponding user ticket entry
+        UserTicket userTicket = userTicketRepository.findByUserIdAndLotteryId(Long.valueOf(userId), Long.valueOf(ticketId));
+        if (userTicket != null) {
+            userTicketRepository.delete(userTicket);
+        }
 
-        Lottery lotteryToDelete = user.getLotteries().stream()
-                .filter(lottery -> lottery.getId().equals(Long.valueOf(ticketId)))
-                .findFirst()
-                .orElseThrow(() -> new NotFoundException("Lottery ticket no." + ticketId + " not found for user"));
-        user.getLotteries().remove(lotteryToDelete);
-        userRepository.save(user);
-        lotteryRepository.delete(lotteryToDelete);
-
-        return new LotteryResponse(String.valueOf(lotteryToDelete.getId()));
+        // Create a response containing the ticket numbers of the deleted lotteries
+        List<String> deletedTicketNumbers = List.of(deletedLottery.getIdAsString());
+        return new LotteryResponse(deletedTicketNumbers);
     }
 
     public UserLotteryResponse showUserLotteriesList(String userId) {
+        Long userIdLong = Long.parseLong(userId);
 
-        User user = userRepository.findById(Long.valueOf(userId))
-                .orElseThrow(() -> new NotFoundException("User not found with ID: " + userId));
-        List<Lottery> userLotteries = user.getLotteries();
+        List<UserTicket> userTickets = userTicketRepository.findByUserId(userIdLong);
 
-        List<String> lotteryIds = userLotteries.stream()
-                .map(lottery -> String.valueOf(lottery.getId()))
+        List<Long> lotteryIds = userTickets.stream()
+                .map(UserTicket::getLotteryId)
                 .collect(Collectors.toList());
-        List<Integer> prices = userLotteries.stream()
-                .map(Lottery::getPrice)
-                .toList();
 
-        int count = lotteryIds.size();
-        int cost = prices.stream().mapToInt(Integer::intValue).sum();
-        return new UserLotteryResponse(lotteryIds, count, cost);
+        List<Lottery> lotteries = lotteryRepository.findAllById(lotteryIds);
+
+        List<String> ticketIds = lotteries.stream()
+                .map(Lottery::getIdAsString)
+                .collect(Collectors.toList());
+
+        return new UserLotteryResponse(ticketIds);
+    }
+
+    public List<User> getAllUser() {
+        List<User> users = new ArrayList<>();
+        users = userRepository.findAll();
+    return users;
     }
 }
 

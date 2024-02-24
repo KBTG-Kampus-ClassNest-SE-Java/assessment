@@ -1,18 +1,15 @@
 package com.kbtg.bootcamp.posttest.user;
 
-import com.kbtg.bootcamp.posttest.lottery.Lottery;
-import com.kbtg.bootcamp.posttest.lottery.LotteryListResponse;
 import com.kbtg.bootcamp.posttest.lottery.LotteryResponse;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
-import com.kbtg.bootcamp.posttest.userLottery.UserLotteryRequest;
-import com.kbtg.bootcamp.posttest.userLottery.UserLotteryResponse;
+import com.kbtg.bootcamp.posttest.userTicket.UserLotteryResponse;
+import com.kbtg.bootcamp.posttest.userTicket.UserTicketResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
@@ -21,32 +18,21 @@ public class UserController {
     private final UserService userService;
     private final LotteryService lotteryService;
 
+
     @Autowired
-    public UserController(UserService userService, LotteryService lotteryService) {
+    public UserController(UserService userService, LotteryService lotteryService, UserRepository userRepository) {
         this.userService = userService;
         this.lotteryService = lotteryService;
     }
 
     @GetMapping
-    public List<User> getAllUser(){
-        return userService.getAllUsers();
+    public List<User> getALlUser(){
+        return userService.getAllUser();
     }
-
     @GetMapping("/{id}")
     public User getUserById(@PathVariable("id") Long id) {
         return (User) userService.getUserById(id);
     }
-
-    @GetMapping("/lotteries/list")
-    public LotteryListResponse getAllLotteryTickets() {
-        List<Lottery> lotteries = lotteryService.getAllLotteries();
-        List<String> listOfLottery = lotteries.stream()
-                .map(Lottery::getIdAsString)
-                .collect(Collectors.toList());
-        return new LotteryListResponse(listOfLottery);
-    }
-
-
 
     @GetMapping("/{userId}/lotteries")
     public UserLotteryResponse getUserLotteries(@PathVariable("userId") String userId) {
@@ -59,9 +45,10 @@ public class UserController {
         return userService.createUser(request);
     }
 
-    @PostMapping("/lotteries/buy")
-    public UserResponse buyLottery(@RequestBody UserLotteryRequest userLotteryRequest) {
-        return userService.buyLottery(userLotteryRequest.userId(), userLotteryRequest.lotteryId());
+
+    @PostMapping("/{userId}/lotteries/{ticketId}")
+    public UserTicketResponse buyLottery(@PathVariable String userId, @PathVariable String ticketId) {
+        return userService.buyLottery(userId,ticketId);
     }
 
     @DeleteMapping("/{userId}/lotteries/{ticketId}")

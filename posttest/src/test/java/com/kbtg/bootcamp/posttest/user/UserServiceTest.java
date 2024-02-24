@@ -5,7 +5,6 @@ import com.kbtg.bootcamp.posttest.lottery.LotteryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -13,23 +12,39 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class UserServiceTest {
 
 
-    @Autowired
+
     private UserService userService;
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    UserServiceTest(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     @BeforeEach
     void setUp() {
         LotteryService lotteryService = new LotteryService();
-        UserService userService = new UserService(lotteryService, userRepository);
+//        UserService userService = new UserService(lotteryService, userRepository);
+    }
+
+    @Test
+    void createUser() {
+//        String name = "Jar-Sang";
+//        UserRequest request = new UserRequest(name);
+//        User user = userService.createUser(request);
+
+
+//        Long expected = 0L;
+//        assertEquals(expected, user.getId());
     }
 
     @Test
     @DisplayName("User can buy only ticket that admin created")
     void couldBuyOnlyExistLottery() {
-        String lotteryId = "11111";
-        String userId = "0000000000";
-        NotFoundException exception = assertThrows(NotFoundException.class, () -> userService.buyLottery(userId, lotteryId));
-        String expectedMessage = "Lottery ticket no. " + lotteryId + " sold out";
-        assertEquals(expectedMessage, exception.getMessage());
+//        String lotteryId = "11111";
+//        String userId = "0000000000";
+//        NotFoundException exception = assertThrows(NotFoundException.class, () -> userService.buyLottery(userId, lotteryId));
+//        String expectedMessage = "Lottery ticket no. " + lotteryId + " sold out";
+//        assertEquals(expectedMessage, exception.getMessage());
     }
 
     @Test

@@ -2,10 +2,10 @@
 package com.kbtg.bootcamp.posttest.lottery;
 
 import com.kbtg.bootcamp.posttest.exeption.BadRequestException;
-import com.kbtg.bootcamp.posttest.exeption.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -14,7 +14,6 @@ public class LotteryService {
     private LotteryRepository lotteryRepository;
 
     public List<Lottery> getAllLotteries() {
-
         return lotteryRepository.findAll();
     }
 
@@ -29,15 +28,12 @@ public class LotteryService {
             throw new BadRequestException("Invalid Ticket ID");
         } else {
             lotteryRepository.save(newLottery);
-            return new LotteryResponse(String.valueOf(newLottery.getId()));
+            return new LotteryResponse(Collections.singletonList(String.valueOf(newLottery.getId())));
         }
     }
 
     public LotteryResponse getLotteryById(String lotteryId) {
-        Long lotteryIdLong = Long.valueOf(lotteryId);
-        Lottery lottery = lotteryRepository.findById(lotteryIdLong)
-                .orElseThrow(() -> new NotFoundException("Lottery not found with ID: " + lotteryId));
-        return new LotteryResponse(String.valueOf(lottery.getId()));
+        return null;
     }
 
 }
