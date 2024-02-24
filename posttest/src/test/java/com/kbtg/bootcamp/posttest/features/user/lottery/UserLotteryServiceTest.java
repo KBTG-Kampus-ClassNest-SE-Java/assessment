@@ -7,6 +7,7 @@ import com.kbtg.bootcamp.posttest.features.date.DateTimeProviderService;
 import com.kbtg.bootcamp.posttest.features.lottery.LotteryRepository;
 import com.kbtg.bootcamp.posttest.features.user.lottery.model.buy_lottery.BuyLotteryResDto;
 import com.kbtg.bootcamp.posttest.features.user.lottery.model.get_my_lottery.GetMyLotteryResDto;
+import com.kbtg.bootcamp.posttest.features.user.lottery.model.sell_lottery.SellLotteryResDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -53,12 +54,13 @@ class UserLotteryServiceTest {
         when(mockLotteryRepository.findAvailableLotteryByTicketId(any())).thenReturn(List.of());
 
         // Act
-        assertThrows(BadRequestException.class, () -> {
+        final BadRequestException thrown = assertThrows(BadRequestException.class, () -> {
             userLotteryService.buy(mockUserId, mockTicketId);
         });
 
         // Assert
         verify(mockLotteryRepository).findAvailableLotteryByTicketId(mockTicketId);
+        assertEquals("Lottery no " + mockTicketId + " is out of stock", thrown.getMessage());
     }
 
     @Test
@@ -87,16 +89,16 @@ class UserLotteryServiceTest {
         when(mockUserTicketRepository.save(any())).thenReturn(mockSaveUserTicketRes);
         when(mockDateTimeProviderService.getCurrentDateTime()).thenReturn(mockDateTime);
 
-        Lottery cheapestLottery = mockAvailableLotteries.get(0);
+        final Lottery cheapestLottery = mockAvailableLotteries.get(0);
 
-        UserTicket mockUserTicket = new UserTicket();
+        final UserTicket mockUserTicket = new UserTicket();
         mockUserTicket.setUserId(mockUserId);
         mockUserTicket.setBuyPrice(cheapestLottery.getPrice());
         mockUserTicket.setTicketId(mockTicketId);
         mockUserTicket.setBuyDate(mockDateTime);
 
         // Act
-        BuyLotteryResDto res = userLotteryService.buy(mockUserId, mockTicketId);
+        final BuyLotteryResDto res = userLotteryService.buy(mockUserId, mockTicketId);
 
         // Assert
         verify(mockUserTicketRepository).save(mockUserTicket);
@@ -130,16 +132,16 @@ class UserLotteryServiceTest {
         when(mockUserTicketRepository.save(any())).thenReturn(mockSaveUserTicketRes);
         when(mockDateTimeProviderService.getCurrentDateTime()).thenReturn(mockDateTime);
 
-        Lottery cheapestLottery = mockAvailableLotteries.get(0);
+        final Lottery cheapestLottery = mockAvailableLotteries.get(0);
 
-        UserTicket mockUserTicket = new UserTicket();
+        final UserTicket mockUserTicket = new UserTicket();
         mockUserTicket.setUserId(mockUserId);
         mockUserTicket.setBuyPrice(cheapestLottery.getPrice());
         mockUserTicket.setTicketId(mockTicketId);
         mockUserTicket.setBuyDate(mockDateTime);
 
         // Act
-        BuyLotteryResDto res = userLotteryService.buy(mockUserId, mockTicketId);
+        final BuyLotteryResDto res = userLotteryService.buy(mockUserId, mockTicketId);
 
         // Assert
         verify(mockUserTicketRepository).save(mockUserTicket);
@@ -214,7 +216,7 @@ class UserLotteryServiceTest {
         );
     }
 
-    // get my lottery
+    // getMyLottery
     @ParameterizedTest
     @MethodSource("GetMyLottery_ShouldSuccess_WhenCorrectRequest_DataSet")
     public void GetMyLottery_ShouldSuccess_WhenCorrectRequest(String userId, List<UserTicket> mockMyLotteriesRes, GetMyLotteryResDto expected) {
@@ -222,10 +224,54 @@ class UserLotteryServiceTest {
         when(mockUserTicketRepository.findByUserIdOrderByTicketIdAsc(any())).thenReturn(mockMyLotteriesRes);
 
         // Act
-        GetMyLotteryResDto res = userLotteryService.getMyLottery(userId);
+        final GetMyLotteryResDto res = userLotteryService.getMyLottery(userId);
 
         // Assert
         verify(mockUserTicketRepository).findByUserIdOrderByTicketIdAsc(userId);
         assertEquals(expected, res);
+    }
+
+    // sellLottery
+    @Test
+    public void SellLottery_ShouldThrowBadRequestException_WhenTicketIdNotInYourInventory() {
+        // Arrange
+        final String mockUserId = "1";
+        final String mockTicketId = "123456";
+
+        when(mockUserTicketRepository.findByUserIdAndTicketId(any(), any())).thenReturn(List.of());
+
+        // Act
+        final BadRequestException thrown = assertThrows(BadRequestException.class, () -> {
+            userLotteryService.sellLottery(mockUserId, mockTicketId);
+        });
+
+        // Assert
+        verify(mockUserTicketRepository).findByUserIdAndTicketId(mockUserId, mockTicketId);
+        assertEquals("Lottery no " + mockTicketId + " is not found in you inventory", thrown.getMessage());
+    }
+
+    @Test
+    public void SellLottery_ShouldSuccess_WhenCorrectRequest() {
+        // Arrange
+        final String mockUserId = "1";
+        final String mockTicketId = "123456";
+        final List<UserTicket> mockMyLotteries = List.of(
+                new UserTicket(
+                        1,
+                        "1",
+                        "123456",
+                        new BigDecimal("100"),
+                        LocalDateTime.now()
+                )
+        );
+
+        when(mockUserTicketRepository.findByUserIdAndTicketId(any(), any())).thenReturn(mockMyLotteries);
+
+        // Act
+        SellLotteryResDto res = userLotteryService.sellLottery(mockUserId, mockTicketId);
+
+        // Assert
+        verify(mockUserTicketRepository).sellTicket(mockUserId, mockTicketId);
+        assertEquals(mockTicketId, res.ticket());
     }
 }

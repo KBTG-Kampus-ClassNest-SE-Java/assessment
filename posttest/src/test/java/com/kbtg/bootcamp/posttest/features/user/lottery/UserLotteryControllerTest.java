@@ -3,6 +3,7 @@ package com.kbtg.bootcamp.posttest.features.user.lottery;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kbtg.bootcamp.posttest.features.user.lottery.model.buy_lottery.BuyLotteryResDto;
 import com.kbtg.bootcamp.posttest.features.user.lottery.model.get_my_lottery.GetMyLotteryResDto;
+import com.kbtg.bootcamp.posttest.features.user.lottery.model.sell_lottery.SellLotteryResDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -99,6 +99,32 @@ class UserLotteryControllerTest {
         // Assert
         assertEquals(expectedBodyJson, contentAsString);
         verify(mockUserLotteryService).getMyLottery(mockUserId);
+    }
+
+    // getMyLottery
+    @Test
+    public void SellLottery_ShouldSuccess_WhenRequestCorrectly() throws Exception {
+        // Arrange
+        final String mockUserId = "1";
+        final String mockTicketId = "123456";
+
+        final SellLotteryResDto mockRes = new SellLotteryResDto(
+                "123456"
+        );
+        final String expectedBodyJson = objectMapper.writeValueAsString(mockRes);
+        when(mockUserLotteryService.sellLottery(any(), any())).thenReturn(mockRes);
+
+        // Act
+        MvcResult mvcResult = mockMvc.perform(delete("/users/" + mockUserId + "/lotteries/" + mockTicketId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+        String contentAsString = mvcResult.getResponse().getContentAsString();
+
+        // Assert
+        assertEquals(expectedBodyJson, contentAsString);
+        verify(mockUserLotteryService).sellLottery(mockUserId, mockTicketId);
     }
 
 }
