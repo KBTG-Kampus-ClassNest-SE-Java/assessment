@@ -7,6 +7,6 @@ import com.kbtg.bootcamp.posttest.userticket.rest.dto.UserTicketResDto;
 public interface UserTicketService {
 
     UserTicketReqDto buyLottery(String userId, String ticketId);
-    UserTicketResDto getLotteryById(String userId);
+    UserTicketResDto getLotteryByUserId(String userId);
     LotteryResponseDto sellLottery(String userId, String ticketId);
 }

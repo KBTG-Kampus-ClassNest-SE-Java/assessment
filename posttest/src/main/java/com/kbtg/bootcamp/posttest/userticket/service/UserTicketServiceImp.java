@@ -5,6 +5,7 @@ import com.kbtg.bootcamp.posttest.lottery.entity.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.repo.LotteryRepo;
 import com.kbtg.bootcamp.posttest.lottery.rest.dto.LotteryResponseDto;
 import com.kbtg.bootcamp.posttest.userticket.entity.UserTicket;
+import com.kbtg.bootcamp.posttest.userticket.exception.InvalidUserTicketException;
 import com.kbtg.bootcamp.posttest.userticket.repo.UserTicketRepo;
 import com.kbtg.bootcamp.posttest.userticket.rest.dto.UserTicketReqDto;
 import com.kbtg.bootcamp.posttest.userticket.rest.dto.UserTicketResDto;
@@ -24,6 +25,7 @@ public class UserTicketServiceImp implements  UserTicketService {
         this.userTicketRepo = userTicketRepo;
         this.lotteryRepo = lotteryRepo;
     }
+
     @Override
     public UserTicketReqDto buyLottery(String userId, String ticketId) {
 
@@ -42,7 +44,7 @@ public class UserTicketServiceImp implements  UserTicketService {
     }
 
     @Override
-    public UserTicketResDto getLotteryById(String userId) {
+    public UserTicketResDto getLotteryByUserId(String userId) {
         UserTicketResDto userTicketResDto = new UserTicketResDto();
         List<UserTicket> fromUser = userTicketRepo.findByUserId(userId);
         List<String> tickets = fromUser.stream().map(eachUserId -> eachUserId.getLottery().getTicket()).toList();
@@ -52,101 +54,54 @@ public class UserTicketServiceImp implements  UserTicketService {
         userTicketResDto.setTotalPrice(sumPrice(fromUser));
 
         return userTicketResDto;
-
     }
-
 
 
     @Override
     public LotteryResponseDto sellLottery(String userId, String ticketId) {
-        List<UserTicket> byUser = userTicketRepo.findByUserIdAndTicketId(userId, ticketId);
-        if (!byUser.isEmpty()) {
-            userTicketRepo.delete(byUser.get(0));
-            Optional<Lottery> optional = lotteryRepo.findById(ticketId);
-            if (optional.isPresent()) {
-                Lottery lottery = optional.get();
-                lottery.setAmount(1);
-                lotteryRepo.save(lottery);
-                return new LotteryResponseDto(ticketId);
-            } else {
-                throw new InvalidUserTicketException("Invalid userId or ticketId");
-            }
+        List<UserTicket> userTicket = userTicketRepo.findByUserIdAndTicketId(userId, ticketId);
 
-
+        if (userTicket.isEmpty()) {
+            throw new InvalidUserTicketException("Invalid userId or ticketId");
         }
+
+        // Delete UserTicket
+        userTicketRepo.delete(userTicket.get(0));
+
+        // Update and return Lottery
+        Lottery lottery = lotteryRepo.findById(ticketId)
+                .orElseThrow(() -> new InvalidUserTicketException("Invalid userId or ticketId")); // Reuse exception
+
+        lottery.setAmount(1);
+        lotteryRepo.save(lottery);
+        return new LotteryResponseDto(ticketId);
+//        List<UserTicket> fromUser = userTicketRepo.findByUserIdAndTicketId(userId, ticketId);
+//        if (!fromUser.isEmpty()) {
+//            userTicketRepo.delete(fromUser.get(0));
+//            Optional<Lottery> optional = lotteryRepo.findById(ticketId);
+//            if (optional.isPresent()) {
+//                Lottery lottery = optional.get();
+//                lottery.setAmount(1);
+//                lotteryRepo.save(lottery);
+//                return new LotteryResponseDto(ticketId);
+//            } else {
+//                throw new InvalidUserTicketException("Invalid userId or ticketId");
+//            }
+//        }else {
+//            throw new InvalidUserTicketException("Invalid userId or ticketId");
+//        }
     }
+
+
     private Integer sumPrice(List<UserTicket> fromUser) {
         Integer sum = 0;
-        for(UserTicket ticket : fromUser){
+        for (UserTicket ticket : fromUser) {
             sum += ticket.getLottery().getPrice();
         }
         return sum;
     }
-
-
-
-//----------------------------------------
-//    public UserTicketsRequestDto buyLotteries(String userId, String ticketId) {
-//        UserTicket userTicket = new UserTicket();
-//
-//        Optional<Lottery> optionalLottery = lotteryRepository.findById((ticketId));
-//        Lottery lottery;
-//
-//        if (optionalLottery.isEmpty()) {
-//            throw new LotteryUnavailableException("Lottery Unavailable Exception");
-//        } else {
-//            lottery = optionalLottery.get();
-//            if (lottery.getAmount() <= 0) {
-//                throw new LotteryUnavailableException("Lottery Unavailable Exception");
-//            }
-//
-//        }
-//        lottery.setTicket(ticketId);
-//
-//        userTicket.setUserId(userId);
-//        userTicket.setLottery(lottery);
-//
-//        UserTicket saved = userTicketRepository.save(userTicket);
-//        return new UserTicketsRequestDto(saved.getId());
-//    }
-//---------------------------------------------------------------------------
-//    public UserTicketResponseDto getLotteriesByUserId(String userId) {
-//        UserTicketResponseDto userTicketResponseDto = new UserTicketResponseDto();
-//
-//        List<UserTicket> byUser = userTicketRepository.findByUserId(userId);
-//        List<String> tickets = byUser.stream().map(b -> b.getLottery().getTicket()).toList();
-//
-//        userTicketResponseDto.setTickets(tickets);
-//        userTicketResponseDto.setCount(tickets.size());
-//        userTicketResponseDto.setTotalPrice(sumAllPrice(byUser));
-//
-//        return userTicketResponseDto;
-//    }
-//-------------------------------------------------------------------
-//    private Integer sumAllPrice(List<UserTicket> byUser) {
-//        Integer sum = 0;
-//        for(UserTicket ticket : byUser){
-//            sum += ticket.getLottery().getPrice();
-//        }
-//        return sum;
-//    }
-//--------------------------------------------------------------------------------
-//
-//    public LotteryResponseDto deleteLotteriesByUserId(String userId, String ticketId) {
-//        List<UserTicket> byUser = userTicketRepository.findByUserIdAndTicketId(userId, ticketId);
-//        if (!byUser.isEmpty()) {
-//            userTicketRepository.delete(byUser.get(0));
-//            Optional<Lottery> optional = lotteryRepository.findById(ticketId);
-//            if(optional.isPresent()) {
-//                Lottery lottery = optional.get();
-//                lottery.setAmount(1);
-//                lotteryRepository.save(lottery);
-//                return new LotteryResponseDto(ticketId);
-//            }else{
-//                throw new InvalidUserTicketException("Invalid userId or ticketId");
-//            }
-//        } else {
-//            throw new InvalidUserTicketException("Invalid userId or ticketId");
-//        }
-//    }
 }
+
+
+
+
