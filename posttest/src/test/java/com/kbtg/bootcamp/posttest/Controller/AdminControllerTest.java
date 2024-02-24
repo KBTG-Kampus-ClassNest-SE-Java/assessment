@@ -24,7 +24,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-
 @ExtendWith(MockitoExtension.class)
 class AdminControllerTest {
     private MockMvc mockMvc;
@@ -81,9 +80,20 @@ class AdminControllerTest {
     }
 
     @Test
-    @DisplayName("POST:/admin/lotteries with non numeric should return status badRequest")
+    @DisplayName("POST:/admin/lotteries with non numeric ticketId should return status badRequest")
     public void TestCreateLotteryFailNonNumeric() throws Exception {
-        String ticketId = "12345a";
+        String ticketId = "abc";
+        LotteryRequestDto lotteryRequestDto = new LotteryRequestDto(ticketId, 10L, 100.0);
+
+        assertThrows(BadRequestException.class, () -> lotteryRequestDto.validate());
+
+        verify(lotteryService, never()).createLottery(any(LotteryRequestDto.class));
+    }
+
+    @Test
+    @DisplayName("POST:/admin/lotteries with mixed non numeric ticketId should return status badRequest")
+    public void TestCreateLotteryFailMixedNonNumeric() throws Exception {
+        String ticketId = "abc123";
         LotteryRequestDto lotteryRequestDto = new LotteryRequestDto(ticketId, 10L, 100.0);
 
         assertThrows(BadRequestException.class, () -> lotteryRequestDto.validate());

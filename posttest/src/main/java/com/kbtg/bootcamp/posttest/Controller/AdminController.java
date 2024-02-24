@@ -3,12 +3,9 @@ package com.kbtg.bootcamp.posttest.Controller;
 import com.kbtg.bootcamp.posttest.Lottery.LotteryRequestDto;
 import com.kbtg.bootcamp.posttest.Service.LotteryService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;

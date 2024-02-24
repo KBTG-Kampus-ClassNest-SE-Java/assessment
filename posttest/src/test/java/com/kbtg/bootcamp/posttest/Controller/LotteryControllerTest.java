@@ -45,8 +45,8 @@ class LotteryControllerTest {
         mockMvc.perform(get("/lotteries"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.ticket").isArray())
-                .andExpect(jsonPath("$.ticket", hasSize(0)));
+                .andExpect(jsonPath("$.tickets").isArray())
+                .andExpect(jsonPath("$.tickets", hasSize(0)));
     }
 
     @Test
@@ -59,9 +59,9 @@ class LotteryControllerTest {
         mockMvc.perform(get("/lotteries"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.ticket").isArray())
-                .andExpect(jsonPath("$.ticket", hasSize(1)))
-                .andExpect(jsonPath("$.ticket[0]", is("123456")));
+                .andExpect(jsonPath("$.tickets").isArray())
+                .andExpect(jsonPath("$.tickets", hasSize(1)))
+                .andExpect(jsonPath("$.tickets[0]", is("123456")));
     }
 
     @Test
@@ -75,9 +75,9 @@ class LotteryControllerTest {
         mockMvc.perform(get("/lotteries"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.ticket").isArray())
-                .andExpect(jsonPath("$.ticket", hasSize(2)))
-                .andExpect(jsonPath("$.ticket[0]", is("123456")))
-                .andExpect(jsonPath("$.ticket[1]", is("654321")));
+                .andExpect(jsonPath("$.tickets").isArray())
+                .andExpect(jsonPath("$.tickets", hasSize(2)))
+                .andExpect(jsonPath("$.tickets[0]", is("123456")))
+                .andExpect(jsonPath("$.tickets[1]", is("654321")));
     }
 }

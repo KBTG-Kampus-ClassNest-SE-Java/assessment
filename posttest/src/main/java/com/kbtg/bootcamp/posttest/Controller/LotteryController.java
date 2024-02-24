@@ -23,7 +23,7 @@ public class LotteryController {
     @GetMapping("")
     public ResponseEntity<Map<String, List<String>>> getLottery() {
         List<String> AllLotteries = lotteryService.getLottery();
-        Map<String, List<String>> response = Collections.singletonMap("ticket", AllLotteries);
+        Map<String, List<String>> response = Collections.singletonMap("tickets", AllLotteries);
 
         return ResponseEntity.ok(response);
     }

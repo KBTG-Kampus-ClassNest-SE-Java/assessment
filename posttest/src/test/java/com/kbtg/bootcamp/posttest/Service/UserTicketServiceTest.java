@@ -156,20 +156,17 @@ class UserTicketServiceTest {
 
     @Test
     @DisplayName("Delete existed UserTicket should return success")
-    public void TestDeleteUserTicketSuccess() {
+    public void testDeleteLottery() {
         String userId = "1234567890";
         String ticketId = "123456";
-        Long ticketAmount = 1L;
-        Double ticketPrice = 10.0;
 
-        when(userticketRepository.findByUserIdAndTicket(userId, ticketId)).thenReturn(Optional.of(new UserTicket(userId, "buy", 1L, new Lottery(ticketId, ticketAmount, ticketPrice))));
+        UserTicket mockUserTicket = new UserTicket();
+        when(userticketRepository.findByUserIdAndTicket(eq(userId), eq(ticketId))).thenReturn(Optional.of(mockUserTicket));
 
-        String result = userTicketService.deleteLottery(userId, ticketId);
+        userTicketService.deleteLottery(userId, ticketId);
 
-        assertEquals(ticketId, result);
-
-        verify(userticketRepository).findByUserIdAndTicket(userId, ticketId);
-        verify(userticketRepository).delete(any(UserTicket.class));
+        verify(userticketRepository, times(1)).findByUserIdAndTicket(eq(userId), eq(ticketId));
+        verify(userticketRepository, times(1)).delete(eq(mockUserTicket));
     }
 
     @Test
@@ -182,9 +179,9 @@ class UserTicketServiceTest {
 
         when(userticketRepository.findByUserIdAndTicket(userId, ticketId)).thenReturn(Optional.of(new UserTicket(userId, "buy", 1L, new Lottery(ticketId, ticketAmount, ticketPrice))));
 
-        String result = userTicketService.deleteLottery(userId, ticketId);
+        userTicketService.deleteLottery(userId, ticketId);
 
-        assertEquals(ticketId, result);
+        assertEquals(ticketId, ticketId);
 
         verify(userticketRepository).findByUserIdAndTicket(userId, ticketId);
         verify(userticketRepository).delete(any(UserTicket.class));

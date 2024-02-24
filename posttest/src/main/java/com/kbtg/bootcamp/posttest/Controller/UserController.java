@@ -16,15 +16,15 @@ import java.util.Map;
 @RequestMapping("/users")
 public class UserController {
     @Autowired
-    private final UserTicketService user_ticketService;
+    private final UserTicketService userticketService;
 
     public UserController(UserTicketService user_ticketService) {
-        this.user_ticketService = user_ticketService;
+        this.userticketService = user_ticketService;
     }
 
     @PostMapping("/{userId}/lotteries/{ticketId}")
     public ResponseEntity<Map<String, String>> BuyTicket(@PathVariable @NotBlank @Pattern(regexp = "\\d{10}") String userId, @PathVariable @NotBlank @Pattern(regexp = "\\d{6}", message = "Value must be a 6-digit number") String ticketId) {
-        String transactionId = user_ticketService.BuyTicket(userId, ticketId);
+        String transactionId = userticketService.BuyTicket(userId, ticketId);
         Map<String, String> response = Collections.singletonMap("id", transactionId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -32,15 +32,15 @@ public class UserController {
 
     @GetMapping("/{userId}/lotteries")
     public ResponseEntity<UserTicketResponseDto> getUserTicket(@PathVariable @NotBlank @Pattern(regexp = "\\d{10}") String userId) {
-        UserTicketResponseDto userTicket = user_ticketService.getUserTicket(userId);
+        UserTicketResponseDto userTicket = userticketService.getUserTicket(userId);
 
         return ResponseEntity.ok(userTicket);
     }
 
     @DeleteMapping("/{userId}/lotteries/{ticketId}")
-    public ResponseEntity<Map<String, String>> deleteLottery(@PathVariable @NotBlank @Pattern(regexp = "\\d{10}") String userId, @PathVariable String ticketId) {
-        String SoldTicket = user_ticketService.deleteLottery(userId, ticketId);
-        Map<String, String> response = Collections.singletonMap("ticket", SoldTicket);
+    public ResponseEntity<Map<String, String>> deleteLottery(@PathVariable @NotBlank @Pattern(regexp = "\\d{10}") String userId, @PathVariable @NotBlank @Pattern(regexp = "\\d{6}", message = "Value must be a 6-digit number") String ticketId) {
+        userticketService.deleteLottery(userId, ticketId);
+        Map<String, String> response = Collections.singletonMap("ticket", ticketId);
 
         return ResponseEntity.ok(response);
     }
