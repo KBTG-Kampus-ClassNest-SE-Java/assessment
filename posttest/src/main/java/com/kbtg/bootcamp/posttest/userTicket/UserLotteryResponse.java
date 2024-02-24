@@ -1,5 +1,5 @@
 // UserLotteryResponse.java
-package com.kbtg.bootcamp.posttest.userLottery;
+package com.kbtg.bootcamp.posttest.userTicket;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,6 +10,4 @@ import java.util.List;
 @AllArgsConstructor
 public class UserLotteryResponse {
     private List<String> tickets;
-    private int count;
-    private int cost;
 }

@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((request) -> request
                         .requestMatchers("/users/**").permitAll()
-//                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/lotteries/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(new ApiKeyAuthFilter(), BasicAuthenticationFilter.class)
                 .httpBasic(withDefaults())

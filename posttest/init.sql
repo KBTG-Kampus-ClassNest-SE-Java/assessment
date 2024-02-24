@@ -1,16 +1,22 @@
-DROP TABLE IF EXISTS lotteries CASCADE;
+DROP TABLE IF EXISTS lottery CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS user_ticket CASCADE;
 
 CREATE TABLE users (
-    id BIGINT PRIMARY KEY,
+    user_id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE lotteries (
-    id SERIAL PRIMARY KEY,
+CREATE TABLE lottery (
+    lottery_id SERIAL PRIMARY KEY,
     price INTEGER NOT NULL,
     amount INTEGER NOT NULL,
-    user_id BIGINT REFERENCES users(id) ON DELETE CASCADE
+
+
+CREATE TABLE user_ticket (
+    ticket_id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(user_id),
+    lottery_id INTEGER NOT NULL REFERENCES lottery(lottery_id),
 );
 
 -- Initial data
