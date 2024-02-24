@@ -1,5 +1,6 @@
 package com.kbtg.bootcamp.posttest.user;
 
+import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,13 +28,13 @@ public class UserController {
     @GetMapping("/lotteries")
     public UserResponse getLotteriesPage() {
         List<String> collect = lotteryService.getAllLotteries().stream()
-                .map(lottery -> lottery.getTicket())
+                .map(Lottery::getTicket)
                 .collect(Collectors.toList());
         return new UserResponse(collect);
     }
 
     @PostMapping("/{requestedUserId}/lotteries/{requestedTicketId}")
-    public ResponseEntity getBuyLotteryPage(
+    public ResponseEntity<?> getBuyLotteryPage(
             @PathVariable(name = "requestedUserId") String requestedUserId,
             @PathVariable(name = "requestedTicketId") String requestedTicketId,
             @RequestBody UserRequest request

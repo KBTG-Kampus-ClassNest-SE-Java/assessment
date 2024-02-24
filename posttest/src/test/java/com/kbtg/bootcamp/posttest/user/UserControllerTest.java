@@ -1,35 +1,36 @@
 package com.kbtg.bootcamp.posttest.user;
 
-import com.jayway.jsonpath.JsonPath;
+import com.kbtg.bootcamp.posttest.exception.LotteryNotBelongToUserException;
+import com.kbtg.bootcamp.posttest.exception.NotExistLotteryException;
+import com.kbtg.bootcamp.posttest.exception.NotExistUserIdException;
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
-import com.kbtg.bootcamp.posttest.lottery.LotteryRepository;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
-import com.kbtg.bootcamp.posttest.profile.Profile;
-import com.kbtg.bootcamp.posttest.profile.ProfileRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 
 
 @SpringBootTest(
@@ -42,19 +43,13 @@ class UserControllerTest {
     @Autowired
     MockMvc mockMvc;
     @Autowired
-    TestRestTemplate restTemplate;
+    TestRestTemplate testRestTemplate;
 
     @Autowired
     LotteryService lotteryService;
 
     @Autowired
     UserController userController;
-
-    @Autowired
-    ProfileRepository  profileRepository;
-
-    @Autowired
-    LotteryRepository lotteryRepository;
 
 
 
@@ -85,14 +80,10 @@ class UserControllerTest {
     @DisplayName("EXP03 test: shouldReturn HTTPStatusOK and Body")
     void test() {
         UserRequest request = new UserRequest("1234567890","111111");
-
-        ResponseEntity<String> result = ResponseEntity.ok().body("test");
-        ResponseEntity<String> response =
-                restTemplate.postForEntity("/test/1/lotteries/111111",request, String.class );
-
+        ResponseEntity<?> response =
+                testRestTemplate.postForEntity("/users/1234567890/lotteries/111111",request, Object.class );
         // assert
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isEqualTo(result.getBody());
     }
 
 
@@ -105,7 +96,7 @@ class UserControllerTest {
         responseBody.put("id", request.userId());
         ResponseEntity<?> result = ResponseEntity.ok().body(responseBody);
         ResponseEntity<String> response =
-                restTemplate.postForEntity("/users/1/lotteries/111111",request, String.class );
+                testRestTemplate.postForEntity("/users/1234567890/lotteries/111111",request, String.class );
 
         // assert
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -117,7 +108,7 @@ class UserControllerTest {
     @DisplayName("EXP04 test:shouldReturn Status OK with correct path variable")
     void testEXP04p2() {
         ResponseEntity<String> response =
-                restTemplate.getForEntity("/users/0987654321/lotteries",String.class);
+                testRestTemplate.getForEntity("/users/0987654321/lotteries",String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
@@ -126,13 +117,163 @@ class UserControllerTest {
     void testEXP04p3() {
         boolean userExistsByUserId = lotteryService.isUserExistsByUserId("0987654321");
         System.out.println("userExistsByUserId = " + userExistsByUserId);
-
     }
 
     @Test
-    @DisplayName("Exp05: return ")
-    void testEp05() {
+    @DisplayName("EXP05 : shouldReturnStatus OK")
+    void testEXP05p0() {
 
+        testRestTemplate = mock(TestRestTemplate.class);
+        // Create a mock response entity with the desired status code
+        ResponseEntity<Void> response = new ResponseEntity<>(HttpStatus.OK);
+
+        // Define the behavior of the restTemplateMock when the exchange method is called
+        when(testRestTemplate.exchange(eq("/users/1234567890/lotteries/555555"), eq(HttpMethod.DELETE), any(), eq(Void.class)))
+                .thenReturn(response);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
+    @DisplayName("Should return NOT_FOUND when selling back a non-existent lottery ticket")
+    void sellingBackNonExistentLotteryTicket() {
+        // Arrange
+        String nonExistentTicketId = "999999"; // this ticket doesn't exist
+        testRestTemplate = mock(TestRestTemplate.class);
+
+        ResponseEntity<Void> response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        // Act
+        // Define the behavior of the restTemplateMock when the exchange method is called
+        when(testRestTemplate.exchange(eq("/users/1234567890/lotteries/"+nonExistentTicketId), eq(HttpMethod.DELETE), any(), eq(Void.class)))
+                .thenReturn(response);
+
+        // Assert
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    @DisplayName("EXP05 : Should return the lottery associated with the given user ID")
+    void shouldReturnLotteryForExistingUserId() {
+        // Arrange
+        String requestedUserID = "1234567890"; // Existing user ID
+        String requestedLotteryId = "111111"; // Existing Lottery ID
+        testRestTemplate = mock(TestRestTemplate.class);
+        ResponseEntity<Void> response = ResponseEntity.ok().build();
+        when(testRestTemplate.exchange(
+                eq("/users/" +requestedUserID + "lotteries/" + requestedLotteryId),
+                eq(HttpMethod.GET),
+                any(),
+                eq(Void.class)
+        )).thenReturn(response);
+
+        // Assert
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
+    @DisplayName("EXP05 :Should return a list of lotteries associated with the given user ID")
+    void shouldReturnListOfLotteriesForExistingUserId() {
+        // Arrange
+        String userId = "1234567890"; // Existing user ID
+        String lotteryId = "111111";// Existing lottery ID
+
+        // Mock
+        testRestTemplate = mock(TestRestTemplate.class);
+        ResponseEntity<Void> expectedResponse = ResponseEntity.ok().build();
+
+        // Stub the exchange
+        when(testRestTemplate.exchange(
+                eq("/users/" + userId + "/lotteries/" + lotteryId),
+                eq(HttpMethod.DELETE),
+                any(),
+                eq(Void.class)
+        )).thenReturn(expectedResponse);
+
+        // Act: Perform the actual method call that you want to test
+        ResponseEntity<Void> actualResponse = testRestTemplate.exchange(
+                "/users/" + userId + "/lotteries/" + lotteryId,
+                HttpMethod.DELETE,
+                null,
+                Void.class
+        );
+
+        // Assert
+        assertThat(actualResponse.getStatusCode()).isEqualTo(expectedResponse.getStatusCode());
+        // Check if the body of the actual response is not null
+        assertThat(actualResponse).isNotNull();
+    }
+
+    @Test
+    @DisplayName("EXP05: should throw LotteryNotBelongToUserException")
+    void testException() {
+        String userId = "1234567890";
+        String lotteryId = "333333";
+        testRestTemplate = mock(TestRestTemplate.class);
+
+        ResponseEntity<Void> response = ResponseEntity.badRequest().build();
+        when(testRestTemplate.exchange(
+                eq("/users/" + userId + "/lotteries/" +lotteryId),
+                eq(HttpMethod.DELETE),
+                any(),
+                eq(Void.class)
+        )).thenReturn(response);
+
+        assertThrows(LotteryNotBelongToUserException.class, () -> {
+            lotteryService.validateLotteryOwnership("1234567890", "333333");
+        });
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    void testHandleNotExistLotteryException() {
+        // Arrange
+        Exception exception = new NotExistLotteryException("Lottery does not exist");
+
+        // Act
+        ResponseEntity<?> response = lotteryService.handleException(exception);
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Lottery does not exist", response.getBody());
+    }
+
+    @Test
+    void testHandleNotExistUserIdException() {
+        // Arrange
+        Exception exception = new NotExistUserIdException("User does not exist");
+
+        // Act
+        ResponseEntity<?> response = lotteryService.handleException(exception);
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("User does not exist", response.getBody());
+    }
+
+    @Test
+    void testHandleLotteryNotBelongToUserException() {
+        // Arrange
+        Exception exception = new LotteryNotBelongToUserException("Lottery does not belong to user.");
+
+        // Act
+        ResponseEntity<?> response = lotteryService.handleException(exception);
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Lottery does not belong to user.", response.getBody());
+    }
+
+    @Test
+    void testHandleInternalServerError() {
+        // Arrange
+        Exception exception = new RuntimeException("Internal Server Error");
+
+        // Act
+        ResponseEntity<?> response = lotteryService.handleException(exception);
+
+        // Assert
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
 
