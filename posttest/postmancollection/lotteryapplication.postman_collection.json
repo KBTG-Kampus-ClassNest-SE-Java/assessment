@@ -1,0 +1,300 @@
+{
+	"info": {
+		"_postman_id": "8257d688-a006-4e7f-a987-be8d0573adbe",
+		"name": "REST API: JAVA TEST LOTTERY APPLICATION",
+		"description": "```\n## User Stories\n### Story: EXP01\n\t* As an admin, I want to add a new lottery ticket So that I can have a lottery store\n\t* ในฐานะผู้ดูแลระบบ ฉันต้องการเพิ่มใบลอตเตอรี่ เพื่อที่จะสร้างคลังเก็บลอตเตอรี่\n#### Technical Details: EXP01\n* POST /admin/lotteries\n* ต้องยืนยันสิทธิ์การเข้าใช้งานด้วย basic authentication (username = admin, password = password)\n* Request Body\n```json\n{\n\t\"ticket\": \"123456\",\n\t\"price\": 80,\n\t\"amount\": 1\n}\n```\n* Response Body\n```json\n{\n\t\"ticket\": \"123456\"\n}\n```\n\n\n### Story: EXP02\n\t* As a user, I want a list all lottery ticket So that I can pick what I want to buy\n\t* ในฐานะผู้ใช้ ฉันต้องการดูรายการลอตเตอรี่ทั้งหมด เพิื่อจะได้เลือกซื้อ\n#### Technical Details: EXP02\n* GET /lotteries\n* Response Body\n```json\n{\n\t\"tickets\": [\"000001\",\"000002\",\"123456\"]\n}\n```\n\n### Story: EXP03\n\t* As a user, I want to buy a lottery ticket So that I can get a change to win\n\t* ในฐานะผู้ใช้ ฉันต้องการซื้อลอตเตอรี่ เพื่อที่จะได้ลุ้นถูกหวย\n#### Technical Details: EXP03\n* POST /users/:userId/lotteries/:ticketId\n* userId และ ticketId เป็นค่าที่ผู้ใช้ป้อนเข้ามา\n* Response Body\n```json\n{\n\t\"id\": \"1\"\n}\n```\nโดย id มาจาก ID ของตาราง `user_ticket`\n\n### Story: EXP04\n\t* As a user, I want to list all my lottery ticket So that I can see which one I have already bought and it cost\n\t* ในฐานะผู้ใช้ ฉันต้องการดูรายการลอตเตอรี่ทั้งหมดที่เคยซื้อ\n#### Technical Details: EXP04\n```mermaid\nsequenceDiagram\n    Client->>+API Server: call GET /users/:userId/lotteries\n    API Server->>+Database: get all lottery ticket by user\n    API Server->>+API Server: calculate total price\n    API Server->>+API Server: count of total lottery ticket\n    API Server-->>Client: return JSON body <br/> tickets = list of ticket e.g.  [\"000001\",\"000002\",\"123456\"] <br/> count = number <br/> cost = number\n```\n\n### Story: EXP05\n\t* As a user, I want to sell back my lottery ticket So that I can get my money back\n\t* ในฐานะผู้ใช้ ฉันต้องการขายคืนลอตเตอรี่เพื่อได้เงินคืน\n#### Technical Details: EXP05\n* DELETE /users/:userId/lotteries/:ticketId\n* userId และ ticketId เป็นค่าที่ผู้ใช้ป้อนเข้ามา\n* Response Body\n```json\n{\n\t\"ticket\": \"000001\",\n}\n```\n\n ```",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16184483"
+	},
+	"item": [
+		{
+			"name": "Get all lotteries",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/lotteries",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"lotteries"
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": []
+		},
+		{
+			"name": "Create lottery",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"ticket\": \"123457\",\n    \"price\": 80.0,\n    \"amount\": 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/admin/lotteries",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"admin",
+						"lotteries"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Create buy lottery by user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"ticket\": \"123457\",\n    \"price\": 80.0,\n    \"amount\": 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/admin/lotteries",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"admin",
+						"lotteries"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Get user summary lotteries",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful DELETE request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 202, 204]);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/users/2023022400/lotteries",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users",
+						"2023022400",
+						"lotteries"
+					]
+				},
+				"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Soldback lottery",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful PUT request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/users/:userId/lotteries/:ticketId",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users",
+						":userId",
+						"lotteries",
+						":ticketId"
+					],
+					"variable": [
+						{
+							"key": "userId",
+							"value": "2023022400",
+							"description": "UserId"
+						},
+						{
+							"key": "ticketId",
+							"value": "1",
+							"description": "Lottery Id"
+						}
+					]
+				},
+				"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "password",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "admin",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "localhost:8888"
+		}
+	]
+}
