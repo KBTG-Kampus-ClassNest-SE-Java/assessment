@@ -20,16 +20,16 @@ CREATE TABLE user_ticket (
 );
 
 
-INSERT INTO users (username, password, phone) VALUES ('John', 'password','0812345687');
-INSERT INTO users (username, password, phone) VALUES ('Deph', 'password','0812345602');
-INSERT INTO lottery (lottery_number, price, amount) VALUES ('12356', 50, 1);
-INSERT INTO lottery (lottery_number, price, amount) VALUES ('8835566', 60, 1);
-INSERT INTO lottery (lottery_number, price, amount) VALUES ('99966', 70, 1);
-INSERT INTO lottery (lottery_number, price, amount) VALUES ('77235566', 80, 1);
+INSERT INTO users (user_id,username, password, phone) VALUES ('2110511101','John', 'password','0812345687');
+INSERT INTO users (user_id,username, password, phone) VALUES ('2051110022', 'Dep', 'password', '0812345602');
+INSERT INTO lottery (lottery_number, price, amount) VALUES ('123456', 50, 1);
+INSERT INTO lottery (lottery_number, price, amount) VALUES ('883556', 60, 1);
+INSERT INTO lottery (lottery_number, price, amount) VALUES ('999666', 70, 1);
+INSERT INTO lottery (lottery_number, price, amount) VALUES ('772356', 80, 1);
 INSERT INTO lottery (lottery_number, price, amount) VALUES ('998855', 90, 1);
-INSERT INTO user_ticket (user_id, lottery_id, amount) VALUES (1, 1, 1);
-INSERT INTO user_ticket (user_id, lottery_id, amount) VALUES (1, 2, 1);
-INSERT INTO user_ticket (user_id, lottery_id, amount) VALUES (1, 3, 1);
+INSERT INTO user_ticket (user_id, lottery_id, amount) VALUES (2110511101, 1, 1);
+INSERT INTO user_ticket (user_id, lottery_id, amount) VALUES (2110511101, 2, 1);
+INSERT INTO user_ticket (user_id, lottery_id, amount) VALUES (2110511101, 3, 1);
 
 
 
