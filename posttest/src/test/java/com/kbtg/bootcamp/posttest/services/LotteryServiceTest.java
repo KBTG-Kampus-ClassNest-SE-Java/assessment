@@ -2,7 +2,11 @@ package com.kbtg.bootcamp.posttest.services;
 
 import com.kbtg.bootcamp.posttest.dto.CreateLotteryRequest;
 import com.kbtg.bootcamp.posttest.entities.Lottery;
+import com.kbtg.bootcamp.posttest.entities.UserTicket;
+import com.kbtg.bootcamp.posttest.exceptions.LotteryNotFoundException;
+import com.kbtg.bootcamp.posttest.exceptions.LotterySoldOutException;
 import com.kbtg.bootcamp.posttest.repositories.LotteryRepository;
+import com.kbtg.bootcamp.posttest.repositories.UserTicketRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -12,10 +16,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -23,6 +30,9 @@ class LotteryServiceTest {
 
     @Mock
     private LotteryRepository lotteryRepository;
+
+    @Mock
+    private UserTicketRepository userTicketRepository;
 
     @InjectMocks
     private LotteryServiceImpl lotteryService;
@@ -87,5 +97,63 @@ class LotteryServiceTest {
 
         assertNotNull(lotteries);
         assertEquals(0, lotteries.size());
+    }
+
+    @Test
+    @DisplayName("Given user id and ticket id, when buy lottery, then the lottery is bought and return user ticket")
+    void givenUserIdAndTicketId_whenBuyLottery_thenReturnUserTicket() {
+        when(this.lotteryRepository.findById(any())).thenReturn(Optional.of(
+                Lottery
+                        .builder()
+                        .ticket("123456")
+                        .price(100)
+                        .amount(2)
+                        .build()
+        ));
+
+        when(this.userTicketRepository.existsByUserIdAndTicketId(any(), any())).thenReturn(true);
+
+        when(this.userTicketRepository.updateTicketAmountOfUser(any(), any(), eq(1))).thenReturn(
+                UserTicket
+                        .builder()
+                        .userId("username")
+                        .ticketId("123456")
+                        .amount(1)
+                        .build()
+        );
+
+        UserTicket userTicket = this.lotteryService.buyLottery("username", "123456");
+
+        assertNotNull(userTicket);
+        assertEquals("username", userTicket.getUserId());
+        assertEquals("123456", userTicket.getTicketId());
+        assertTrue(userTicket.getAmount() > 0);
+    }
+
+    @Test
+    @DisplayName("Given user id and ticket id, when lottery is not found, then throw lottery not found exception")
+    void givenUserIdAndTicketId_whenLotteryIsNotFound_thenThrowLotteryNotFoundException() {
+        when(this.lotteryRepository.findById(any())).thenReturn(Optional.empty());
+
+        assertThrows(LotteryNotFoundException.class, () -> {
+            this.lotteryService.buyLottery("username", "123456");
+        });
+    }
+
+    @Test
+    @DisplayName("Given user id and ticket id, when lottery is found but sold out, then throw lottery sold out exception")
+    void givenUserIdAndTicketId_whenLotteryIsFoundButSoldOut_thenThrowLotterySoldOutException() {
+        when(this.lotteryRepository.findById(any())).thenReturn(Optional.of(
+                Lottery
+                        .builder()
+                        .ticket("123456")
+                        .price(100)
+                        .amount(0)
+                        .build()
+        ));
+
+        assertThrows(LotterySoldOutException.class, () -> {
+            this.lotteryService.buyLottery("username", "123456");
+        });
     }
 }

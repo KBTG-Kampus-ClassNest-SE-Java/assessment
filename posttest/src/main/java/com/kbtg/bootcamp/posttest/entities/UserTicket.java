@@ -6,24 +6,25 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Entity
-@Table(name = "lottery")
+@Table(name = "user_ticket")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Lottery {
+public class UserTicket {
 
     @Id
-    @Column(name = "ticket")
-    private String ticket;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Integer id;
 
-    @Column(name = "price")
-    private Integer price;
+    @Column(name = "user_id")
+    private String userId;
+
+    @Column(name = "ticket_id")
+    private String ticketId;
 
     @Column(name = "amount")
     private Integer amount;
-
 }
