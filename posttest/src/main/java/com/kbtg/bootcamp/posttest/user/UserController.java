@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}/lotteries/{ticketId}")
-    public LotteryResponse sellAllLotteries(@PathVariable String userId, @PathVariable String ticketId) {
+    public LotteryResponse sellBackLottery(@PathVariable String userId, @PathVariable String ticketId) {
         return userService.deleteLottery(userId, ticketId);
     }
 }

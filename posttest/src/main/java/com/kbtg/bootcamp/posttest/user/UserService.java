@@ -33,18 +33,18 @@ public class UserService {
 
 
 
-
-    public User getUserById(Long userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User not found with ID: " + userId));
-    }
-
     public User createUser(UserRequest request) {
         String name = request.getName();
         User user = new User(name);
         userRepository.save(user);
         return user;
     }
+
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found with ID: " + userId));
+    }
+
 
     @Transactional
     public UserTicketResponse buyLottery(String userId, String lottery_id) {
@@ -65,13 +65,11 @@ public class UserService {
         Lottery deletedLottery = lotteryRepository.findById(Long.valueOf(ticketId))
                 .orElseThrow(() -> new NotFoundException("Lottery ticket not found"));
 
-        // Delete the corresponding user ticket entry
         UserTicket userTicket = userTicketRepository.findByUserIdAndLotteryId(Long.valueOf(userId), Long.valueOf(ticketId));
         if (userTicket != null) {
             userTicketRepository.delete(userTicket);
         }
 
-        // Create a response containing the ticket numbers of the deleted lotteries
         List<String> deletedTicketNumbers = List.of(deletedLottery.getIdAsString());
         return new LotteryResponse(deletedTicketNumbers);
     }
@@ -95,7 +93,7 @@ public class UserService {
     }
 
     public List<User> getAllUser() {
-        List<User> users = new ArrayList<>();
+        List<User> users;
         users = userRepository.findAll();
     return users;
     }
