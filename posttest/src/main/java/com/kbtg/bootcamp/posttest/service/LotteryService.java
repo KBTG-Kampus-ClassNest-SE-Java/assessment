@@ -35,32 +35,22 @@ public class LotteryService {
                 .map(Lottery::getLotteryNumber)
                 .toList();
 
-        LotteryResponseDto responseDto = new LotteryResponseDto(tickets.toString());
+        LotteryResponseDto responseDto = new LotteryResponseDto(tickets);
         return ResponseEntity.ok().body(responseDto);
 
     }
 
-    public ResponseEntity<LotteryResponseDto> createLottery(LotteryRequestDto requestDto){
+    public ResponseEntity<LotteryResponseDto> createLottery(LotteryRequestDto requestDto) throws Exception{
         if(Objects.isNull(requestDto)){
             throw new BadRequestException("Request body is null");
         }
 
-
-        try {
             Lottery lottery = new Lottery(requestDto.getTickets(), requestDto.getPrice(), requestDto.getAmount());
             lotteryRepository.save(lottery);
 
-            String tickets = lottery.getLotteryNumber();
+            List<String> tickets = Arrays.asList(lottery.getLotteryNumber());
             LotteryResponseDto responseDto = new LotteryResponseDto(tickets);
             return ResponseEntity.ok().body(responseDto);
-        }catch (Exception e){
-            return ResponseEntity.badRequest().build();
-        }
-
-
-
-
-
     }
 
     public ResponseEntity<UserTicketResponseDto> buyLottery(Integer userId, String ticketNumber){
@@ -90,7 +80,6 @@ public class LotteryService {
        int cost = list.stream().flatMap(Collection::stream).mapToInt(Lottery::getPrice).sum();
 
        TicketResponseDto responseDto = new TicketResponseDto(ticket, count, cost);
-
         return ResponseEntity.ok().body(responseDto);
     }
 
@@ -101,9 +90,9 @@ public class LotteryService {
         Lottery lottery = lotteryRepository.findByLotteryNumber(ticketNumber)
                 .orElseThrow(() ->new NotFoundException("Ticket not found with ID: " + ticketNumber));
 
+        List<String> tickets = Arrays.asList(lottery.getLotteryNumber());
+        LotteryResponseDto responseDto = new LotteryResponseDto(tickets);
         userTicketRepository.deleteUserTicketByUserIdAndTicketId(users.getId(), lottery.getId());
-
-        LotteryResponseDto responseDto = new LotteryResponseDto(lottery.getLotteryNumber());
         return ResponseEntity.ok().body(responseDto);
     }
 }

@@ -21,14 +21,15 @@ CREATE TABLE user_ticket (
 
 
 INSERT INTO users (username, password, phone) VALUES ('John', 'password','0812345687');
+INSERT INTO users (username, password, phone) VALUES ('Deph', 'password','0812345602');
 INSERT INTO lottery (lottery_number, price, amount) VALUES ('12356', 50, 1);
 INSERT INTO lottery (lottery_number, price, amount) VALUES ('8835566', 60, 1);
 INSERT INTO lottery (lottery_number, price, amount) VALUES ('99966', 70, 1);
 INSERT INTO lottery (lottery_number, price, amount) VALUES ('77235566', 80, 1);
 INSERT INTO lottery (lottery_number, price, amount) VALUES ('998855', 90, 1);
 INSERT INTO user_ticket (user_id, lottery_id, amount) VALUES (1, 1, 1);
-INSERT INTO user_ticket (user_id, lottery_id, amount) VALUES (1, 2, 5);
-INSERT INTO user_ticket (user_id, lottery_id, amount) VALUES (1, 3, 5);
+INSERT INTO user_ticket (user_id, lottery_id, amount) VALUES (1, 2, 1);
+INSERT INTO user_ticket (user_id, lottery_id, amount) VALUES (1, 3, 1);
 
 
 

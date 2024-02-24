@@ -17,7 +17,7 @@ public class AdminController {
     private final LotteryService lotteryService;
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/lotteries")
-    public ResponseEntity<LotteryResponseDto> createLottery(@Valid @RequestBody LotteryRequestDto requestDto){
+    public ResponseEntity<LotteryResponseDto> createLottery(@Valid @RequestBody LotteryRequestDto requestDto) throws  Exception{
         return lotteryService.createLottery(requestDto);
     }
 

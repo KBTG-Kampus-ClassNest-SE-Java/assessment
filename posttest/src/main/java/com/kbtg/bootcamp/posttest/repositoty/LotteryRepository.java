@@ -12,4 +12,6 @@ public interface LotteryRepository extends JpaRepository<Lottery, Long> {
     Optional<Lottery> findByLotteryNumber(String lotteryNumber);
 
 
+
+
 }

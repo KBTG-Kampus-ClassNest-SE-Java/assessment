@@ -1,21 +1,14 @@
 package com.kbtg.bootcamp.posttest.controller;
 
-import com.kbtg.bootcamp.posttest.dto.LotteryRequestDto;
 import com.kbtg.bootcamp.posttest.dto.LotteryResponseDto;
 import com.kbtg.bootcamp.posttest.dto.TicketResponseDto;
 import com.kbtg.bootcamp.posttest.dto.UserTicketResponseDto;
-import com.kbtg.bootcamp.posttest.model.Lottery;
-import com.kbtg.bootcamp.posttest.model.Users;
-import com.kbtg.bootcamp.posttest.repositoty.LotteryRepository;
 import com.kbtg.bootcamp.posttest.service.LotteryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,20 +22,18 @@ public class LotteryController {
         return lotteryService.getAllLotteries();
     }
 
-
-
     @PostMapping("/users/{userId}/lotteries/{ticketId}")
-    public ResponseEntity<UserTicketResponseDto> buyLottery(@PathVariable Integer userId, @PathVariable String ticketId){
+    public ResponseEntity<UserTicketResponseDto> buyLottery(@Valid @PathVariable Integer userId, @PathVariable String ticketId){
         return lotteryService.buyLottery(userId, ticketId);
     }
 
     @GetMapping("/users/{userId}/lotteries")
-    public ResponseEntity<TicketResponseDto> findLotteryByUserId(@PathVariable Integer userId){
+    public ResponseEntity<TicketResponseDto> findLotteryByUserId(@Valid @PathVariable Integer userId){
         return lotteryService.findLotteryByUserId(userId);
     }
 
     @DeleteMapping("/users/{userId}/lotteries/{ticketId}")
-    public ResponseEntity<LotteryResponseDto> deleteTicketByUserId(@PathVariable Integer userId, @PathVariable String ticketId){
+    public ResponseEntity<LotteryResponseDto> deleteTicketByUserId(@Valid @PathVariable Integer userId, @PathVariable String ticketId){
         return lotteryService.deleteTicketByUserId(userId, ticketId);
     }
 

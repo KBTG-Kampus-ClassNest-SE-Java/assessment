@@ -9,5 +9,5 @@ import java.util.List;
 @AllArgsConstructor
 public class LotteryResponseDto {
 
-    private String tickets;
+    private List<String> tickets;
 }
