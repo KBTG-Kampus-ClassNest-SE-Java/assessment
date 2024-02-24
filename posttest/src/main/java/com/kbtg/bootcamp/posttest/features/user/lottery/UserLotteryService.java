@@ -7,7 +7,9 @@ import com.kbtg.bootcamp.posttest.features.date.DateTimeProviderService;
 import com.kbtg.bootcamp.posttest.features.lottery.LotteryRepository;
 import com.kbtg.bootcamp.posttest.features.user.lottery.model.buy_lottery.BuyLotteryResDto;
 import com.kbtg.bootcamp.posttest.features.user.lottery.model.get_my_lottery.GetMyLotteryResDto;
+import com.kbtg.bootcamp.posttest.features.user.lottery.model.sell_lottery.SellLotteryResDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -69,6 +71,21 @@ public class UserLotteryService {
                 tickets,
                 count,
                 cost
+        );
+    }
+
+    @Transactional
+    public SellLotteryResDto sellLottery(String userId, String ticketId) {
+        List<UserTicket> myLotteries = userTicketRepository.findByUserIdAndTicketId(userId, ticketId);
+
+        if (myLotteries.isEmpty()) {
+            throw new BadRequestException("Lottery no " + ticketId + " is not found in you inventory");
+        }
+
+        userTicketRepository.sellTicket(userId, ticketId);
+
+        return new SellLotteryResDto(
+                ticketId
         );
     }
 }
