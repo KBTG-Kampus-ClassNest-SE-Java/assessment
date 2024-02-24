@@ -36,12 +36,20 @@ public class TestLotteryController {
     public Lottery getLotteryPage(
             @PathVariable Long requestedId
     ) {
-        Optional<Lottery> lottery = lotteryService.getLottery(requestedId);
+        Optional<Lottery> lottery = lotteryRepository.findById(requestedId);
         if (lottery.isPresent()) {
             return lottery.get();
         } else {
             throw new RuntimeException();
         }
+    }
+
+    @GetMapping("/{requestedUserId}/lotteries/{requestedTicketId}")
+    public ResponseEntity<?> getLotteryPage(
+            @PathVariable(name = "requestedUserId") Integer requestedUserId,
+            @PathVariable(name = "requestedTicketId") Integer requestedTicketId
+    ) {
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/{requestedUserId}/lotteries/{requestedTicketId}")

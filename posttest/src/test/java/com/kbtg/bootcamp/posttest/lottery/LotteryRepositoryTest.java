@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -72,10 +73,10 @@ class LotteryRepositoryTest {
         AdminRequest request = new AdminRequest(randomString, 10.0, 10L);
 
         // act
-        LotteryResponse lottery = lotteryService.createLottery(request);
+        ResponseEntity<?> lottery = lotteryService.createLottery(request);
 
         // Assert
-        assertThat(lottery).isInstanceOf(LotteryResponse.class);
+        assertThat(lottery.getBody()).isInstanceOf(LotteryResponse.class);
     }
 
 }

@@ -2,6 +2,7 @@ package com.kbtg.bootcamp.posttest.lottery;
 
 import com.kbtg.bootcamp.posttest.admin.AdminRequest;
 import com.kbtg.bootcamp.posttest.exception.DuplicateTickerException;
+import com.kbtg.bootcamp.posttest.exception.LotteryNotBelongToUserException;
 import com.kbtg.bootcamp.posttest.exception.NotExistLotteryException;
 import com.kbtg.bootcamp.posttest.exception.NotExistUserIdException;
 import com.kbtg.bootcamp.posttest.profile.Profile;
@@ -26,139 +27,175 @@ public class LotteryService {
 
     private Map<String, String> responseBody;
 
-
     public LotteryService(LotteryRepository lotteryRepository, ProfileRepository profileRepository) {
         this.lotteryRepository = lotteryRepository;
         this.profileRepository =  profileRepository;
     }
 
-
-    public List<Profile> getAllUserProfile() {
-        return
-        profileRepository.findAll();
-    }
-
-    public Optional<Lottery> getLottery(Long id) {
-        return lotteryRepository.findById(id);
-    }
-
     @Transactional
-    public LotteryResponse createLottery(AdminRequest request) {
+    public ResponseEntity<?> createLottery(AdminRequest request) {
         Objects.requireNonNull(request);
         Lottery newLottery = new Lottery(request.ticket(), request.price(), request.amount());
-
-        if (isLotteryExistsByTicketNumber(newLottery.getTicket())) {
-            throw new DuplicateTickerException("Duplicate entity");
-        } else {
-            // new lottery
+        try {
+            if (isLotteryExistsByTicketNumber(request.ticket())) {
+                throw new DuplicateTickerException("Duplicate Lottery!");
+            }
             lotteryRepository.save(newLottery);
+            LotteryResponse lotteryResponse =  new LotteryResponse(newLottery.getTicket());
+            return ResponseEntity.ok(lotteryResponse);
+        } catch (DuplicateTickerException e) {
+            return ResponseEntity.badRequest().body("Lottery does not exist");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return new LotteryResponse(newLottery.getTicket());
     }
 
 
     public List<Lottery> getAllLotteries() {
-        return lotteryRepository.findAll(); // null
+        return lotteryRepository.findAll();
     }
 
     @Transactional
     public ResponseEntity<?> buyLotteries(UserRequest request) {
         Objects.requireNonNull(request);
         responseBody = new HashMap<>();
-        // check there is a lottery that request
-        if (isLotteryExistsByTicketNumber(request.ticketId())) {
-            Lottery byTicket = lotteryRepository.findByTicket(request.ticketId());
 
-            byTicket.setProfile(profileRepository.findByUserIdEquals(request.userId()));
-            lotteryRepository.save(byTicket);
+        try {
+            validateLotteryOwnership(request.userId(), request.ticketId());
+            Lottery result = lotteryRepository.findByTicket(request.ticketId());
+
+            result.setProfile(profileRepository.findByUserIdEquals(request.userId()));
+            lotteryRepository.save(result);
 
             responseBody.put("id", request.userId());
             return ResponseEntity.ok().body(responseBody);
-        } else {
-            throw new NotExistLotteryException("Wrong ticket number");
+
+        } catch (Exception e) {
+            return handleException(e);
         }
     }
 
 
-    public Map<String, String> getUserLotteryDetail(String requestedUserId) {
-        Integer counter = 0;
-        Double totalPrice = 0.0;
-        responseBody = new LinkedHashMap<>();
-        if (isUserExistsByUserId(requestedUserId)) {
-            List<Lottery> collect = getAllLotteriesByUserId(requestedUserId);
+    public ResponseEntity<?> getUserLotteryDetail(String requestedUserId) {
 
-            List<String> ticketList = collect.stream()
-                    .map(Lottery::getTicket)
-                    .collect(Collectors.toList());
+        try {
+            int counter = 0;
+            double totalPrice = 0.0;
+            responseBody = new LinkedHashMap<>();
+            if (isUserExistsByUserId(requestedUserId)) {
+                List<Lottery> collect = getAllLotteriesByUserId(requestedUserId);
 
-                    counter = collect.size();
+                List<String> ticketList = collect.stream()
+                        .map(Lottery::getTicket)
+                        .collect(Collectors.toList());
 
-            totalPrice = collect.stream()
-                    .mapToDouble(
-                            lottery -> lottery.getPrice() * lottery.getAmount()
-                    )
-                    .sum();
-            responseBody.put("tickets", String.join(",",ticketList));
-            responseBody.put("count", counter.toString());
-            responseBody.put("totalPrice", totalPrice.toString());
-            return responseBody;
-        } else {
-            throw new NotExistUserIdException("Wrong user id");
+                        counter = collect.size();
+
+                totalPrice = collect.stream()
+                        .mapToDouble(
+                                lottery -> lottery.getPrice() * lottery.getAmount()
+                        )
+                        .sum();
+                responseBody.put("tickets", String.join(",",ticketList));
+                responseBody.put("count", Integer.toString(counter));
+                responseBody.put("totalPrice", Double.toString(totalPrice));
+                return ResponseEntity.ok(responseBody);
+            } else {
+                throw new NotExistUserIdException("Wrong user id");
+            }
+        } catch (NotExistUserIdException e) {
+            return ResponseEntity.badRequest().body("Lottery does not exist");
         }
     }
 
     public List<Lottery> getAllLotteriesByUserId(String requestedUserId) {
-        List<Lottery> collect = getAllLotteries().stream()
+        return getAllLotteries().stream()
                 .filter(lottery -> {
                     Profile profile = lottery.getProfile();
                     return profile != null && profile.getUserId() != null && profile.getUserId().equals(requestedUserId);
                 })
                 .collect(Collectors.toList());
-        return collect;
     }
 
     public boolean isUserExistsByUserId(String requestedUserId) {
-        return
-        profileRepository.findAll().stream()
-                .filter(profile -> profile.getUserId().equals(requestedUserId))
-                .findFirst().isPresent();
+        return profileRepository.findAll().stream()
+                .anyMatch(profile -> profile.getUserId().equals(requestedUserId));
     }
+
+    public boolean isLotteryTicketBelongsToUser(String userId, String lotteryNumber) {
+        List<Lottery> userLotteries = getAllLotteriesByUserId(userId);
+        return userLotteries.stream()
+                .anyMatch(lottery -> lottery.getTicket().equals(lotteryNumber));
+    }
+
 
     public boolean isLotteryExistsByTicketNumber(String ticket) {
-        return
-        lotteryRepository.findAll().stream()
-                .filter(lottery -> lottery.getTicket().equals(ticket))
-                .findFirst().isPresent();
+        return lotteryRepository.findAll().stream()
+                .anyMatch(lottery -> lottery.getTicket().equals(ticket));
     }
 
+    public void validateLotteryOwnership(String userId, String lotteryNumber) {
+        // Check if the lottery exists
+        boolean lotteryExists = isLotteryExistsByTicketNumber(lotteryNumber);
+        if (!lotteryExists) {
+            throw new NotExistLotteryException("Lottery does not exist");
+        }
+
+        // Check if the user exists
+        boolean userExists = isUserExistsByUserId(userId);
+        if (!userExists) {
+            throw new NotExistUserIdException("User does not exist");
+        }
+
+        // Check if the lottery belongs to the user
+        boolean lotteryBelongsToUser = isLotteryTicketBelongsToUser(userId, lotteryNumber);
+        if (!lotteryBelongsToUser) {
+            throw new LotteryNotBelongToUserException("Lottery does not belong to user");
+        }
+    }
+
+
+    @Transactional
     public ResponseEntity<?> sellLotteryByUsingUserIdAndLotteryTicket(String requestedUserID,
-                                                                      String requestedTicketId) {
-        List<Lottery> allLotteriesByUserId = new ArrayList<>();
-        responseBody = new LinkedHashMap<>();
+                                                                      String requestedLotteryId) {
         try {
-            if (!isLotteryExistsByTicketNumber(requestedTicketId)) {
-                throw new NotExistLotteryException("Lottery does not exist");
-            } else if (!isUserExistsByUserId(requestedUserID)) {
-                throw new NotExistUserIdException("User does not exist");
-            }
+            validateLotteryOwnership(requestedUserID, requestedLotteryId);
+            List<Lottery> allLotteriesByUserId = new ArrayList<>();
+            responseBody = new HashMap<>();
 
             // find the lottery that has the profile equal to requestedUserID
             allLotteriesByUserId = getAllLotteriesByUserId(requestedUserID);
 
             // delete profile and amount from lottery that match Lottery number
-            allLotteriesByUserId.stream()
-                    .filter(lottery -> lottery.getTicket().equals(requestedTicketId))
-                    .collect(Collectors.toList()).stream()
+            allLotteriesByUserId.stream() // Stream<Lottery>
+                    .filter(lottery -> lottery.getTicket().equals(requestedLotteryId))
                     .forEach(lottery -> {
                         lottery.setProfile(null);
                         lottery.setAmount(0L);
+                        lotteryRepository.save(lottery);
                     });
 
-        } catch (NotExistLotteryException  | NotExistUserIdException e) {
-            return ResponseEntity.notFound().build();
+            responseBody.put("id",requestedUserID);
+
+            return ResponseEntity.ok(responseBody);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return handleException(e);
         }
-        return ResponseEntity.ok(allLotteriesByUserId);
     }
+
+    public ResponseEntity<?> handleException(Exception e) {
+        return switch (e.getClass().getSimpleName()) {
+            case "NotExistLotteryException" ->
+                    ResponseEntity.badRequest().body("Lottery does not exist");
+            case "NotExistUserIdException" ->
+                    ResponseEntity.badRequest().body("User does not exist");
+            case "LotteryNotBelongToUserException" ->
+                    ResponseEntity.badRequest().body("Lottery does not belong to user.");
+            default -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        };
+    }
+
+
+
+
 }

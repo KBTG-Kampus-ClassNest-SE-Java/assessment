@@ -4,6 +4,7 @@ import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryResponse;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -24,8 +25,8 @@ public class AdminController {
         lotteryService.getAllLotteries();
     }
 
-    @GetMapping("/lotteries")
-    public LotteryResponse addNewLotteryTicketToDb(
+    @PostMapping("/lotteries")
+    public ResponseEntity<?> addNewLotteryTicketToDb(
             @RequestBody AdminRequest request
     ) {
         return
