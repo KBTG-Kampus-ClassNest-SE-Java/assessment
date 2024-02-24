@@ -1,0 +1,20 @@
+version: '3'
+
+networks:
+  lottery_application:
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: lottery
+      POSTGRES_USER: lottery
+      POSTGRES_PASSWORD: Plottery001!@#
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+        - lottery_application
+volumes:
+  pgdata:

@@ -1,10 +1,10 @@
-package com.kbtg.bootcamp.posttest;
+package com.kbtg.bootcamp.lottery;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class PosttestApplicationTests {
+class ApplicationTests {
 
 	@Test
 	void contextLoads() {
