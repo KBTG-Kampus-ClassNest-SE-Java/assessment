@@ -20,7 +20,6 @@ public class LotteryService {
 
     public List<String> getLottery() {
         return lotteryRepository.findAll().stream().filter(lottery -> lottery.getAmount() > 0).map(Lottery::getTicket).toList();
-//        return lotteryRepository.findTicketsWithAmountGreaterThanZero();
     }
 
     public String createLottery(LotteryRequestDto lottery) {
