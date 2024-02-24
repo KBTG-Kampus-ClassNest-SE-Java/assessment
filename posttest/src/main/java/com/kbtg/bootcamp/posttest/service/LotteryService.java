@@ -50,7 +50,7 @@ public class LotteryService {
 
             List<String> tickets = Arrays.asList(lottery.getLotteryNumber());
             LotteryResponseDto responseDto = new LotteryResponseDto(tickets);
-            return ResponseEntity.ok().body(responseDto);
+            return ResponseEntity.status(201).body(responseDto);
     }
 
     public ResponseEntity<UserTicketResponseDto> buyLottery(Integer userId, String ticketNumber){

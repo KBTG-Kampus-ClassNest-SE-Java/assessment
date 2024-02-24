@@ -43,12 +43,12 @@ class LotteryControllerTest {
     }
 
         @Test
-        @DisplayName("when perform on GET: /lotteries should return lotterytNumber ")
+        @DisplayName("when perform on GET: /lotteries should return ticket number ")
         void getAllLotteries() throws Exception {
             List<Lottery> mockLotteries = List.of(new Lottery("123456", 80, 1),
                                                   new Lottery("456789", 80, 1));
 
-            List<String> lottery = mockLotteries.stream().map(Lottery::getLotteryNumber).collect(Collectors.toList());;
+            List<String> lottery = mockLotteries.stream().map(Lottery::getLotteryNumber).collect(Collectors.toList());
 
             LotteryResponseDto lotteryResponseDto = new LotteryResponseDto(lottery);
             ResponseEntity<LotteryResponseDto> responseEntity = ResponseEntity.ok(lotteryResponseDto);
