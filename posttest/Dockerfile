@@ -1,8 +1,10 @@
 # stage-1 build artifact
-FROM amazoncorretto:17.0.9-alpine3.18 as builder
+FROM amazoncorretto:17.0.9-alpine3.18
+
 WORKDIR /app
 ADD . .
 RUN ["./gradlew","bootJar"]
+
 
 # stage-2 running image
 FROM gcr.io/distroless/java17-debian12:latest
