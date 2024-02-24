@@ -50,12 +50,13 @@ public class UserTicketService {
         return new UserTicketResponseDto(tickets, count, cost);
     }
 
-    public void deleteLottery(String userId, String ticketId) {
+    public String deleteLottery(String userId, String ticketId) {
         Optional<UserTicket> user_tickets = UserTicketRepository.findByUserIdAndTicket(userId, ticketId);
 
         if (user_tickets.isEmpty())
             throw new NotFoundException("User with userId " + userId + " not found");
 
         UserTicketRepository.delete(user_tickets.get());
+        return ticketId;
     }
 }

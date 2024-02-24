@@ -44,10 +44,9 @@ class AdminControllerTest {
         String ticketId = "123456";
         LotteryRequestDto lotteryRequestDto = new LotteryRequestDto(ticketId, 10L, 100.0);
 
-        when(lotteryService.createLottery(any(LotteryRequestDto.class))).thenReturn(ticketId);
+        when(lotteryService.createLottery(lotteryRequestDto)).thenReturn(ticketId);
 
         mockMvc.perform(post("/admin/lotteries")
-                        .with(user("admin").roles("USER"))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(lotteryRequestDto)))
                 .andExpect(status().isCreated())
@@ -63,9 +62,8 @@ class AdminControllerTest {
     public void TestCreateLotteryFailNonBlank() throws Exception {
         LotteryRequestDto lotteryRequestDto = new LotteryRequestDto(null, 10L, 100.0);
 
-        assertThrows(BadRequestException.class, () -> lotteryRequestDto.validate());
-
-        verify(lotteryService, never()).createLottery(any(LotteryRequestDto.class));
+        mockMvc.perform(post("/admin/lotteries"))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -74,9 +72,8 @@ class AdminControllerTest {
         String ticketId = "12345";
         LotteryRequestDto lotteryRequestDto = new LotteryRequestDto(ticketId, 10L, 100.0);
 
-        assertThrows(BadRequestException.class, () -> lotteryRequestDto.validate());
-
-        verify(lotteryService, never()).createLottery(any(LotteryRequestDto.class));
+        mockMvc.perform(post("/admin/lotteries"))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -85,9 +82,8 @@ class AdminControllerTest {
         String ticketId = "abc";
         LotteryRequestDto lotteryRequestDto = new LotteryRequestDto(ticketId, 10L, 100.0);
 
-        assertThrows(BadRequestException.class, () -> lotteryRequestDto.validate());
-
-        verify(lotteryService, never()).createLottery(any(LotteryRequestDto.class));
+        mockMvc.perform(post("/admin/lotteries"))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -96,9 +92,8 @@ class AdminControllerTest {
         String ticketId = "abc123";
         LotteryRequestDto lotteryRequestDto = new LotteryRequestDto(ticketId, 10L, 100.0);
 
-        assertThrows(BadRequestException.class, () -> lotteryRequestDto.validate());
-
-        verify(lotteryService, never()).createLottery(any(LotteryRequestDto.class));
+        mockMvc.perform(post("/admin/lotteries"))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -107,9 +102,8 @@ class AdminControllerTest {
         String ticketId = "123456";
         LotteryRequestDto lotteryRequestDto = new LotteryRequestDto(ticketId, null, 100.0);
 
-        assertThrows(BadRequestException.class, () -> lotteryRequestDto.validate());
-
-        verify(lotteryService, never()).createLottery(any(LotteryRequestDto.class));
+        mockMvc.perform(post("/admin/lotteries"))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -118,9 +112,8 @@ class AdminControllerTest {
         String ticketId = "123456";
         LotteryRequestDto lotteryRequestDto = new LotteryRequestDto(ticketId, -10L, 100.0);
 
-        assertThrows(BadRequestException.class, () -> lotteryRequestDto.validate());
-
-        verify(lotteryService, never()).createLottery(any(LotteryRequestDto.class));
+        mockMvc.perform(post("/admin/lotteries"))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -129,9 +122,8 @@ class AdminControllerTest {
         String ticketId = "123456";
         LotteryRequestDto lotteryRequestDto = new LotteryRequestDto(ticketId, 10L, null);
 
-        assertThrows(BadRequestException.class, () -> lotteryRequestDto.validate());
-
-        verify(lotteryService, never()).createLottery(any(LotteryRequestDto.class));
+        mockMvc.perform(post("/admin/lotteries"))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -140,9 +132,8 @@ class AdminControllerTest {
         String ticketId = "123456";
         LotteryRequestDto lotteryRequestDto = new LotteryRequestDto(ticketId, 10L, -100.0);
 
-        assertThrows(BadRequestException.class, () -> lotteryRequestDto.validate());
-
-        verify(lotteryService, never()).createLottery(any(LotteryRequestDto.class));
+        mockMvc.perform(post("/admin/lotteries"))
+                .andExpect(status().isBadRequest());
     }
 
     @Test

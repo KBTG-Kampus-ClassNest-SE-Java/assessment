@@ -23,18 +23,13 @@ public class AdminController {
 
     @PostMapping("/lotteries")
     public ResponseEntity<Map<String, String>> createLottery(@Valid @RequestBody LotteryRequestDto lottery) {
-        lottery.validate();
-        String createdLottery = lotteryService.createLottery(lottery);
-        Map<String, String> response = Collections.singletonMap("ticket", createdLottery);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(Collections.singletonMap("ticket", lotteryService.createLottery(lottery)));
     }
 
     @DeleteMapping("/lotteries/{Id}")
     public ResponseEntity<Map<String, String>> deleteLottery(@PathVariable String Id) {
-        String DeletedLottery = lotteryService.deleteLottery(Id);
-        Map<String, String> response = Collections.singletonMap("ticket", DeletedLottery);
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(Collections.singletonMap("ticket", lotteryService.deleteLottery(Id)));
     }
 }

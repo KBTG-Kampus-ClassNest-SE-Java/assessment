@@ -1,5 +1,6 @@
 package com.kbtg.bootcamp.posttest.Controller;
 
+import com.kbtg.bootcamp.posttest.Entity.Lottery;
 import com.kbtg.bootcamp.posttest.Service.UserTicketService;
 import com.kbtg.bootcamp.posttest.UserTicket.UserTicketResponseDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -207,7 +208,7 @@ class UserControllerTest {
         String ticketId = "123456";
         String userId = "1234567890";
 
-        doNothing().when(userTicketService).deleteLottery(userId, ticketId);
+        when(userTicketService.deleteLottery(userId, ticketId)).thenReturn(ticketId);
 
         mockMvc.perform(delete("/users/{userId}/lotteries/{ticketId}", userId, ticketId))
                 .andExpect(status().isOk())

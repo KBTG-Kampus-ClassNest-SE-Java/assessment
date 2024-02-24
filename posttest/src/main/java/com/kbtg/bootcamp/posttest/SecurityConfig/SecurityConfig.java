@@ -20,7 +20,6 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Component
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     @Bean
@@ -46,16 +45,11 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService() {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-        UserDetails user = User.withUsername("user")
-                .password(encoder.encode("password"))
-                .roles("USER")
-                .build();
-
         UserDetails admin = User.withUsername("admin")
                 .password(encoder.encode("password"))
                 .roles("ADMIN")
                 .build();
 
-        return new InMemoryUserDetailsManager(user, admin);
+        return new InMemoryUserDetailsManager(admin);
     }
 }

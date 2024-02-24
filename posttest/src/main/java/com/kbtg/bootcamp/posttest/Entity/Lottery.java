@@ -1,11 +1,7 @@
 package com.kbtg.bootcamp.posttest.Entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
-import org.antlr.v4.runtime.misc.NotNull;
+import jakarta.validation.constraints.*;
 
 import java.util.List;
 
@@ -17,17 +13,17 @@ public class Lottery {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotBlank
     @Size(min = 6, max = 6)
     @Pattern(regexp = "^[0-9]{6}$")
     private String ticket;
 
-    @NotNull
-    @Min(value = 0, message = "Amount must be greater than or equal to 0")
-    @Digits( integer = 10, fraction = 0, message = "Amount must be an integer")
+    @Digits( integer = 10, fraction = 0)
+    @Min(value = 0)
     private Long amount;
 
-    @NotNull
+    @Positive
+    @Min(value = 0)
     private Double price;
 
     @OneToMany(mappedBy = "lottery")
