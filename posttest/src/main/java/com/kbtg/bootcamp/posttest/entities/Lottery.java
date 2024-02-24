@@ -1,12 +1,16 @@
 package com.kbtg.bootcamp.posttest.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Lottery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

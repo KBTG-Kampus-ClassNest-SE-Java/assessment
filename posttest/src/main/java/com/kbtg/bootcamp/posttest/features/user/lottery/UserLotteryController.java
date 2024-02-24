@@ -14,16 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("")
 @Validated
 public class UserLotteryController {
-
     private final UserLotteryService userTicketService;
 
     public UserLotteryController(UserLotteryService userTicketService) {
         this.userTicketService = userTicketService;
-    }
-
-    @PostMapping("users/greeting")
-    public String greeting() {
-        return "Hello lottery";
     }
 
     @PostMapping("users/{userId}/lotteries/{ticketId}")

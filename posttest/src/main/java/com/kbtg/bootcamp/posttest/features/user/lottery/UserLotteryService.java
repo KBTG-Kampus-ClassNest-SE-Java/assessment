@@ -3,11 +3,11 @@ package com.kbtg.bootcamp.posttest.features.user.lottery;
 import com.kbtg.bootcamp.posttest.entities.Lottery;
 import com.kbtg.bootcamp.posttest.entities.UserTicket;
 import com.kbtg.bootcamp.posttest.exceptions.BadRequestException;
+import com.kbtg.bootcamp.posttest.features.date.DateTimeProviderService;
 import com.kbtg.bootcamp.posttest.features.lottery.LotteryRepository;
 import com.kbtg.bootcamp.posttest.features.user.lottery.model.buy_lottery.BuyLotteryResDto;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -17,9 +17,12 @@ public class UserLotteryService {
 
     private final UserTicketRepository userTicketRepository;
 
-    public UserLotteryService(LotteryRepository lotteryRepository, UserTicketRepository userTicketRepository) {
+    private final DateTimeProviderService dateTimeProviderService;
+
+    public UserLotteryService(LotteryRepository lotteryRepository, UserTicketRepository userTicketRepository, DateTimeProviderService dateTimeProviderService) {
         this.lotteryRepository = lotteryRepository;
         this.userTicketRepository = userTicketRepository;
+        this.dateTimeProviderService = dateTimeProviderService;
     }
 
     public BuyLotteryResDto buy(String userId, String ticketId) {
@@ -35,7 +38,7 @@ public class UserLotteryService {
         userTicket.setUserId(userId);
         userTicket.setBuyPrice(cheapestLottery.getPrice());
         userTicket.setTicketId(ticketId);
-        userTicket.setBuyDate(LocalDateTime.now());
+        userTicket.setBuyDate(dateTimeProviderService.getCurrentDateTime());
 
         UserTicket savedUserTicket = userTicketRepository.save(userTicket);
 
