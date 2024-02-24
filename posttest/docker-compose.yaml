@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+    db:
+      image: postgres:16.0
+      container_name: postgres
+      restart: on-failure
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_DB: lotteries
+      ports:
+        - 5432:5432
