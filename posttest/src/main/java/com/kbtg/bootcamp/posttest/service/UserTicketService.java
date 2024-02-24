@@ -30,7 +30,7 @@ public class UserTicketService implements ImpUserTicketService {
 
     @Override
     public void refundLotteryToStore(String userid, String ticket) {
-        userTicketRepository.refundLotteryToStore(userid, ticket);  // รอ database มาใส่
+        userTicketRepository.refundLotteryToStore(userid, ticket);
     }
 
 

@@ -17,19 +17,16 @@ public class LotteryService implements ImpLotteryService {
     private final LotteryRepository lotteryRepository;
 
     public LotteryService(LotteryRepository lotteryRepository) {
-
         this.lotteryRepository = lotteryRepository;
     }
 
     @Override
     public List<LotteryEntity> getAllLottery() {
-
         return lotteryRepository.findAll();
     }
 
     @Override
     public LotteryEntity addLotteryToStore(LotteryEntity lotteryEntity) {
-
         return lotteryRepository.save(lotteryEntity);
     }
 
@@ -49,7 +46,7 @@ public class LotteryService implements ImpLotteryService {
             lottery.setStatus(status); // Set status to true
             lotteryRepository.save(lottery); // Save the updated lottery entity
         } else {
-            // Handle if the lottery ticket is not found
+
         }
 
 
@@ -59,6 +56,5 @@ public class LotteryService implements ImpLotteryService {
     public List<LotteryEntity> getLotteryEntity(String ticket) {
         return lotteryRepository.getTicketEntity(ticket);
     }
-
 
 }

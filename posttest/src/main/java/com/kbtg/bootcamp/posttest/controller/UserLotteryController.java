@@ -90,8 +90,8 @@ public class UserLotteryController {
         UserTicketEntity addUserTicket = impUserTicketService.buyLotteryFromStore(userTicketEntity);
 
         //todo ผมไม่เเน่ใจว่าต้องให้เเสดงเป็นหมายเลขลอตเตอรี่หรือ id ของ record ใน database
-//      return  "\"ticket\": " + "\"" + userTicketEntity.getTicket() + "\"";
-        return  "\"id\": " + "\"" + userTicketEntity.getId() + "\"";
+        // return  "\"ticket\": " + "\"" + userTicketEntity.getTicket() + "\"";
+        return "\"id\": " + "\"" + userTicketEntity.getId() + "\"";
     }
 
     @Description("USE BY USER FOR REFUND LOTTERY TO STORE")
@@ -108,6 +108,5 @@ public class UserLotteryController {
         return "\"ticket\": " + "\"" + ticket + "\"";
 
     }
-
 
 }
