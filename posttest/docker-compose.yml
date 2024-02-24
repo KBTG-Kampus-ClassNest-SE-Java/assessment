@@ -1,0 +1,23 @@
+version: '3'
+
+networks:
+  lottery-service-network:
+
+services:
+  progres-db:
+    container_name: lottery-postgres-database
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: lottery-db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - ./db-init/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - lottery-service-network
+
+volumes:
+  pgdata:
