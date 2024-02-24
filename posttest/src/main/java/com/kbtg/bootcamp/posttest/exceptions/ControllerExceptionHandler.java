@@ -1,5 +1,6 @@
 package com.kbtg.bootcamp.posttest.exceptions;
 
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,6 +20,24 @@ public class ControllerExceptionHandler {
         List<String> error = notValidException.getFieldErrors()
                 .stream()
                 .map(f -> f.getField() + " " + f.getDefaultMessage())
+                .toList();
+
+        return new ApiErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                null,
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                String.join(", ", error),
+                request.getDescription(false)
+        );
+    }
+
+    @ExceptionHandler(value = {ConstraintViolationException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiErrorResponse handleBadRequestException(ConstraintViolationException constraintViolationException, WebRequest request) {
+        List<String> error = constraintViolationException.getConstraintViolations()
+                .stream()
+                .map(f -> f.getPropertyPath().toString() + " " + f.getMessage())
                 .toList();
 
         return new ApiErrorResponse(

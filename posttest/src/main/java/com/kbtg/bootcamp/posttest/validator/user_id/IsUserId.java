@@ -1,4 +1,4 @@
-package com.kbtg.bootcamp.posttest.validator.lottery_id;
+package com.kbtg.bootcamp.posttest.validator.user_id;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -6,11 +6,11 @@ import jakarta.validation.Payload;
 import java.lang.annotation.*;
 
 @Documented
-@Constraint(validatedBy = IsLotteryIdValidator.class)
+@Constraint(validatedBy = IsUserIdValidator.class)
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface IsLotteryId {
-    String message() default "Invalid lottery id must be exactly 6 characters long and contain only numeric characters";
+public @interface IsUserId {
+    String message() default "Invalid user id must be exactly 1-10 characters long and contain only numeric characters";
 
     Class<?>[] groups() default {};
 
