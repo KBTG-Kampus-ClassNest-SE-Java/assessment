@@ -22,9 +22,11 @@ public class SpringSecurityConfig {
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/lotteries/**").permitAll()
-                        .requestMatchers("/users/*/lotteries/*").permitAll()
+                        .requestMatchers(
+                                "/users/*/lotteries",
+                                "/users/*/lotteries/*"
+                        ).permitAll()
                         // TODO Remove this
-                        .requestMatchers("/users/greeting").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

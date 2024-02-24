@@ -6,12 +6,17 @@ import com.kbtg.bootcamp.posttest.exceptions.BadRequestException;
 import com.kbtg.bootcamp.posttest.features.date.DateTimeProviderService;
 import com.kbtg.bootcamp.posttest.features.lottery.LotteryRepository;
 import com.kbtg.bootcamp.posttest.features.user.lottery.model.buy_lottery.BuyLotteryResDto;
+import com.kbtg.bootcamp.posttest.features.user.lottery.model.get_my_lottery.GetMyLotteryResDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -52,6 +57,7 @@ class UserLotteryServiceTest {
             userLotteryService.buy(mockUserId, mockTicketId);
         });
 
+        // Assert
         verify(mockLotteryRepository).findAvailableLotteryByTicketId(mockTicketId);
     }
 
@@ -92,6 +98,7 @@ class UserLotteryServiceTest {
         // Act
         BuyLotteryResDto res = userLotteryService.buy(mockUserId, mockTicketId);
 
+        // Assert
         verify(mockUserTicketRepository).save(mockUserTicket);
         verify(mockLotteryRepository).delete(cheapestLottery);
         assertEquals(mockSaveUserTicketRes.getId().toString(), res.id());
@@ -134,8 +141,91 @@ class UserLotteryServiceTest {
         // Act
         BuyLotteryResDto res = userLotteryService.buy(mockUserId, mockTicketId);
 
+        // Assert
         verify(mockUserTicketRepository).save(mockUserTicket);
         verify(mockLotteryRepository).save(cheapestLottery);
         assertEquals(mockSaveUserTicketRes.getId().toString(), res.id());
+    }
+
+    private static Stream<Arguments> GetMyLottery_ShouldSuccess_WhenCorrectRequest_DataSet() {
+        return Stream.of(
+                Arguments.of(
+                        "1",
+                        List.of(
+                        ), new GetMyLotteryResDto(
+                                List.of(),
+                                0,
+                                new BigDecimal("0")
+                        )
+                ),
+                Arguments.of(
+                        "12",
+                        List.of(
+                                new UserTicket(
+                                        1,
+                                        "12",
+                                        "123456",
+                                        new BigDecimal("100.50"),
+                                        LocalDateTime.now()
+                                ),
+                                new UserTicket(
+                                        1,
+                                        "12",
+                                        "333333",
+                                        new BigDecimal("150"),
+                                        LocalDateTime.now()
+                                )
+                        ), new GetMyLotteryResDto(
+                                List.of("123456", "333333"),
+                                2,
+                                new BigDecimal("250.50")
+                        )
+                ),
+                Arguments.of(
+                        "1",
+                        List.of(
+                                new UserTicket(
+                                        1,
+                                        "1",
+                                        "123456",
+                                        new BigDecimal("100"),
+                                        LocalDateTime.now()
+                                ),
+                                new UserTicket(
+                                        1,
+                                        "1",
+                                        "123456",
+                                        new BigDecimal("150"),
+                                        LocalDateTime.now()
+                                ),
+                                new UserTicket(
+                                        1,
+                                        "1",
+                                        "333333",
+                                        new BigDecimal("100"),
+                                        LocalDateTime.now()
+                                )
+                        ), new GetMyLotteryResDto(
+                                List.of("123456", "123456", "333333"),
+                                3,
+                                new BigDecimal("350")
+                        )
+                )
+        );
+    }
+
+    // get my lottery
+    @ParameterizedTest
+    @MethodSource("GetMyLottery_ShouldSuccess_WhenCorrectRequest_DataSet")
+    public void GetMyLottery_ShouldSuccess_WhenCorrectRequest(String userId, List<UserTicket> mockMyLotteriesRes, GetMyLotteryResDto expected) {
+        // Arrange
+        when(mockUserTicketRepository.findByUserIdOrderByTicketIdAsc(any())).thenReturn(mockMyLotteriesRes);
+
+        // Act
+        GetMyLotteryResDto res = userLotteryService.getMyLottery(userId);
+
+        // Assert
+        verify(mockUserTicketRepository).findByUserIdOrderByTicketIdAsc(userId);
+        assertEquals(expected, res);
     }
 }
