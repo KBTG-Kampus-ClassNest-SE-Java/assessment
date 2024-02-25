@@ -1,0 +1,29 @@
+version: '3'
+
+networks:
+  integration-test-post-test-lottery-app:
+
+services:
+  post-test-lottery-backend:
+    build:
+      context: ./
+    ports:
+      - "8888:8888"
+    networks:
+      - integration-test-post-test-lottery-app
+    depends_on:
+      - postgresdb
+  postgresdb:
+    image: postgres:16.0
+    environment:
+      POSTGRES_DB: posttestdb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - ./base-db-init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - integration-test-post-test-lottery-app
+volumes:
+  pgdata:
