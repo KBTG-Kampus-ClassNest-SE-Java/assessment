@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
