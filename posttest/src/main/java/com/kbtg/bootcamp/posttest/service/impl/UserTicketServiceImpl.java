@@ -74,6 +74,7 @@ public class UserTicketServiceImpl implements UserTicketService {
         // Return with bad request because user id and ticket id might be existing.
         // However, user didn't purchase the lottery.
         // Hence, user trying to refund lottery which is not afforded yet(Illegal operation)
+        // More details in NOTE.md
         if(refundTicket.isEmpty()) {
             throw new IllegalOperationException("User ID : " + userId + " didn't purchase lottery number : " + ticketId);
         }
