@@ -26,6 +26,10 @@ public class LotteryController {
     public ResponseEntity<UserTicketResponseDto> buyLottery(@PathVariable Integer userId, @PathVariable String ticketId){
         return lotteryService.buyLottery(userId, ticketId);
     }
+    @GetMapping("/users/{userId}/lotteries")
+    public ResponseEntity<LotteryUserResponseDto> findLotteryByUserId(@PathVariable Integer userId){
+        return lotteryService.findLotteryByUserId(userId);
+    }
 
 
 }

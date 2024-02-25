@@ -42,5 +42,19 @@ public class LotteryService {
         return ResponseEntity.ok().body(responseDto);
 
     }
+    public ResponseEntity<LotteryUserResponseDto> findLotteryByUserId(Integer userId){
+        Users users = usersRepository.findById(userId);
+
+        Optional<List<Lottery>> list = userTicketRepository.findDistinctLotteriesByUserId(users.getId());
+        List<String> ticket = list.get().stream()
+                .map(Lottery::getTicketNumber)
+                .toList();
+
+        int count = list.stream().flatMap(Collection::stream).mapToInt(Lottery::getAmount).sum();
+        int cost = list.stream().flatMap(Collection::stream).mapToInt(Lottery::getPrice).sum();
+
+        LotteryUserResponseDto responseDto = new LotteryUserResponseDto(ticket, count, cost);
+        return ResponseEntity.ok().body(responseDto);
+    }
 
 }
