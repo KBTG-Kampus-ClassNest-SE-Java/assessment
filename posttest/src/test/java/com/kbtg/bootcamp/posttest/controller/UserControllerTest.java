@@ -75,7 +75,7 @@ public class UserControllerTest {
         int expectedTicketAmount = 3;
         int expectedTotalTicketCost = 240;
         mockMvc.perform(get(String.format("/users/%s/lotteries", USER_ID)))
-                .andExpect(jsonPath("$.tickets",containsInAnyOrder(PURCHASED_TICKET.toArray())))
+                .andExpect(jsonPath("$.tickets",containsInAnyOrder(expectedPurchasedTicket.toArray())))
                 .andExpect(jsonPath("$.count",is(expectedTicketAmount)))
                 .andExpect(jsonPath("$.cost",is(expectedTotalTicketCost)))
                 .andExpect(status().isOk());
