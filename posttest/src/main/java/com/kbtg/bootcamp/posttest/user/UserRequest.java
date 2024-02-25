@@ -12,7 +12,7 @@ public class UserRequest {
 
     @NotNull
     @Pattern(regexp = "^[a-zA-Z\\s]*$")
-    @Size(min = 1, max = 20, message = "Wallet name should be between 3 and 20 character")
+    @Size(min = 3, max = 20, message = "user name should be between 3 and 20 character")
     private String name;
-    
+
 }

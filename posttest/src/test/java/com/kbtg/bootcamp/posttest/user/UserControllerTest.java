@@ -1,6 +1,7 @@
 package com.kbtg.bootcamp.posttest.user;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,13 +9,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.matchesRegex;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.when;
@@ -28,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerTest {
 
     MockMvc mockMvc;
+    private ObjectMapper objectMapper;
     @Mock
     private UserService userService;
 
@@ -37,6 +39,7 @@ class UserControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(userController)
                 .alwaysDo(print())
                 .build();
+        objectMapper = new ObjectMapper();
     }
 
     @Test
@@ -64,13 +67,14 @@ class UserControllerTest {
     @Test
     @DisplayName("Name should not exceed 100 characters")
     void testCreateUserWithExcessiveNameLength() throws Exception {
+        String testName = "a".repeat(100);
+        UserRequest validRequest = new UserRequest();
+        validRequest.setName(testName);
 
-        String longName = "a".repeat(105);
-
-        UserRequest userRequest = new UserRequest();
-        userRequest.setName(longName);
-
-        mockMvc.perform(post("/users"))
+        // Perform a POST request with the valid UserRequest
+        mockMvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(validRequest)))
                 .andExpect(status().isBadRequest());
     }
 }
