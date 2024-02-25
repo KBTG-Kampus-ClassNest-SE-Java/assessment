@@ -22,6 +22,10 @@ public class LotteryController {
 
         return lotteryService.findAllLotteries();
     }
+    @PostMapping("/users/{userId}/lotteries/{ticketId}")
+    public ResponseEntity<UserTicketResponseDto> buyLottery(@PathVariable Integer userId, @PathVariable String ticketId){
+        return lotteryService.buyLottery(userId, ticketId);
+    }
 
 
 }

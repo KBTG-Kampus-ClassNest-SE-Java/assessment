@@ -32,5 +32,15 @@ public class LotteryService {
         return ResponseEntity.ok().body(responseDto);
 
     }
+    public ResponseEntity<UserTicketResponseDto> buyLottery(Integer userId, String ticketNumber){
+        Users user = usersRepository.findById(userId);
+
+        Lottery lottery = lotteryRepository.findByTicketNumber(ticketNumber);
+        UserTicket userTicket = new UserTicket(user,lottery,1);
+        userTicketRepository.save(userTicket);
+        UserTicketResponseDto responseDto = new UserTicketResponseDto(userTicket.getId());
+        return ResponseEntity.ok().body(responseDto);
+
+    }
 
 }
