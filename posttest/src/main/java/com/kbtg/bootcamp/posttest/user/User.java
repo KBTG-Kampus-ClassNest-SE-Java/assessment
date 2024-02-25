@@ -3,6 +3,7 @@ package com.kbtg.bootcamp.posttest.user;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,7 @@ public class User {
     private Long user_id;
 
     @NotNull
+    @Pattern(regexp = "^[A-Za-z]+$")
     private String name;
 
     public  User(){
