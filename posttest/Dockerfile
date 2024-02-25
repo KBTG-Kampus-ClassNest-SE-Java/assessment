@@ -1,7 +1,7 @@
 FROM amazoncorretto:17 as builder
 
 # Cache Gradle dependencies and build output
-COPY . .
+COPY .. .
 RUN ["./gradlew", "build", "--build-cache"]
 
 # Test Stage (with volume for reports)
