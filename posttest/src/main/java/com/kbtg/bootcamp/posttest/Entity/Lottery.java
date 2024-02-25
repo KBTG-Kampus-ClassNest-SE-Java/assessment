@@ -2,6 +2,7 @@ package com.kbtg.bootcamp.posttest.Entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.Data;
 
 import java.util.List;
 

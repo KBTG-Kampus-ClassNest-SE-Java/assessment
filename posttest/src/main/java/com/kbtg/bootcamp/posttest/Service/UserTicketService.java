@@ -6,6 +6,8 @@ import com.kbtg.bootcamp.posttest.Exception.ConflictException;
 import com.kbtg.bootcamp.posttest.Exception.NotFoundException;
 import com.kbtg.bootcamp.posttest.UserTicket.UserTicketRepository;
 import com.kbtg.bootcamp.posttest.UserTicket.UserTicketResponseDto;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.kbtg.bootcamp.posttest.Lottery.LotteryRepository;
 
@@ -13,14 +15,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class UserTicketService {
-    private final com.kbtg.bootcamp.posttest.UserTicket.UserTicketRepository UserTicketRepository;
-    private final LotteryRepository lotteryRepository;
-
-    public UserTicketService(UserTicketRepository user_ticketRepository, LotteryRepository lotteryRepository) {
-        this.UserTicketRepository = user_ticketRepository;
-        this.lotteryRepository = lotteryRepository;
-    }
+    @Autowired
+    private UserTicketRepository UserTicketRepository;
+    @Autowired
+    private LotteryRepository lotteryRepository;
 
     public String BuyTicket(String userId, String ticketId) {
         Optional<Lottery> lottery = lotteryRepository.findByTicket(ticketId);

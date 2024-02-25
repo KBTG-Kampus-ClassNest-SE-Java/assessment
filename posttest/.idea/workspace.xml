@@ -9,8 +9,9 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Controller/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Controller/AdminController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Entity/Lottery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Entity/Lottery.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Entity/UserTicket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Entity/UserTicket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/kbtg/bootcamp/posttest/Repository/LotteryRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/kbtg/bootcamp/posttest/Repository/LotteryRepositoryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/kbtg/bootcamp/posttest/Repository/UserTicketRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/kbtg/bootcamp/posttest/Repository/UserTicketRepositoryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/SecurityConfig/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/SecurityConfig/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Service/LotteryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Service/LotteryService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Service/UserTicketService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Service/UserTicketService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

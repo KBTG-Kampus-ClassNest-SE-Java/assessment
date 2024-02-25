@@ -5,18 +5,18 @@ import com.kbtg.bootcamp.posttest.Exception.ConflictException;
 import com.kbtg.bootcamp.posttest.Exception.NotFoundException;
 import com.kbtg.bootcamp.posttest.Lottery.LotteryRepository;
 import com.kbtg.bootcamp.posttest.Lottery.LotteryRequestDto;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class LotteryService {
-    private final LotteryRepository lotteryRepository;
-
-    public LotteryService(LotteryRepository lotteryRepository) {
-        this.lotteryRepository = lotteryRepository;
-    }
+    @Autowired
+    private LotteryRepository lotteryRepository;
 
     public List<String> getLottery() {
         return lotteryRepository.findAll().stream().filter(lottery -> lottery.getAmount() > 0).map(Lottery::getTicket).toList();
