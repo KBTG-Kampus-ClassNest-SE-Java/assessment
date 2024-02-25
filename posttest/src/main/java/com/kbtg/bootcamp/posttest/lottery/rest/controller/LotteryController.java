@@ -21,6 +21,7 @@ public class LotteryController {
     }
 
 
+    //EXP01
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin/lotteries")
@@ -28,6 +29,8 @@ public class LotteryController {
         return new ResponseEntity<>(new LotteryResponseDto(lotteryServiceImp.createLottery(request).getTicket()), HttpStatus.CREATED);
     }
 
+
+    //EXP02
     @GetMapping("/lotteries")
     public ResponseEntity<LotteryListResDto> listLotteries(){
         return new ResponseEntity<>(lotteryServiceImp.listAllLotteries(), HttpStatus.OK);

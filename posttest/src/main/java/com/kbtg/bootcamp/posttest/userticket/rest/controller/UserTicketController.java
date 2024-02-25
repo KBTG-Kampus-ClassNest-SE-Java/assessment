@@ -22,41 +22,42 @@ public class UserTicketController {
         this.userTicketService = userTicketService;
     }
 
-    //By lottery
+    //EXP03 Buy lottery
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/users/{userId}/lotteries/{ticketId}")
     public ResponseEntity<UserTicketReqDto> buyLottery(
             @PathVariable("userId")
-            @Pattern(regexp = "^0\\d{9}$", message = "must be a number only  and start with '0'")
-            @Size(min = 10, max = 10, message = "must be a 10 digit")
+            @Pattern(regexp = "^\\d{10}$", message = "Must be a number only")
+            @Size(min = 10, max = 10, message = "Must be a 10 digit")
             String userId,
             @PathVariable("ticketId")
-            @Pattern(regexp = "^\\d{6}$", message = "must be a number only")
-            @Size(min = 6, max = 6, message = "must be a 6 digit")
+            @Pattern(regexp = "^\\d{6}$", message = "Must be a number only")
+            @Size(min = 6, max = 6, message = "Must be a 6 digit")
             String ticketId) {
-        return new ResponseEntity<>(userTicketService.buyLottery(userId, ticketId), HttpStatus.OK);
+        return new ResponseEntity<>(userTicketService.buyLottery(userId, ticketId), HttpStatus.CREATED);
     }
 
-    //List all lottery by userId
+    //EXP04 view user lottery
     @GetMapping("/users/{userId}/lotteries")
     public ResponseEntity<UserTicketResDto> getLotteryByUserId(
             @PathVariable("userId")
-            @Pattern(regexp = "^0\\d{9}$", message = "must be a number only  and start with '0'")
-            @Size(min = 10, max = 10, message = "must be a 10 digit")
+            @Pattern(regexp = "^\\d{10}$", message = "Must be a number only")
+            @Size(min = 10, max = 10, message = "Must be a 10 digit")
             String userId) {
         return new ResponseEntity<>(userTicketService.getLotteryByUserId(userId), HttpStatus.OK);
     }
 
 
-    //Sell lottery
+    //EXP05 Sell lottery
     @DeleteMapping("/users/{userId}/lotteries/{ticketId}")
     public ResponseEntity<LotteryResponseDto> sellLottery(
             @PathVariable("userId")
-            @Pattern(regexp = "^0\\d{9}$", message = "must be a number only  and start with '0'")
-            @Size(min = 10, max = 10, message = "must be a 10 digit")
+            @Pattern(regexp = "^\\d{10}$", message = "Must be a number only")
+            @Size(min = 10, max = 10, message = "Must be a 10 digit")
             String userId,
             @PathVariable("ticketId")
-            @Pattern(regexp = "^\\d{6}$", message = "must be a number only")
-            @Size(min = 6, max = 6, message = "must be a 6 digit")
+            @Pattern(regexp = "^\\d{6}$", message = "Must be a number only")
+            @Size(min = 6, max = 6, message = "Must be a 6 digit")
             String ticketId) {
         return new ResponseEntity<>(userTicketService.sellLottery(userId, ticketId), HttpStatus.OK);
     }
