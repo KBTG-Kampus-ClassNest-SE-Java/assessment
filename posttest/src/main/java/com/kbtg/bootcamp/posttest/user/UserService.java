@@ -34,7 +34,6 @@ public class UserService {
 
 
     public User createUser(UserRequest request) {
-
         String name = request.getName();
         User user = new User(name);
         userRepository.save(user);

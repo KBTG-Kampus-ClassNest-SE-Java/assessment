@@ -11,4 +11,7 @@ import java.util.List;
     public class LotteryResponse {
         private List<String> ticket;
 
+    public List<String> getLotteryIds() {
+        return ticket;
+    }
 }

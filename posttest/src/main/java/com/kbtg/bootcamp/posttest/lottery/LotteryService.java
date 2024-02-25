@@ -30,11 +30,8 @@ public class LotteryService {
 
     public LotteryResponse addLottery(LotteryRequest request) throws Exception {
         Lottery newLottery = new Lottery(request.getTicket(), request.getPrice(), request.getAmount());
-        if (newLottery.getId() == null) {
-            throw new BadRequestException("Invalid Ticket ID");
-        } else {
-            lotteryRepository.save(newLottery);
-            return new LotteryResponse(Collections.singletonList(String.valueOf(newLottery.getId())));
-        }
+        lotteryRepository.save(newLottery);
+        return new LotteryResponse(Collections.singletonList(String.valueOf(newLottery.getId())));
+
     }
 }

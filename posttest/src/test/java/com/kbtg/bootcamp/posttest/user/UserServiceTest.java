@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,10 +29,14 @@ class UserServiceTest {
     MockMvc mockMvc;
 
     @Mock
+    private UserRepository userRepository;
+
+    @InjectMocks
     private UserService userService;
 
     @BeforeEach
     void setUp() {
+        UserService userService = new UserService(userRepository);
         mockMvc = MockMvcBuilders.standaloneSetup(userService)
                 .alwaysDo(print())
                 .build();
@@ -41,21 +46,63 @@ class UserServiceTest {
     @DisplayName("User should be created with valid input")
     void testCreateUserWithValidInput() {
         UserRequest request = new UserRequest();
-        request.setName("test");
+        request.setName("John Doe");
 
-        User expectedUser = new User(request.getName());
-        when(userService.createUser(any(UserRequest.class))).thenReturn(expectedUser);
+        User user = new User("John Doe");
+        when(userRepository.save(any(User.class))).thenReturn(user);
 
         User createdUser = userService.createUser(request);
 
-        assertEquals(expectedUser, createdUser);
+        assertEquals(user.getName(), createdUser.getName());
     }
 
     @Test
-    @DisplayName("Exception should be thrown when call getUserById with invalid ID")
-    void testGetUserById(){
+    void testCreateUser() {
+        UserRequest request = new UserRequest();
+        request.setName("John Doe");
 
+        User user = new User("John Doe");
+        when(userRepository.save(any(User.class))).thenReturn(user);
 
+        User createdUser = userService.createUser(request);
 
+        assertEquals(user.getName(), createdUser.getName());
     }
+
+    @Test
+    void testGetUserById() {
+        Long userId = 123L;
+        User user = new User("John Doe");
+        user.setUser_id(userId);
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+
+        User retrievedUser = userService.getUserById(userId);
+
+        assertEquals(userId, retrievedUser.getUser_id());
+    }
+
+    @Test
+    void testGetAllUser() {
+        User user1 = new User("John Doe");
+        User user2 = new User("Jane Smith");
+        when(userRepository.findAll()).thenReturn(List.of(user1, user2));
+
+        List<User> users = userService.getAllUser();
+
+        assertEquals(2, users.size());
+    }
+
+    @Test
+    @DisplayName("Default constructor should initialize fields")
+    void testDefaultConstructor() {
+        // Arrange
+        User user = new User();
+
+        // Assert
+        assertNotNull(user);
+        assertNotNull(user.getUser_id());
+        assertNotNull(user.getName());
+        assertTrue(user.getUser_id() >= 1_000_000_000L && user.getUser_id() <= 10_000_000_000L);
+    }
+
 }

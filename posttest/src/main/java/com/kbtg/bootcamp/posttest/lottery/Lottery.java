@@ -41,6 +41,4 @@ public class Lottery {
         return lottery_id;
     }
 
-    public void setId(long l) {
-    }
 }

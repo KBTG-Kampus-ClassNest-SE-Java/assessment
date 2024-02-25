@@ -6,7 +6,11 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Data
 public class LotteryRequest {
     @NotNull
@@ -23,7 +27,5 @@ public class LotteryRequest {
     @Max(value = 80, message = "price can not be over 80")
     private Integer amount;
 
-    public LotteryRequest(String testLottery, Integer amountTest, Integer priceTest) {
 
-    }
 }
