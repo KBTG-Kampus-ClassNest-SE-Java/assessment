@@ -2,6 +2,42 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.2.2'
 	id 'io.spring.dependency-management' version '1.1.4'
+	id 'com.diffplug.spotless' version '6.22.0'
+}
+
+spotless {
+	java {
+		removeUnusedImports()
+		indentWithSpaces(4)
+	}
+}
+
+task copyGitHooks(type: Copy) {
+	description 'Copies the git hooks from /git-hooks to the .git folder.'
+	from("${rootDir}/git-hooks/") {
+		include '**/*.sh'
+		rename '(.*).sh', '$1'
+	}
+	into "${rootDir}/.git/hooks"
+	onlyIf { isLinuxOrMacOs() }
+}
+
+static def isLinuxOrMacOs() {
+	def osName = System.getProperty('os.name').toLowerCase(Locale.ROOT)
+	return osName.contains('linux') || osName.contains('mac os') || osName.contains('macos')
+}
+
+task installGitHooks(type: Exec) {
+	description 'Installs the pre-commit.sh git hooks from /git-hooks.'
+	group 'git hooks'
+	workingDir rootDir
+	commandLine 'chmod'
+	args '-R', '+x', '../.git/hooks/'
+	dependsOn copyGitHooks
+	onlyIf { isLinuxOrMacOs() }
+	doLast {
+		logger.info('Git hook installed successfully.')
+	}
 }
 
 group = 'com.kbtg.bootcamp'
