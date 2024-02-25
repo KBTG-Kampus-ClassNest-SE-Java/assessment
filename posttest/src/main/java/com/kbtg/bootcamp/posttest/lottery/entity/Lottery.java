@@ -14,6 +14,7 @@ public class Lottery {
     @Id
     @Column(name = "ticket_id",length = 6)
     @Size(min = 6, max = 6)
+    @NotNull
     private String ticket;
 
     @Column(name = "amount")

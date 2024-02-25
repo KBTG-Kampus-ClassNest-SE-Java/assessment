@@ -25,7 +25,7 @@ public class LotteryController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin/lotteries")
     public ResponseEntity<LotteryResponseDto> lotteryAdminPost(@RequestBody LotteryRequestDto request){
-        return new ResponseEntity<>(new LotteryResponseDto(lotteryServiceImp.createLottery(request).getTicket()), HttpStatus.OK);
+        return new ResponseEntity<>(new LotteryResponseDto(lotteryServiceImp.createLottery(request).getTicket()), HttpStatus.CREATED);
     }
 
     @GetMapping("/lotteries")

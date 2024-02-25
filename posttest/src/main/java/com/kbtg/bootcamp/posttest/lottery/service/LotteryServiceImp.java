@@ -1,6 +1,6 @@
 package com.kbtg.bootcamp.posttest.lottery.service;
 
-import com.kbtg.bootcamp.posttest.lottery.exception.DubLotteryExceptionHandling;
+import com.kbtg.bootcamp.posttest.exception.LotteryException;
 import com.kbtg.bootcamp.posttest.lottery.rest.dto.LotteryListResDto;
 import com.kbtg.bootcamp.posttest.lottery.rest.dto.LotteryRequestDto;
 import com.kbtg.bootcamp.posttest.lottery.rest.dto.LotteryResponseDto;
@@ -22,24 +22,30 @@ public class LotteryServiceImp implements LotteryService {
         this.lotteryRepo = lotteryRepo;
     }
 
+
+    //EXP02
     @Override
     public LotteryListResDto listAllLotteries() {
-        return new LotteryListResDto(lotteryRepo.findAll().stream().map(Lottery::getTicket).collect(Collectors.toList()));
+        //instantiate and return response
+        return new LotteryListResDto(lotteryRepo.findAll()
+                .stream()
+                .map(Lottery::getTicket)
+                .collect(Collectors.toList()));
     }
 
+    //EXP01
     @Override
     public LotteryResponseDto createLottery(LotteryRequestDto lotteryRequestDto) {
         Optional<Lottery> ticket = lotteryRepo.findById(lotteryRequestDto.getTicket());
 
+        //check if the ticketId already exists in the database
         if (ticket.isPresent()) {
-            throw new DubLotteryExceptionHandling("This lottery number has already existed in database.");
-            //throw new RuntimeException("Lottery exists in the database.");
-            //for Simple
+            throw new LotteryException("This lottery number has already existed in database.");
         }
-
+        //save newly instantiated lottery object to database, and return ticketId
         return new LotteryResponseDto(lotteryRepo.save(new Lottery(lotteryRequestDto.getTicket(),
-                        lotteryRequestDto.getPrice(),
-                        lotteryRequestDto.getAmount()))
+                        lotteryRequestDto.getAmount(),
+                        lotteryRequestDto.getPrice()))
                 .getTicket()
         );
     }

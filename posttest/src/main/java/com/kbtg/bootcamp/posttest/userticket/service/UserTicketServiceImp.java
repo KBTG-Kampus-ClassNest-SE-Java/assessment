@@ -1,12 +1,12 @@
 package com.kbtg.bootcamp.posttest.userticket.service;
 
 
+import com.kbtg.bootcamp.posttest.exception.LotteryException;
 import com.kbtg.bootcamp.posttest.lottery.entity.Lottery;
-import com.kbtg.bootcamp.posttest.lottery.exception.LotteryUnavailableExceptionHandling;
 import com.kbtg.bootcamp.posttest.lottery.repo.LotteryRepo;
 import com.kbtg.bootcamp.posttest.lottery.rest.dto.LotteryResponseDto;
 import com.kbtg.bootcamp.posttest.userticket.entity.UserTicket;
-import com.kbtg.bootcamp.posttest.userticket.exception.InvalidUserTicketExceptionHandling;
+import com.kbtg.bootcamp.posttest.exception.UserTicketException;
 import com.kbtg.bootcamp.posttest.userticket.repo.UserTicketRepo;
 import com.kbtg.bootcamp.posttest.userticket.rest.dto.UserTicketReqDto;
 import com.kbtg.bootcamp.posttest.userticket.rest.dto.UserTicketResDto;
@@ -34,7 +34,7 @@ public class UserTicketServiceImp implements  UserTicketService {
         UserTicket userTicket = new UserTicket();
 
         if (lottery.isEmpty()) {
-            throw new LotteryUnavailableExceptionHandling("This lottery number is not available for purchase.");
+            throw new LotteryException("This lottery number is not available for purchase.");
         }
 
         lottery.get().setTicket(ticketId);
@@ -63,7 +63,7 @@ public class UserTicketServiceImp implements  UserTicketService {
         List<UserTicket> userTicket = userTicketRepo.findByUserIdAndTicketId(userId, ticketId);
 
         if (userTicket.isEmpty()) {
-            throw new InvalidUserTicketExceptionHandling("Either userId or ticketId is invalid. Please check.");
+            throw new UserTicketException("Either userId or ticketId is invalid. Please check.");
         }
 
         // Delete UserTicket
@@ -71,7 +71,7 @@ public class UserTicketServiceImp implements  UserTicketService {
 
         // Update and return Lottery
         Lottery lottery = lotteryRepo.findById(ticketId)
-                .orElseThrow(() -> new InvalidUserTicketExceptionHandling("Either userId or ticketId is invalid. Please check.")); // Reuse exception
+                .orElseThrow(() -> new UserTicketException("Either userId or ticketId is invalid. Please check.")); // Reuse exception
 
         lottery.setAmount(1);
         lotteryRepo.save(lottery);
