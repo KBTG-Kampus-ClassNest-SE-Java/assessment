@@ -1,4 +1,4 @@
-package com.example.ptts.entity;
+package com.kbtg.bootcamp.posttest.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

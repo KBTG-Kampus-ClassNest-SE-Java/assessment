@@ -31,5 +31,10 @@ public class LotteryController {
         return lotteryService.findLotteryByUserId(userId);
     }
 
+    @DeleteMapping("/users/{userId}/lotteries/{ticketId}")
+    public ResponseEntity<LotteryResponseDto> deleteTicketByUserId( @PathVariable Integer userId, @PathVariable String ticketId){
+        return lotteryService.deleteTicketByUserId(userId, ticketId);
+    }
+
 
 }

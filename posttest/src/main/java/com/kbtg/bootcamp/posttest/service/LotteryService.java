@@ -1,10 +1,10 @@
-package com.example.ptts.service;
+package com.kbtg.bootcamp.posttest.service
 
 
-import com.example.ptts.entity.*;
-import com.example.ptts.repository.LotteryRepository;
-import com.example.ptts.repository.UserTicketRepository;
-import com.example.ptts.repository.UsersRepository;
+import com.kbtg.bootcamp.posttest.entity.*;
+import com.kbtg.bootcamp.posttest.repository.LotteryRepository;
+import com.kbtg.bootcamp.posttest.repository.UserTicketRepository;
+import com.kbtg.bootcamp.posttest.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -54,6 +54,16 @@ public class LotteryService {
         int cost = list.stream().flatMap(Collection::stream).mapToInt(Lottery::getPrice).sum();
 
         LotteryUserResponseDto responseDto = new LotteryUserResponseDto(ticket, count, cost);
+        return ResponseEntity.ok().body(responseDto);
+    }
+    public ResponseEntity<LotteryResponseDto> deleteTicketByUserId(Integer userId, String ticketNumber){
+        Users users = usersRepository.findById(userId);
+        Lottery lottery = lotteryRepository.findByTicketNumber(ticketNumber);
+
+
+        List<String> tickets = Arrays.asList(lottery.getTicketNumber());
+        LotteryResponseDto responseDto = new LotteryResponseDto(tickets);
+        userTicketRepository.deleteUserTicketByUserIdAndTicketId(users.getId(), lottery.getId());
         return ResponseEntity.ok().body(responseDto);
     }
 
