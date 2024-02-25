@@ -7,12 +7,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import java.util.List;
+import java.util.Map;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -36,22 +40,44 @@ public class PublicRequestTest {
     }
 
     @Test
-    @DisplayName("when perform on GET: /lotteries should return list of lotteries")
+    @DisplayName("when perform on GET: /lotteries should return list of lotteries with key ticket")
     void getListOfLotteries() throws Exception {
-        Lottery lottery1 = new Lottery();
-        lottery1.setTicket("123456");
+        Lottery lotteryDummy1 = new Lottery();
+        lotteryDummy1.setTicket("123456");
 
-        Lottery lottery2 = new Lottery();
-        lottery2.setTicket("654321");
+        Lottery lotteryDummy2 = new Lottery();
+        lotteryDummy2.setTicket("654321");
 
-        when(publicService.getLottery()).thenReturn(List.of(lottery1, lottery2));
+        Lottery lotteryDummy3 = new Lottery();
+        lotteryDummy3.setTicket("789456");
+
+        when(publicService.getLottery()).thenReturn(Map.of("ticket",
+                List.of(lotteryDummy1.getTicket(),
+                        lotteryDummy2.getTicket(),
+                        lotteryDummy3.getTicket()
+                )));
 
         String expectLottery1 = "123456";
         String expectLottery2 = "654321";
+        String expectLottery3 = "789456";
+
+        List<String> expectResult = List.of(expectLottery1, expectLottery2, expectLottery3);
 
         mockMvc.perform(get("/lotteries"))
-                .andExpect(jsonPath("$[0].ticket", is(expectLottery1)))
-                .andExpect(jsonPath("$[1].ticket", is(expectLottery2)))
+                .andExpect(jsonPath("$.ticket", is(expectResult)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("when perform on GET: /lotteries in case no any ticket in database should return with empty list")
+    void getListOfLotteriesWhenNoAnyTicket() throws Exception {
+
+        when(publicService.getLottery()).thenReturn(Map.of("ticket", List.of()));
+
+        List<String> expectResult = List.of();
+
+        mockMvc.perform(get("/lotteries"))
+                .andExpect(jsonPath("$.ticket", is(expectResult)))
                 .andExpect(status().isOk());
     }
 }
