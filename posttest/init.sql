@@ -20,8 +20,8 @@ CREATE TABLE user_ticket (
 );
 
 
-INSERT INTO users (user_id,username, password, phone) VALUES ('2110511101','John', 'password','0812345687');
-INSERT INTO users (user_id,username, password, phone) VALUES ('2051110022', 'Dep', 'password', '0812345602');
+INSERT INTO users (user_id,username, password, phone) VALUES (2110511101,'John', 'password','0812345687');
+INSERT INTO users (user_id,username, password, phone) VALUES (2051110022, 'Dep', 'password', '0812345602');
 INSERT INTO lottery (lottery_number, price, amount) VALUES ('123456', 50, 1);
 INSERT INTO lottery (lottery_number, price, amount) VALUES ('883556', 60, 1);
 INSERT INTO lottery (lottery_number, price, amount) VALUES ('999666', 70, 1);
