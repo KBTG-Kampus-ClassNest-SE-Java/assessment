@@ -15,4 +15,4 @@ spring:
 #      name: test
 #      password: testt
 server:
-  port: 8888
+  port: ${SERVER_PORT}
