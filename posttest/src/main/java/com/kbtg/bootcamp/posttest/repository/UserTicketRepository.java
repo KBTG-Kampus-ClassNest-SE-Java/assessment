@@ -2,8 +2,8 @@ package com.kbtg.bootcamp.posttest.repository;
 
 
 
-import com.example.ptts.entity.Lottery;
-import com.example.ptts.entity.UserTicket;
+import com.kbtg.bootcamp.posttest.entity.Lottery;
+import com.kbtg.bootcamp.posttest.entity.UserTicket;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

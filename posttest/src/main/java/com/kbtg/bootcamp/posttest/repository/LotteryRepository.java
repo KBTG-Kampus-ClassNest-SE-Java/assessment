@@ -1,7 +1,7 @@
 package com.kbtg.bootcamp.posttest.repository;
 
 
-import com.example.ptts.entity.Lottery;
+import com.kbtg.bootcamp.posttest.Lottery;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

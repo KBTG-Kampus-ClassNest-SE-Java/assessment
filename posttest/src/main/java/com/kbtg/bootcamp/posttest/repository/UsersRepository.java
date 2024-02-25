@@ -2,7 +2,7 @@ package com.kbtg.bootcamp.posttest.repository;
 
 
 
-import com.example.ptts.entity.Users;
+import com.kbtg.bootcamp.posttest.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
