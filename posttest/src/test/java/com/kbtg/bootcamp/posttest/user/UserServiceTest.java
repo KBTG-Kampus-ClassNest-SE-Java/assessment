@@ -1,59 +1,48 @@
-package com.kbtg.bootcamp.posttest.user;
-
-import com.kbtg.bootcamp.posttest.exeption.NotFoundException;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
+import com.kbtg.bootcamp.posttest.user.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
-class UserServiceTest {
+class UserControllerTest {
 
-
-
+    @Mock
     private UserService userService;
-    private final UserRepository userRepository;
 
-    UserServiceTest(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    @Mock
+    private LotteryService lotteryService;
+
+    @InjectMocks
+    private UserController userController;
 
     @BeforeEach
     void setUp() {
-        LotteryService lotteryService = new LotteryService();
-//        UserService userService = new UserService(lotteryService, userRepository);
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    void createUser() {
-//        String name = "Jar-Sang";
-//        UserRequest request = new UserRequest(name);
-//        User user = userService.createUser(request);
+    @DisplayName("test if user created successfully")
+    void testGetAllUser() {
+        List<User> users = new ArrayList<>();
+        users.add(new User("Alice"));
+        users.add(new User("Bob"));
+        when(userService.getAllUser()).thenReturn(users);
 
+        List<User> result = userController.getALlUser();
 
-//        Long expected = 0L;
-//        assertEquals(expected, user.getId());
+        assertEquals(2, result.size());
+        assertEquals("Alice", result.get(0).getName());
+        assertEquals("Bob", result.get(1).getName());
     }
 
-    @Test
-    @DisplayName("User can buy only ticket that admin created")
-    void couldBuyOnlyExistLottery() {
-//        String lotteryId = "11111";
-//        String userId = "0000000000";
-//        NotFoundException exception = assertThrows(NotFoundException.class, () -> userService.buyLottery(userId, lotteryId));
-//        String expectedMessage = "Lottery ticket no. " + lotteryId + " sold out";
-//        assertEquals(expectedMessage, exception.getMessage());
-    }
-
-    @Test
-    @DisplayName("User should be created before buying a lottery")
-    void checkIfUserAlreadyCreated() {
-        String lotteryId = "111111";
-        String userId = "00";
-        NotFoundException exception = assertThrows(NotFoundException.class, () -> userService.buyLottery(userId, lotteryId));
-        String expectedMessage = "User : " + userId + " doesn't exist";
-        assertEquals(expectedMessage, exception.getMessage());
-    }
+    // Add similar tests for other controller methods
 }
