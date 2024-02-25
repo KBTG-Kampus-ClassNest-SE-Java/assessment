@@ -37,9 +37,4 @@ public class LotteryService {
             return new LotteryResponse(Collections.singletonList(String.valueOf(newLottery.getId())));
         }
     }
-
-    public LotteryResponse getLotteryById(String lotteryId) {
-        return null;
-    }
-
 }

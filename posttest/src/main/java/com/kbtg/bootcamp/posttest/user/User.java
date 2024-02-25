@@ -19,8 +19,6 @@ public class User {
     @Id
     private Long user_id;
 
-    @NotNull
-    @Pattern(regexp = "^[A-Za-z]+$")
     private String name;
 
     public  User(){

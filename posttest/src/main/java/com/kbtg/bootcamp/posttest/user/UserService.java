@@ -4,7 +4,6 @@ import com.kbtg.bootcamp.posttest.exeption.NotFoundException;
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryRepository;
 import com.kbtg.bootcamp.posttest.lottery.LotteryResponse;
-import com.kbtg.bootcamp.posttest.userTicket.UserLotteryResponse;
 import com.kbtg.bootcamp.posttest.userTicket.UserTicket;
 import com.kbtg.bootcamp.posttest.userTicket.UserTicketRepository;
 import com.kbtg.bootcamp.posttest.userTicket.UserTicketResponse;

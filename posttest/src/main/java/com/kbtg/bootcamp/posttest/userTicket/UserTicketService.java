@@ -41,24 +41,25 @@ public class UserTicketService {
         UserTicket userTicket = new UserTicket(user.getUser_id(), lottery.getLottery_id());
         userTicketRepository.save(userTicket);
 
-        return new UserTicketResponse(userId);
+        String ticketId = String.valueOf(userTicket.getTicket_id());
+        return new UserTicketResponse(Collections.singletonList(ticketId));
 
     }
 
-    public LotteryResponse deleteLottery(String userId, String ticketId) {
+    public UserTicketResponse deleteLotteryLotteryById(String userId, String ticketId) {
         UserTicket userTicket = userTicketRepository
                 .findByUserIdAndLotteryId(Long.valueOf(userId), Long.valueOf(ticketId));
 
         if (userTicket != null) {
             userTicketRepository.delete(userTicket);
-            return new LotteryResponse(Collections.singletonList(String.valueOf(userTicket.getTicket_id())));
+            return new UserTicketResponse(Collections.singletonList(ticketId));
         } else {
             throw new NotFoundException("Lottery ticket not found for user " + userId + " and ticket ID " + ticketId);
         }
     }
 
 
-    public UserLotteryResponse showUserLotteriesList(String userId) {
+    public UserTicketResponse showUserLotteriesList(String userId) {
         Long userIdLong = Long.parseLong(userId);
 
         List<UserTicket> userTickets = userTicketRepository.findByUserId(userIdLong);
@@ -68,7 +69,7 @@ public class UserTicketService {
                 .map(String::valueOf)
                 .collect(Collectors.toList());
 
-        return new UserLotteryResponse(ticketIds);
+        return new UserTicketResponse(ticketIds);
     }
 
 }
