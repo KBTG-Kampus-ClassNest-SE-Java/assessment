@@ -30,8 +30,4 @@ public class LotteryController {
         return new LotteryResponse(ticketNumbers);
     }
 
-    @DeleteMapping
-    public void DeleteLottery() {
-        lotteryService.deleteAllLotteries();
-    }
 }

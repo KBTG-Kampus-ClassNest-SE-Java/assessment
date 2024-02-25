@@ -1,7 +1,6 @@
 package com.kbtg.bootcamp.posttest.userTicket;
 
 
-import com.kbtg.bootcamp.posttest.lottery.LotteryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,12 +21,12 @@ public class UserTicketController {
     }
 
     @DeleteMapping("/{userId}/lotteries/{ticketId}")
-    public LotteryResponse sellBackLottery(@PathVariable String userId, @PathVariable String ticketId) {
-        return userTicketService.deleteLottery(userId, ticketId);
+    public UserTicketResponse sellBackLottery(@PathVariable String userId, @PathVariable String ticketId) {
+        return userTicketService.deleteLotteryLotteryById(userId, ticketId);
     }
 
     @GetMapping("/{userId}/lotteries")
-    public UserLotteryResponse getUserLotteries(@PathVariable("userId") String userId) {
+    public UserTicketResponse getUserLotteries(@PathVariable("userId") String userId) {
         return userTicketService.showUserLotteriesList(userId);
     }
 }

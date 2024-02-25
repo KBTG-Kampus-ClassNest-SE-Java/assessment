@@ -25,16 +25,12 @@ import static org.mockito.Mockito.when;
 
 class LotteryServiceTest {
 
-    private LotteryController lotteryController;
-    private LotteryService lotteryService;
-    private LotteryRepository lotteryRepository;
-    private LotteryRequest lotteryRequest;
 
     @BeforeEach
     void setUp() {
-        lotteryRepository = mock(LotteryRepository.class); // Mocking the repository
-        lotteryService = new LotteryService(lotteryRepository); // Instantiating service with mocked repository
-        lotteryController = new LotteryController(lotteryService);
+        LotteryRepository lotteryRepository = mock(LotteryRepository.class); // Mocking the repository
+        LotteryService lotteryService = new LotteryService(lotteryRepository); // Instantiating service with mocked repository
+        LotteryController lotteryController = new LotteryController(lotteryService);
     }
 
     @Test
