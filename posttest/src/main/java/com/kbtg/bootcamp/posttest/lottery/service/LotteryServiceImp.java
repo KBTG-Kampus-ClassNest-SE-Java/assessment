@@ -1,5 +1,6 @@
 package com.kbtg.bootcamp.posttest.lottery.service;
 
+import com.kbtg.bootcamp.posttest.lottery.exception.DubLotteryExceptionHandling;
 import com.kbtg.bootcamp.posttest.lottery.rest.dto.LotteryListResDto;
 import com.kbtg.bootcamp.posttest.lottery.rest.dto.LotteryRequestDto;
 import com.kbtg.bootcamp.posttest.lottery.rest.dto.LotteryResponseDto;
@@ -31,7 +32,9 @@ public class LotteryServiceImp implements LotteryService {
         Optional<Lottery> ticket = lotteryRepo.findById(lotteryRequestDto.getTicket());
 
         if (ticket.isPresent()) {
-            throw new RuntimeException("Lottery exists in the database.");
+            throw new DubLotteryExceptionHandling("This lottery number has already existed in database.");
+            //throw new RuntimeException("Lottery exists in the database.");
+            //for Simple
         }
 
         return new LotteryResponseDto(lotteryRepo.save(new Lottery(lotteryRequestDto.getTicket(),
