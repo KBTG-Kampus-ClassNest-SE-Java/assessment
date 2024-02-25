@@ -12,19 +12,15 @@ import java.util.Map;
 @RequestMapping("/lotteries")
 public class LotteryController {
 
-    @Autowired
-    private final LotteryService lotteryService;
+	@Autowired
+	private final LotteryService lotteryService;
 
-    public LotteryController(LotteryService lotteryService) {
-        this.lotteryService = lotteryService;
-    }
+	public LotteryController(LotteryService lotteryService) {
+		this.lotteryService = lotteryService;
+	}
 
-//    @GetMapping("")
-//    public LotteryListResponseDto getLotteries() {
-//        return new LotteryListResponseDto(lotteryService.getLotteries());
-//    }
-    @GetMapping("")
-    public ResponseEntity<Map<String, List<String>>> getLottery() {
-        return ResponseEntity.ok(Collections.singletonMap("tickets", lotteryService.getLotteries()));
-    }
+	@GetMapping("")
+	public ResponseEntity<Map<String, List<String>>> getLottery() {
+		return ResponseEntity.ok(Collections.singletonMap("tickets", lotteryService.getLotteries()));
+	}
 }

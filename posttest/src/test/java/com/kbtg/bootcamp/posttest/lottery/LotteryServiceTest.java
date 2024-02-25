@@ -20,106 +20,106 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class LotteryServiceTest {
-    @InjectMocks
-    private LotteryService lotteryService;
-    @Mock
-    private LotteryRepository lotteryRepository;
+	@InjectMocks
+	private LotteryService lotteryService;
+	@Mock
+	private LotteryRepository lotteryRepository;
 
-    @Test
-    @DisplayName("Create lottery should success and return ticket Id as string")
-    public void TestCreateLotterySuccess() {
-        String ticket = "123456";
-        Integer price = 80;
-        Integer amount = 1;
+	@Test
+	@DisplayName("Create lottery should success and return ticket Id as string")
+	public void TestCreateLotterySuccess() {
+		String ticket = "123456";
+		Integer price = 80;
+		Integer amount = 1;
 
-        LotteryRequestDto lotteryRequestDto = new LotteryRequestDto(ticket, amount, price);
-        when(lotteryRepository.findByTicket(ticket)).thenReturn(empty());
+		LotteryRequestDto lotteryRequestDto = new LotteryRequestDto(ticket, amount, price);
+		when(lotteryRepository.findByTicket(ticket)).thenReturn(empty());
 
-        String result = lotteryService.createLottery(lotteryRequestDto);
+		String result = lotteryService.createLottery(lotteryRequestDto);
 
-        assertEquals(ticket, result);
+		assertEquals(ticket, result);
 
-        verify(lotteryRepository).findByTicket(ticket);
-        verify(lotteryRepository).save(any(Lottery.class));
-    }
+		verify(lotteryRepository).findByTicket(ticket);
+		verify(lotteryRepository).save(any(Lottery.class));
+	}
 
-    @Test
-    @DisplayName("Create lottery that already exists should throw StatusInternalServerErrorException")
-    public void TestCreateDuplicateTicket() {
-        String ticket = "123456";
-        Integer price = 80;
-        Integer amount = 1;
+	@Test
+	@DisplayName("Create lottery that already exists should throw StatusInternalServerErrorException")
+	public void TestCreateDuplicateTicket() {
+		String ticket = "123456";
+		Integer price = 80;
+		Integer amount = 1;
 
-        LotteryRequestDto lotteryRequestDto = new LotteryRequestDto(ticket, amount, price);
+		LotteryRequestDto lotteryRequestDto = new LotteryRequestDto(ticket, amount, price);
 
-        when(lotteryRepository.findByTicket(ticket)).thenReturn(Optional.of(new Lottery(ticket, amount, price)));
-        Lottery lottery = Optional.of(new Lottery(ticket, amount, price)).get();
+		when(lotteryRepository.findByTicket(ticket)).thenReturn(Optional.of(new Lottery(ticket, amount, price)));
+		Lottery lottery = Optional.of(new Lottery(ticket, amount, price)).get();
 
-        assertThrows(StatusInternalServerErrorException.class, () -> lotteryService.createLottery(lotteryRequestDto));
+		assertThrows(StatusInternalServerErrorException.class, () -> lotteryService.createLottery(lotteryRequestDto));
 
-        verify(lotteryRepository).findByTicket(ticket);
-        verify(lotteryRepository, never()).save(any());
-    }
+		verify(lotteryRepository).findByTicket(ticket);
+		verify(lotteryRepository, never()).save(any());
+	}
 
-    @Test
-    @DisplayName("Non Zero amount of Lottery should return List of Ticket")
-    public void TestGetLottery() {
-        when(lotteryRepository.findAll()).thenReturn(Arrays.asList(
-                new Lottery("123456", 80, 1),
-                new Lottery("123457", 80, 1)
-        ));
+	@Test
+	@DisplayName("Non Zero amount of Lottery should return List of Ticket")
+	public void TestGetLottery() {
+		when(lotteryRepository.findAll()).thenReturn(Arrays.asList(
+				new Lottery("123456", 80, 1),
+				new Lottery("123457", 80, 1)
+		));
 
-        List<String> result = lotteryService.getLotteries();
+		List<String> result = lotteryService.getLotteries();
 
-        assertEquals(Arrays.asList("123456", "123457"), result);
+		assertEquals(Arrays.asList("123456", "123457"), result);
 
-        verify(lotteryRepository).findAll();
-    }
+		verify(lotteryRepository).findAll();
+	}
 
-    @Test
-    @DisplayName("Zero amount of Lottery should return Empty List")
-    public void TestGetZeroLottery() {
-        when(lotteryRepository.findAll()).thenReturn(Arrays.asList(
-                new Lottery("123456", 80, 0),
-                new Lottery("123457", 80, 0)
-        ));
+	@Test
+	@DisplayName("Zero amount of Lottery should return Empty List")
+	public void TestGetZeroLottery() {
+		when(lotteryRepository.findAll()).thenReturn(Arrays.asList(
+				new Lottery("123456", 80, 0),
+				new Lottery("123457", 80, 0)
+		));
 
-        List<String> result = lotteryService.getLotteries();
+		List<String> result = lotteryService.getLotteries();
 
-        assertEquals(Collections.emptyList(), result);
-        assertNotNull(result);
+		assertEquals(Collections.emptyList(), result);
+		assertNotNull(result);
 
-        verify(lotteryRepository).findAll();
-    }
+		verify(lotteryRepository).findAll();
+	}
 
-    @Test
-    @DisplayName("Mixed Zero and Non Zero amount of Lottery should return List of Non Zero Ticket")
-    public void TestGetMixedLottery() {
-        when(lotteryRepository.findAll()).thenReturn(Arrays.asList(
-                new Lottery("123456", 80, 0),
-                new Lottery("123457", 80, 1)
-        ));
+	@Test
+	@DisplayName("Mixed Zero and Non Zero amount of Lottery should return List of Non Zero Ticket")
+	public void TestGetMixedLottery() {
+		when(lotteryRepository.findAll()).thenReturn(Arrays.asList(
+				new Lottery("123456", 80, 0),
+				new Lottery("123457", 80, 1)
+		));
 
-        List<String> result = lotteryService.getLotteries();
+		List<String> result = lotteryService.getLotteries();
 
-        assertEquals(Arrays.asList("123457"), result);
-        assertNotNull(result);
+		assertEquals(Arrays.asList("123457"), result);
+		assertNotNull(result);
 
-        verify(lotteryRepository).findAll();
-    }
+		verify(lotteryRepository).findAll();
+	}
 
-    @Test
-    @DisplayName("Initial state should return Empty List")
-    public void TestGetInitLottery() {
-        when(lotteryRepository.findAll()).thenReturn(Collections.emptyList());
+	@Test
+	@DisplayName("Initial state should return Empty List")
+	public void TestGetInitLottery() {
+		when(lotteryRepository.findAll()).thenReturn(Collections.emptyList());
 
-        List<String> result = lotteryService.getLotteries();
+		List<String> result = lotteryService.getLotteries();
 
-        assertEquals(Collections.emptyList(), result);
-        assertNotNull(result);
+		assertEquals(Collections.emptyList(), result);
+		assertNotNull(result);
 
-        verify(lotteryRepository).findAll();
-    }
+		verify(lotteryRepository).findAll();
+	}
 }
 //    @Test
 //    @DisplayName("")

@@ -23,117 +23,117 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @ExtendWith(MockitoExtension.class)
 class AdminControllerTest {
 
-    MockMvc mockMvc;
+	MockMvc mockMvc;
 
-    @Mock
-    LotteryService lotteryService;
+	@Mock
+	LotteryService lotteryService;
 
-    ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
+	ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
-    @BeforeEach
-    void setUp() {
-        AdminController adminController = new AdminController(lotteryService);
-        mockMvc = MockMvcBuilders.standaloneSetup(adminController).alwaysDo(print()).build();
-    }
-    @Test
-    @DisplayName("Should be Status CREATED (201) and created lottery")
-    void shouldCreateLottery() throws Exception {
+	@BeforeEach
+	void setUp() {
+		AdminController adminController = new AdminController(lotteryService);
+		mockMvc = MockMvcBuilders.standaloneSetup(adminController).alwaysDo(print()).build();
+	}
+	@Test
+	@DisplayName("Should be Status CREATED (201) and created lottery")
+	void shouldCreateLottery() throws Exception {
 
-        LotteryRequestDto lotteryRequestDto = new LotteryRequestDto("123456", 80,1);
-        String request = objectWriter.writeValueAsString(lotteryRequestDto);
+		LotteryRequestDto lotteryRequestDto = new LotteryRequestDto("123456", 80,1);
+		String request = objectWriter.writeValueAsString(lotteryRequestDto);
 
 //        LotteryResponseDto response = new LotteryResponseDto("123456");
 //        when(lotteryService.createLottery(any())).thenReturn(response);
-        when(lotteryService.createLottery(any())).thenReturn("123456");
+		when(lotteryService.createLottery(any())).thenReturn("123456");
 
 
-        mockMvc.perform(post("/admin/lotteries")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(request))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.ticket", is("123456")))
-                .andReturn();
-    }
-    @Test
-    @DisplayName("Should be Bad request (400) with ticket id is not number")
-    void shouldBadRequestWithTicketIdIsNotNumber() throws Exception {
+		mockMvc.perform(post("/admin/lotteries")
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON)
+						.content(request))
+				.andExpect(status().isCreated())
+				.andExpect(jsonPath("$.ticket", is("123456")))
+				.andReturn();
+	}
+	@Test
+	@DisplayName("Should be Bad request (400) with ticket id is not number")
+	void shouldBadRequestWithTicketIdIsNotNumber() throws Exception {
 
-        LotteryRequestDto lotteryRequestDto = new LotteryRequestDto("000ABC", 80, 1);
-        String request = objectWriter.writeValueAsString(lotteryRequestDto);
+		LotteryRequestDto lotteryRequestDto = new LotteryRequestDto("000ABC", 80, 1);
+		String request = objectWriter.writeValueAsString(lotteryRequestDto);
 
-        mockMvc.perform(post("/admin/lotteries")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(request))
-                .andExpect(status().isBadRequest());
-    }
-    @Test
-    @DisplayName("Should be Bad request (400) with Ticket Id is less than 6 digits")
-    void shouldBadRequestWithTicketIdIsLessThanSixDigits() throws Exception {
+		mockMvc.perform(post("/admin/lotteries")
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON)
+						.content(request))
+				.andExpect(status().isBadRequest());
+	}
+	@Test
+	@DisplayName("Should be Bad request (400) with Ticket Id is less than 6 digits")
+	void shouldBadRequestWithTicketIdIsLessThanSixDigits() throws Exception {
 
-        LotteryRequestDto lotteryRequestDto = new LotteryRequestDto("12345", 80, 1);
-        String request = objectWriter.writeValueAsString(lotteryRequestDto);
+		LotteryRequestDto lotteryRequestDto = new LotteryRequestDto("12345", 80, 1);
+		String request = objectWriter.writeValueAsString(lotteryRequestDto);
 
-        mockMvc.perform(post("/admin/lotteries")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(request))
-                .andExpect(status().isBadRequest());
-    }
-    @Test
-    @DisplayName("Should be Bad request (400) with Ticket Id is more than 6 digits")
-    void shouldBadRequestWithTicketIdIsMoreThanSixDigits() throws Exception {
+		mockMvc.perform(post("/admin/lotteries")
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON)
+						.content(request))
+				.andExpect(status().isBadRequest());
+	}
+	@Test
+	@DisplayName("Should be Bad request (400) with Ticket Id is more than 6 digits")
+	void shouldBadRequestWithTicketIdIsMoreThanSixDigits() throws Exception {
 
-        LotteryRequestDto lotteryRequestDto = new LotteryRequestDto("1234567", 80, 1);
-        String request = objectWriter.writeValueAsString(lotteryRequestDto);
+		LotteryRequestDto lotteryRequestDto = new LotteryRequestDto("1234567", 80, 1);
+		String request = objectWriter.writeValueAsString(lotteryRequestDto);
 
-        mockMvc.perform(post("/admin/lotteries")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(request))
-                .andExpect(status().isBadRequest());
-    }
-    @Test
-    @DisplayName("Should be Bad request (400) with price is not number")
-    void shouldBadRequestWithPriceIsNotNumber() throws Exception {
+		mockMvc.perform(post("/admin/lotteries")
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON)
+						.content(request))
+				.andExpect(status().isBadRequest());
+	}
+	@Test
+	@DisplayName("Should be Bad request (400) with price is not number")
+	void shouldBadRequestWithPriceIsNotNumber() throws Exception {
 
-        mockMvc.perform(post("/admin/lotteries")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content("{\"ticket\": \"000000\", \"price\": \"eight zero\", \"amount\": 1}"))
-                .andExpect(status().isBadRequest());
-    }
-    @Test
-    @DisplayName("Should be Bad Request (400) with price less than 0")
-    void shouldBadRequestWithPriceIsLessThanZero() throws Exception {
+		mockMvc.perform(post("/admin/lotteries")
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON)
+						.content("{\"ticket\": \"000000\", \"price\": \"eight zero\", \"amount\": 1}"))
+				.andExpect(status().isBadRequest());
+	}
+	@Test
+	@DisplayName("Should be Bad Request (400) with price less than 0")
+	void shouldBadRequestWithPriceIsLessThanZero() throws Exception {
 
-        mockMvc.perform(post("/admin/lotteries")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .accept(MediaType.APPLICATION_JSON)
-                            .content("{\"ticket\": \"000000\", \"price\": -1, \"amount\": 1}"))
-                .andExpect(status().isBadRequest());
-    }
-    @Test
-    @DisplayName("Should be Bad Request (400) with amount is not number")
-    void shouldBadRequestWithAmountIsNotNumber() throws Exception {
+		mockMvc.perform(post("/admin/lotteries")
+							.contentType(MediaType.APPLICATION_JSON)
+							.accept(MediaType.APPLICATION_JSON)
+							.content("{\"ticket\": \"000000\", \"price\": -1, \"amount\": 1}"))
+				.andExpect(status().isBadRequest());
+	}
+	@Test
+	@DisplayName("Should be Bad Request (400) with amount is not number")
+	void shouldBadRequestWithAmountIsNotNumber() throws Exception {
 
-        mockMvc.perform(post("/admin/lotteries")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content("{\"ticket\": \"000000\", \"price\": 80, \"amount\": \"a\"}"))
-                .andExpect(status().isBadRequest());
-    }
-    @Test
-    @DisplayName("Should be Bad Request (400) with amount is less than 0")
-    void shouldBadRequestWithAmountIsLessThanZero() throws Exception {
+		mockMvc.perform(post("/admin/lotteries")
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON)
+						.content("{\"ticket\": \"000000\", \"price\": 80, \"amount\": \"a\"}"))
+				.andExpect(status().isBadRequest());
+	}
+	@Test
+	@DisplayName("Should be Bad Request (400) with amount is less than 0")
+	void shouldBadRequestWithAmountIsLessThanZero() throws Exception {
 
-        mockMvc.perform(post("/admin/lotteries")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content("{\"ticket\": \"000000\", \"price\": 80, \"amount\": -1}"))
-                .andExpect(status().isBadRequest());
-    }
+		mockMvc.perform(post("/admin/lotteries")
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON)
+						.content("{\"ticket\": \"000000\", \"price\": 80, \"amount\": -1}"))
+				.andExpect(status().isBadRequest());
+	}
 
 
 }

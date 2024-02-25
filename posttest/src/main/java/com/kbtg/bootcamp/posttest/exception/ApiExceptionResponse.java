@@ -8,16 +8,16 @@ import java.time.ZonedDateTime;
 @Data
 public class ApiExceptionResponse {
 
-    private final String message;
+	private final String message;
 
-    private final HttpStatus httpStatus;
+	private final HttpStatus httpStatus;
 
-    private final ZonedDateTime dateTime;
+	private final ZonedDateTime dateTime;
 
-    public ApiExceptionResponse(String message, HttpStatus httpStatus, ZonedDateTime dateTime) {
-        this.message = message;
-        this.httpStatus = httpStatus;
-        this.dateTime = dateTime;
-    }
+	public ApiExceptionResponse(String message, HttpStatus httpStatus, ZonedDateTime dateTime) {
+		this.message = message;
+		this.httpStatus = httpStatus;
+		this.dateTime = dateTime;
+	}
 
 }

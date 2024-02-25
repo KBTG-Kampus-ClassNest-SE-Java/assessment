@@ -15,19 +15,15 @@ import java.util.Map;
 @RequestMapping("/admin")
 public class AdminController {
 
-    private final LotteryService lotteryService;
+	private final LotteryService lotteryService;
 
-    public AdminController(LotteryService lotteryService) {
-        this.lotteryService = lotteryService;
-    }
+	public AdminController(LotteryService lotteryService) {
+		this.lotteryService = lotteryService;
+	}
 
-    @PostMapping("/lotteries")
-    @PreAuthorize("hasRole('ADMIN')")
-    @ResponseStatus(HttpStatus.CREATED)
-//    public LotteryResponseDto createLottery(@Valid @RequestBody LotteryRequestDto lotteryRequestDto) throws Exception {
-//        return lotteryService.createLottery(lotteryRequestDto);
-//    }
-    public ResponseEntity<Map<String, String>> createLottery(@Valid @RequestBody LotteryRequestDto lottery) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(Collections.singletonMap("ticket", lotteryService.createLottery(lottery)));
-    }
+	@PostMapping("/lotteries")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<Map<String, String>> createLottery(@Valid @RequestBody LotteryRequestDto lottery) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(Collections.singletonMap("ticket", lotteryService.createLottery(lottery)));
+	}
 }
