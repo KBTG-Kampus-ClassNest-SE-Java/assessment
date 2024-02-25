@@ -11,4 +11,18 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"
+  my_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
 
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_URL=jdbc:postgresql://postgres:5432/lottery
+      - DATABASE_USERNAME=fah
+      - DATABASE_PASSWORD=fah240342
+    ports:
+      - "8888:8888"
+volumes:
+  data:
