@@ -1,4 +1,4 @@
-package com.kbtg.bootcamp.posttest.entity;
+package com.kbtg.bootcamp.posttest.controller;
 
 
 import com.kbtg.bootcamp.posttest.LotteryResponseDto;

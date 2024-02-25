@@ -66,5 +66,14 @@ public class LotteryService {
         userTicketRepository.deleteUserTicketByUserIdAndTicketId(users.getId(), lottery.getId());
         return ResponseEntity.ok().body(responseDto);
     }
+    public ResponseEntity<LotteryResponseDto> createLottery(LotteryRequestDto requestDto) throws Exception{
+
+        Lottery lottery = new Lottery(requestDto.getTickets(), requestDto.getPrice(), requestDto.getAmount());
+        lotteryRepository.save(lottery);
+
+        List<String> tickets = Arrays.asList(lottery.getTicketNumber());
+        LotteryResponseDto responseDto = new LotteryResponseDto(tickets);
+        return ResponseEntity.status(201).body(responseDto);
+    }
 
 }
