@@ -1,7 +1,7 @@
 package com.kbtg.bootcamp.posttest.user;
 
 
-import com.kbtg.bootcamp.posttest.exception.NotFoundException;
+import com.kbtg.bootcamp.posttest.exception.BadRequestException;
 import com.kbtg.bootcamp.posttest.exception.StatusInternalServerErrorException;
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryRepository;
@@ -46,7 +46,7 @@ public class UserService {
     public LotteryListDetailResponseDto getUserDetail(String userId) {
         List<User> lotteryListByUserId = userRepository.findByUserId(userId);
         if (lotteryListByUserId.isEmpty()) {
-            throw new NotFoundException("User ID : " + userId + " is not found.");
+            throw new BadRequestException("User ID : " + userId + " is not found.");
         }
         List<String> lotteryList = lotteryListByUserId.stream().map(User::getTicketId).map(Lottery::getTicket).toList();
         Integer count = lotteryListByUserId.size();
@@ -58,7 +58,7 @@ public class UserService {
         List<User> lotteryListByUserId = userRepository.findByUserId(userId);
 
         if (lotteryListByUserId.isEmpty()) {
-            throw new NotFoundException("User ID : " + userId + " is not bought by Ticket ID : " + ticketId);
+            throw new BadRequestException("User ID : " + userId + " is not bought by Ticket ID : " + ticketId);
         }
         Optional<User> optionalLottery = lotteryListByUserId.stream()
                 .filter(tempLottery -> Objects.equals(tempLottery
@@ -67,7 +67,7 @@ public class UserService {
                 .findAny();
 
         if (optionalLottery.isEmpty()) {
-            throw new NotFoundException("Ticket ID : " + ticketId + " is not found.");
+            throw new BadRequestException("Ticket ID : " + ticketId + " is not found.");
         }
         User userLottery = optionalLottery.get();
         Lottery selectedLottery = userLottery.getTicketId();

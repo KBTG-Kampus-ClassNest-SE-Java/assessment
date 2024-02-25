@@ -1,11 +1,8 @@
 version: '3'
 
-networks:
-  lottery-service-network:
-
 services:
-  progres-db:
-    container_name: lottery-postgres-database
+  postgres-db:
+    container_name: lottery-postgres-db
     image: postgres:latest
     restart: always
     environment:
@@ -18,6 +15,9 @@ services:
       - "5432:5432"
     networks:
       - lottery-service-network
+
+networks:
+  lottery-service-network:
 
 volumes:
   pgdata:

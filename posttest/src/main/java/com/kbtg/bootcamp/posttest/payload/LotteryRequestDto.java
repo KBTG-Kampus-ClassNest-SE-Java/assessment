@@ -1,31 +1,49 @@
 package com.kbtg.bootcamp.posttest.payload;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
-public record LotteryRequestDto(
 
-        @NotNull
-            @Size(min = 6, max = 6 , message = "Ticket length should be 6 characters")
-            String ticket,
-            @NotNull
-            Integer price,
-            @NotNull
-            Integer amount
-        ) {
+public class LotteryRequestDto {
 
-    @Override
-    public String ticket() {
+    @NotBlank(message = "Ticket ID cannot be blank")
+    @Pattern(regexp = "\\d{6}", message = "Value must be a 6-digit number")
+    String ticket;
+    @NotNull(message = "Price cannot be null") @Min(value = 1, message = "Price must be at least 1")
+    Integer price;
+
+    @NotNull(message = "Amount cannot be null") @Min(value = 1, message = "Amount must be at least 1")
+    Integer amount;
+
+    public LotteryRequestDto(String ticket, Integer price, Integer amount) {
+        this.ticket = ticket;
+        this.price = price;
+        this.amount = amount;
+    }
+
+    public LotteryRequestDto() {
+    }
+
+    public String getTicket() {
         return ticket;
     }
 
-    @Override
-    public Integer price() {
+    public void setTicket(String ticket) {
+        this.ticket = ticket;
+    }
+
+    public Integer getPrice() {
         return price;
     }
 
-    @Override
-    public Integer amount() {
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    public Integer getAmount() {
         return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 }

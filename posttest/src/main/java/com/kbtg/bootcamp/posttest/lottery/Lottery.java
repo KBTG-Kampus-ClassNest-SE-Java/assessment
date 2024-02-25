@@ -21,13 +21,19 @@ public class Lottery {
     private Integer amount;
 
     @OneToMany(mappedBy = "ticketId")
-    private List<User> userLotteries;
+    private List<com.kbtg.bootcamp.posttest.user.User> userLotteries;
 
-    public Lottery(String ticket, Integer price, Integer amount, List<User> userLotteries) {
+    public Lottery(String ticket, Integer price, Integer amount, List<com.kbtg.bootcamp.posttest.user.User> userLotteries) {
         this.ticket = ticket;
         this.price = price;
         this.amount = amount;
         this.userLotteries = userLotteries;
+    }
+
+    public Lottery(String ticket, Integer price, Integer amount) {
+        this.ticket = ticket;
+        this.price = price;
+        this.amount = amount;
     }
 
     public Lottery() {

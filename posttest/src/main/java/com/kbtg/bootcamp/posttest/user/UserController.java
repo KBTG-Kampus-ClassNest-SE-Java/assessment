@@ -20,7 +20,7 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/{userId}/lotteries/{ticketId}")
-    public UserIdResponseDto createUser(@PathVariable("userId")
+    public UserIdResponseDto createUserAndLottery(@PathVariable("userId")
                                @NotBlank(message = "User ID value must not be blank")
                                @Pattern(regexp = "\\d{10}", message = "User ID must be 10 digit number")
                                String userId,
@@ -50,6 +50,5 @@ public class UserController {
                                                 String ticketId) {
         return userService.sellLotteryByUserIdAndTicketId(userId, ticketId);
     }
-
 }
 
