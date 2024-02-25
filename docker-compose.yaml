@@ -1,0 +1,30 @@
+version: "3"
+services:
+  app:
+    depends_on:
+      - db
+    build: ./posttest
+    restart: on-failure
+    ports:
+      - "8081:8081"
+    environment:
+      SERVER_PORT: 8081
+      SPRING_SECURITY_USER_NAME: admin
+      SPRING_SECURITY_USER_PASSWORD: password
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/lottery_db
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: lottery_db
+    restart: on-failure
+    ports:
+      - "5433:5432"
+    volumes:
+      - "./db/init.sql:/docker-entrypoint-initdb.d/init.sql"
