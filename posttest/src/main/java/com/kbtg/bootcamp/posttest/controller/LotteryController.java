@@ -71,7 +71,7 @@ public class LotteryController {
 
     //exp5
     @DeleteMapping("/users/{userId}/lotteries/{ticketId}")
-    public ResponseEntity<Object> sellLotteries(@PathVariable("userId") int id, @PathVariable("ticketId") String ticketId){
+    public ResponseEntity<Object> sellLotteries(@PathVariable("userId") String id, @PathVariable("ticketId") String ticketId){
         userTicketService.sellLotteries(id,ticketId);
         UserTicketResponseDto userTicketResponse = new UserTicketResponseDto(ticketId);
         return new ResponseEntity<>(Map.of("ticket",userTicketResponse.getTicket()),HttpStatus.OK);

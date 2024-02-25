@@ -119,7 +119,7 @@ public class LotteryControllerTest {
 
     @Test
     void testSellLotteries() throws Exception{
-        doNothing().when(userTicketService).sellLotteries(anyInt(),anyString());
+        doNothing().when(userTicketService).sellLotteries(anyString(),anyString());
 
         mockMvc.perform(delete("/users/123/lotteries/12")
                 .contentType(MediaType.APPLICATION_JSON))
