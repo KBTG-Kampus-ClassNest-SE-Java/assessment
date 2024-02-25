@@ -9,7 +9,14 @@ public class ThaiLotteryService implements LotteryService {
     private LotteryRepository lotteryRepository;
 
     @Override
-    public Lottery addLottery(Lottery lottery) {
-        return lotteryRepository.save(lottery);
+    public void addLottery(Lottery lottery) {
+        lotteryRepository.save(lottery);
+    }
+
+    @Override
+    public LotteryResponse listLotteries() {
+        var tickets = lotteryRepository.findDistinctTickets();
+
+        return new LotteryResponse(tickets);
     }
 }
