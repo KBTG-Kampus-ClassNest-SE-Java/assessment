@@ -26,9 +26,9 @@ public class UserService {
         this.lotteryRepository = lotteryRepository;
     }
     @Transactional
-    public UserIdResponseDto createUserAndLottery(String userId, String ticketId) {
+    public String createUserAndLottery(String userId, String ticketId) {
         Optional<Lottery> optionalLottery = lotteryRepository.findByTicket(ticketId);
-        if (optionalLottery.isEmpty()) {
+        if (optionalLottery.isEmpty() || optionalLottery.get().getAmount() == 0) {
             throw new StatusInternalServerErrorException(
                     "Ticket ID : " + ticketId + " is not available.");
         }
@@ -41,7 +41,7 @@ public class UserService {
         Integer updatedAmount = selectedLottery.getAmount() - 1;
         selectedLottery.setAmount(updatedAmount);
         lotteryRepository.save(selectedLottery);
-        return new UserIdResponseDto(savedUserLottery.getId());
+        return savedUserLottery.getId().toString();
     }
     public LotteryListDetailResponseDto getUserDetail(String userId) {
         List<User> lotteryListByUserId = userRepository.findByUserId(userId);
@@ -54,28 +54,28 @@ public class UserService {
         return new LotteryListDetailResponseDto(lotteryList, count, cost);
     }
     @Transactional
-    public LotteryResponseDto sellLotteryByUserIdAndTicketId(String userId, String ticketId) {
+    public String sellLotteryByUserIdAndTicketId(String userId, String ticketId) {
         List<User> lotteryListByUserId = userRepository.findByUserId(userId);
 
         if (lotteryListByUserId.isEmpty()) {
-            throw new BadRequestException("User ID : " + userId + " is not bought by Ticket ID : " + ticketId);
+            throw new BadRequestException("User ID : " + userId + " is not bought Ticket ID : " + ticketId);
         }
         Optional<User> optionalLottery = lotteryListByUserId.stream()
                 .filter(tempLottery -> Objects.equals(tempLottery
                         .getTicketId()
                         .getTicket(), ticketId))
                 .findAny();
-
-        if (optionalLottery.isEmpty()) {
-            throw new BadRequestException("Ticket ID : " + ticketId + " is not found.");
-        }
+//
+//        if (optionalLottery.isEmpty()) {
+//            throw new BadRequestException("Ticket ID : " + ticketId + " is not found.");
+//        }
         User userLottery = optionalLottery.get();
-        Lottery selectedLottery = userLottery.getTicketId();
+//        Lottery selectedLottery = userLottery.getTicketId();
         userRepository.delete(userLottery);
-        Integer updatedAmount = selectedLottery.getAmount() + 1;
-        selectedLottery.setAmount(updatedAmount);
-        lotteryRepository.save(selectedLottery);
-        return new LotteryResponseDto(selectedLottery.getTicket());
+//        Integer updatedAmount = selectedLottery.getAmount() + 1;
+//        selectedLottery.setAmount(updatedAmount);
+//        lotteryRepository.save(selectedLottery);
+        return ticketId;
     }
 }
 

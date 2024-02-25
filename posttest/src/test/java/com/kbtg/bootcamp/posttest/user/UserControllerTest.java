@@ -41,15 +41,15 @@ class UserControllerTest {
         String userId = "1234567890";
         String ticketId = "123456";
 
-        UserIdResponseDto response = new UserIdResponseDto(1);
+//        UserIdResponseDto response = new UserIdResponseDto(1);
 
-        when(userService.createUserAndLottery(userId, ticketId)).thenReturn(response);
+        when(userService.createUserAndLottery(userId, ticketId)).thenReturn("1");
 
         mockMvc.perform(post("/users/" + userId + "/lotteries/" + ticketId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.id", is("1")))
                 .andReturn();
     }
     @Test
@@ -193,9 +193,9 @@ class UserControllerTest {
         String userId = "1234567890";
         String ticketId = "123456";
 
-        LotteryResponseDto response = new LotteryResponseDto(ticketId);
+//        LotteryResponseDto response = new LotteryResponseDto(ticketId);
 
-        when(userService.sellLotteryByUserIdAndTicketId(userId, ticketId)).thenReturn(response);
+        when(userService.sellLotteryByUserIdAndTicketId(userId, ticketId)).thenReturn(ticketId);
 
         mockMvc.perform(delete("/users/" + userId + "/lotteries/" + ticketId))
                 .andExpect(status().isOk())
