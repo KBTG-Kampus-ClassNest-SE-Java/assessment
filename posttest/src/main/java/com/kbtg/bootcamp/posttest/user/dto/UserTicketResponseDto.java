@@ -13,6 +13,6 @@ import java.util.List;
 @Setter
 public class UserTicketResponseDto {
     private List<String> tickets;
-    private Integer count;
-    private Integer totalPrice;
+    private double count;
+    private double totalPrice;
 }

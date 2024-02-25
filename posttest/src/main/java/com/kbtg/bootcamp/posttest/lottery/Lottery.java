@@ -19,22 +19,32 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Lottery {
 
-    // Main entity
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "lottery_id")
-    private Integer lotteryId;
+    private Long id;
 
-    @Column (name = "lottery_number")
-    @Size(min = 6, max = 6)
+    @Column(name = "ticket")
     private String ticket;
 
-    private Integer price;
+    @Column(name = "amount")
+    private double amount;
 
-    private Integer amount;
+    @Column(name = "price")
+    private double price;
 
-    @ManyToOne(optional = true)
-    @JoinColumn(name = "user_id")
-    private UserTicket userTicket;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Column(name = "lottery_id")
+//    private int lotteryId;
+//
+//    @Column (name = "lottery_number")
+//    @Size(min = 6, max = 6)
+//    private String ticket;
+//
+//    private double price;
+//
+//    private double amount;
+
+
 
 }

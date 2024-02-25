@@ -22,16 +22,22 @@ public class UserTicket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "user_id")
-    @Min(10)
-    @Max(10)
-    private int userId;
+    private String userId;
 
-    @OneToMany(mappedBy = "userTicket")
-    private List<Lottery> lotteries;
+    @ManyToOne
+    @JoinColumn(name = "lottery_id", referencedColumnName = "id")
+    private Lottery lottery;
 
-    @JoinColumn(name = "lottery_number", referencedColumnName = "lottery_number")
-    @Column (name = "lottery_number")
+    @Column(name = "ticket")
     private String ticket;
+
+    @Column(name = "amount")
+    private double amount;
+
+    @Column(name = "price")
+    private double price;
 
 }

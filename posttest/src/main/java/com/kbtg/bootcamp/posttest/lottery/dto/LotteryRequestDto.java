@@ -21,12 +21,12 @@ public class LotteryRequestDto {
     @Positive(message = "Price must be a positive number")
     @Min(value = 80, message = "Price should be 80 - 100")
     @Max(value = 100, message = "Price should be 80 - 100")
-    private Integer price;
+    private double price;
 
     @NotNull(message = "Amount must not be null")
     @Positive(message = "Amount must be a positive number")
     @Min(value = 1, message = "increase one lottery at a time")
     @Max(value = 1, message = "increase one lottery at a time")
-    private Integer amount;
+    private double amount;
 
 }

@@ -1,13 +1,18 @@
 package com.kbtg.bootcamp.posttest.user;
 
 import com.kbtg.bootcamp.posttest.exception.InternalServiceException;
+import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.dto.LotteryListResponseDto;
 
-import org.springframework.http.HttpStatus;
+import com.kbtg.bootcamp.posttest.lottery.dto.LotteryResponseDto;
+import com.kbtg.bootcamp.posttest.user.dto.UserTicketResponseDto;
+import com.kbtg.bootcamp.posttest.user.dto.UserTicketsRequestDto;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -19,25 +24,34 @@ public class UserController {
     }
 
     @GetMapping("/lotteries")
-    public LotteryListResponseDto getLotteryList() {
+    public ResponseEntity<LotteryListResponseDto> getLotteryList() {
         try {
             LotteryListResponseDto response = userService.getAllLotteries();
-            return new ResponseEntity<>(response, HttpStatus.OK).getBody();
+            return ResponseEntity.ok(response);
         } catch (Exception exception) {
             throw new InternalServiceException("Internal service exception with Normal service");
         }
     }
 
-//    @PostMapping("/users/{userId}/lotteries/{ticketId}")
-//    public ResponseEntity<UserTicketsRequestDto> buyLotteries(
-//            @PathVariable("userId")
-//            Long userId,
-//            @PathVariable("ticketId") @NotBlank @Size(min = 6, max = 6)
-//            String ticketId) {
-//
-//        this.userService.buyLotteryTicket(userId, ticketId);
-//        return null;
-//    }
+    @PostMapping("/users/{userId}/lotteries/{lotteries}")
+    public UserTicketsRequestDto buyLotteries(
+            @Validated @Pattern(regexp = "\\d{10}") @PathVariable("userId") String userId,
+            @PathVariable("lotteries") String lotteries) {
+
+        return this.userService.buyLotteryTicket(userId, lotteries);
+    }
+
+    @GetMapping("/users/{userId}/lotteries")
+    public UserTicketResponseDto getAllLottery(@PathVariable("userId") String userId) {
+        return this.userService.getUserLottery(userId);
+    }
+
+
+    @DeleteMapping("/users/{userId}/lotteries/{ticket}")
+    public LotteryResponseDto deleteLotteries (@PathVariable("userId") String userId,
+                                               @PathVariable("ticket") String ticket) {
+        return this.userService.deleteLottery(userId, ticket);
+    }
 
 
     }
