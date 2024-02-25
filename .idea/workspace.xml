@@ -1,7 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d61eca6-f86a-485f-b484-4516a05265ff" name="Changes" comment="" />
+    <list default="true" id="1d61eca6-f86a-485f-b484-4516a05265ff" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/exception/ApiErrorResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/exception/ApiExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/exception/BadRequestException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/lottery/Lottery.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/lottery/LotteryRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/lottery/LotteryRequestDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/security/Permission.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/security/Role.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/user/AdminController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/user/AdminService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/user/PublicController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/user/UserPermission.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/user/UserRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/user/UserRequestDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/user/UserRole.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/user/UserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/user/UserTicket.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/posttest/src/main/java/com/kbtg/bootcamp/posttest/user/Users.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/posttest/src/test/java/com/kbtg/bootcamp/posttest/RequestTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/posttest/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/posttest/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/posttest/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/posttest/src/main/resources/application.properties" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -23,7 +49,8 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "E:/Class/software_engineer_boot_camp/post-test/assessment/posttest"
+    "last_opened_file_path": "E:/Class/software_engineer_boot_camp/post-test/assessment/posttest",
+    "settings.editor.selected.configurable": "testing.instrumented.configuration"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -36,5 +63,16 @@
       <updated>1708693316228</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
