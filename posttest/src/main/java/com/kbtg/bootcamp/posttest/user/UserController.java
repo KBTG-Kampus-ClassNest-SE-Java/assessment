@@ -16,13 +16,10 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final LotteryService lotteryService;
-
 
     @Autowired
-    public UserController(UserService userService, LotteryService lotteryService, UserRepository userRepository) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.lotteryService = lotteryService;
     }
 
     @GetMapping
@@ -34,11 +31,6 @@ public class UserController {
         return (User) userService.getUserById(id);
     }
 
-    @GetMapping("/{userId}/lotteries")
-    public UserLotteryResponse getUserLotteries(@PathVariable("userId") String userId) {
-        return userService.showUserLotteriesList(userId);
-    }
-
     @PostMapping
     @ApiResponse(responseCode = "201", description = "User Created")
     public User createUser(@Validated @RequestBody UserRequest request) {
@@ -46,13 +38,5 @@ public class UserController {
     }
 
 
-    @PostMapping("/{userId}/lotteries/{ticketId}")
-    public UserTicketResponse buyLottery(@PathVariable String userId, @PathVariable String ticketId) {
-        return userService.buyLottery(userId,ticketId);
-    }
 
-    @DeleteMapping("/{userId}/lotteries/{ticketId}")
-    public LotteryResponse sellBackLottery(@PathVariable String userId, @PathVariable String ticketId) {
-        return userService.deleteLottery(userId, ticketId);
-    }
 }

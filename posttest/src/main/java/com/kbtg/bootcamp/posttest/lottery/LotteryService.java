@@ -10,8 +10,14 @@ import java.util.List;
 
 @Service
 public class LotteryService {
+
+
+    private final LotteryRepository lotteryRepository;
+
     @Autowired
-    private LotteryRepository lotteryRepository;
+    public LotteryService(LotteryRepository lotteryRepository) {
+        this.lotteryRepository = lotteryRepository;
+    }
 
     public List<Lottery> getAllLotteries() {
         return lotteryRepository.findAll();

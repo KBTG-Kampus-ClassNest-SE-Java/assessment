@@ -23,4 +23,7 @@ public class LotteryRequest {
     @Max(value = 80, message = "price can not be over 80")
     private Integer amount;
 
+    public LotteryRequest(String testLottery, Integer amountTest, Integer priceTest) {
+
+    }
 }
