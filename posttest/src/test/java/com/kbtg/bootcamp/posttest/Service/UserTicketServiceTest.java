@@ -181,8 +181,6 @@ class UserTicketServiceTest {
 
         userTicketService.deleteLottery(userId, ticketId);
 
-        assertEquals(ticketId, ticketId);
-
         verify(userticketRepository).findByUserIdAndTicket(userId, ticketId);
         verify(userticketRepository).delete(any(UserTicket.class));
     }

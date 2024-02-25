@@ -1,7 +1,6 @@
 package com.kbtg.bootcamp.posttest.Controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kbtg.bootcamp.posttest.Exception.BadRequestException;
 import com.kbtg.bootcamp.posttest.Lottery.LotteryRequestDto;
 import com.kbtg.bootcamp.posttest.Service.LotteryService;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,11 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

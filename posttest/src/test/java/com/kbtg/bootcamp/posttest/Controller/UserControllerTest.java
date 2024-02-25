@@ -1,6 +1,5 @@
 package com.kbtg.bootcamp.posttest.Controller;
 
-import com.kbtg.bootcamp.posttest.Entity.Lottery;
 import com.kbtg.bootcamp.posttest.Service.UserTicketService;
 import com.kbtg.bootcamp.posttest.UserTicket.UserTicketResponseDto;
 import org.junit.jupiter.api.BeforeEach;

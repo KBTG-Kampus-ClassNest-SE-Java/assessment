@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d3c5dfd1-fff7-44cd-9734-6bd894cf88ff" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../.README.md.swp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/kbtg/bootcamp/posttest/Controller/AdminControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/kbtg/bootcamp/posttest/Controller/AdminControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/kbtg/bootcamp/posttest/Controller/UserControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/kbtg/bootcamp/posttest/Controller/UserControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/kbtg/bootcamp/posttest/Service/UserTicketServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/kbtg/bootcamp/posttest/Service/UserTicketServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
