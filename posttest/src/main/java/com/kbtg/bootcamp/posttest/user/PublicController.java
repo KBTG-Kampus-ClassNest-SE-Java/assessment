@@ -26,4 +26,10 @@ public class PublicController {
     public String registerUser(@RequestBody UserRegisterDto requestDto) {
         return this.publicService.registerUser(requestDto);
     }
+
+    @PostMapping("/users/{userId}/lotteries/{ticketId}")
+    public Map<String, Integer>  buyLottery(@PathVariable(name = "userId") String userId,
+                                            @PathVariable(name = "ticketId") Integer ticketId) {
+        return this.publicService.buyLottery(userId, ticketId);
+    }
 }

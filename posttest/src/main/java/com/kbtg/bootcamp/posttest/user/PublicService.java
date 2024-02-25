@@ -1,6 +1,7 @@
 package com.kbtg.bootcamp.posttest.user;
 
 import com.kbtg.bootcamp.posttest.exception.BadRequestException;
+import com.kbtg.bootcamp.posttest.exception.NotFoundException;
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryRepository;
 import com.kbtg.bootcamp.posttest.security.Permission;
@@ -26,16 +27,19 @@ public class PublicService {
     private PasswordEncoder passwordEncoder;
     private PermissionRepository permissionRepository;
     private UserPermissionRepository userPermissionRepository;
+    private UserTicketRepository userTicketRepository;
 
 
 
-    public PublicService(LotteryRepository lotteryRepository, UserRepository userRepository, UserRoleRepository userRoleRepository, RoleRepository roleRepository, PermissionRepository permissionRepository, UserPermissionRepository userPermissionRepository) {
+    public PublicService(LotteryRepository lotteryRepository, UserRepository userRepository, UserRoleRepository userRoleRepository, RoleRepository roleRepository, PermissionRepository permissionRepository, UserPermissionRepository userPermissionRepository, UserTicketRepository userTicketRepository) {
+        // In future this will lead to code smell in type of long parameter.
         this.lotteryRepository = lotteryRepository;
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.roleRepository = roleRepository;
         this.permissionRepository = permissionRepository;
         this.userPermissionRepository = userPermissionRepository;
+        this.userTicketRepository = userTicketRepository;
     }
 
     public Map<String, List<String>> getLottery() {
@@ -108,4 +112,40 @@ public class PublicService {
     }
 
 
+    @Transactional
+    public Map<String, Integer> buyLottery(String userId, Integer ticketId) {
+
+        Optional<Users> checkUser = this.userRepository.findById(userId);
+
+        if (checkUser.isEmpty()) {
+            throw new NotFoundException("Username not found.");
+        }
+
+        Optional<Lottery> checkLottery = this.lotteryRepository.findById((long) ticketId);
+        if (checkLottery.isEmpty()) {
+            throw new NotFoundException("Ticket not found.");
+        }
+
+        Integer ticketAmount = checkLottery.get().getAmount();
+
+        if (ticketAmount <= 0 ) {
+            throw new BadRequestException("This ticket_id is out of stock");
+        }
+
+        Users user = checkUser.get();
+        Lottery lottery =checkLottery.get();
+        Integer subTractLotteryAmount =  lottery.getAmount() - 1;
+        lottery.setAmount(subTractLotteryAmount);
+        this.lotteryRepository.save(lottery);
+
+        UserTicket userTicket = new UserTicket();
+        userTicket.setUsers(user);
+        userTicket.setLottery(lottery);
+
+        this.userTicketRepository.save(userTicket);
+
+        return Map.of("id", userTicket.getId());
+
+
+    }
 }

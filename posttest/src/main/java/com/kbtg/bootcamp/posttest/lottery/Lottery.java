@@ -9,7 +9,7 @@ public class Lottery {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "lottery_id")
+    @Column(name = "ticket_id")
     private Integer id;
 
     private String ticket;

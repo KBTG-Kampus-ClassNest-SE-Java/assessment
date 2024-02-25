@@ -24,8 +24,8 @@ public class Users {
     @OneToMany(mappedBy = "users")
     private List<UserPermission> userPermission;
 
-//    @OneToMany(mappedBy = "user_ticket_id")
-//    private List<UserTicket> userTickets;
+    @OneToMany(mappedBy = "users")
+    private List<UserTicket> userTickets;
 
     public Users() {
     }

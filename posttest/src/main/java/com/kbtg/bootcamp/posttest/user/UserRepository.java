@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<Users, Long> {
+public interface UserRepository extends JpaRepository<Users, String> {
     Optional<Users> findByUsername(String username);
 
     @Query(value = "SELECT u.username, u.password, r.role " +

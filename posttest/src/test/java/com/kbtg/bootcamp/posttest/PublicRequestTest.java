@@ -3,12 +3,13 @@ package com.kbtg.bootcamp.posttest;
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.user.PublicController;
 import com.kbtg.bootcamp.posttest.user.PublicService;
+import com.kbtg.bootcamp.posttest.user.UserTicket;
+import com.kbtg.bootcamp.posttest.user.Users;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,7 +22,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.eq;
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
@@ -79,5 +82,27 @@ public class PublicRequestTest {
         mockMvc.perform(get("/lotteries"))
                 .andExpect(jsonPath("$.ticket", is(expectResult)))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("when perform on GET: http://localhost:8888/users/:user_id/lotteries/:lottery_id")
+    void buyLotterySuccessShouldReturnIdOfUserTicket() throws Exception {
+        String userId = "0000000002";
+        Integer ticketId = 6;
+
+        Users user = new Users();
+        Lottery lottery = new Lottery();
+        UserTicket userTicket = new UserTicket();
+        userTicket.setUsers(user);
+        userTicket.setLottery(lottery);
+        userTicket.setId(1);
+
+        Integer expectedValue = userTicket.getId();
+
+        when(publicService.buyLottery(eq(userId), eq(ticketId))).thenReturn(Map.of("id", expectedValue));
+
+        mockMvc.perform(post("/users/{userId}/lotteries/{ticketId}", userId, ticketId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(expectedValue)));
     }
 }
