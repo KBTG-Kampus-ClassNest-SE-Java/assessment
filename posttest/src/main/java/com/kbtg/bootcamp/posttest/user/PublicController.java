@@ -3,6 +3,7 @@ package com.kbtg.bootcamp.posttest.user;
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -16,7 +17,7 @@ public class PublicController {
     }
 
     @GetMapping("/lotteries")
-    public List<Lottery> getLottery(){
+    public Map<String, List<String>> getLottery(){
         return this.publicService.getLottery();
     }
 
