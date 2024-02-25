@@ -1,0 +1,104 @@
+{
+	"info": {
+		"_postman_id": "ebcf3458-c9cb-40af-985a-1fec62f53b34",
+		"name": "KBTG assessment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "30278617"
+	},
+	"item": [
+		{
+			"name": "lottery",
+			"item": [
+				{
+					"name": "get lotteries",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8888/lotteries"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "get lottery user",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ticket\": \"000001\",\n\t\"price\": 80,\n\t\"amount\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8888/users/0000000001/lotteries"
+					},
+					"response": []
+				},
+				{
+					"name": "sell lottery",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8888/users/1111111111/lotteries/1"
+					},
+					"response": []
+				},
+				{
+					"name": "buy lottery",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"url": "http://localhost:8888/users/1111111111/lotteries/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "create lottery",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"password": "password",
+								"username": "admin"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ticket\": \"123456\",\n\t\"price\": 80,\n\t\"amount\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8888/admin/lotteries"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,60 @@
+databaseChangeLog:
+  - changeSet:
+      id: create table lottery
+      author: poy
+      changes:
+        - createTable:
+            tableName: lottery
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  incrementBy: 1
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: ticket
+                  type: varchar(6)
+                  constraints:
+                    unique: true
+                    uniqueConstraintName: ticket_unique
+                    nullable: false
+              - column:
+                  name: price
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: int
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: create table user_ticket
+      author: poy
+      changes:
+        - createTable:
+            tableName: user_ticket
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  incrementBy: 1
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: lottery_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: user_ticket_lottery_id_fk
+                    references: lottery(id)
