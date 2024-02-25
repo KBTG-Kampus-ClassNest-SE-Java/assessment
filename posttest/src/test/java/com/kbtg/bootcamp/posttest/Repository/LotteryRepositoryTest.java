@@ -4,6 +4,7 @@ import com.kbtg.bootcamp.posttest.Entity.Lottery;
 import com.kbtg.bootcamp.posttest.Entity.UserTicket;
 import com.kbtg.bootcamp.posttest.Lottery.LotteryRepository;
 import com.kbtg.bootcamp.posttest.UserTicket.UserTicketRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,12 @@ class LotteryRepositoryTest {
     private LotteryRepository lotteryRepository;
     @Autowired
     private UserTicketRepository userTicketRepository;
+
+    @BeforeEach
+    void setUp() {
+        lotteryRepository.deleteAll();
+        userTicketRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("Find all lotteries")

@@ -1,6 +1,7 @@
 package com.kbtg.bootcamp.posttest.Entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -22,7 +23,7 @@ public class UserTicket {
     @NotNull
     private String transaction_type;
 
-    @NotNull
+    @Min(value = 0)
     private Long transaction_amount;
 
     @ManyToOne(cascade = {CascadeType.DETACH})

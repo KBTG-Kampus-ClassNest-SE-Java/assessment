@@ -22,7 +22,6 @@ public class Lottery {
     @Min(value = 0)
     private Long amount;
 
-    @Positive
     @Min(value = 0)
     private Double price;
 

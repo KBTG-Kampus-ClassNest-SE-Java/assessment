@@ -6,15 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="d3c5dfd1-fff7-44cd-9734-6bd894cf88ff" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Controller/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Controller/AdminController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Controller/LotteryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Controller/LotteryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Lottery/LotteryRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Lottery/LotteryRequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Service/UserTicketService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Service/UserTicketService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/kbtg/bootcamp/posttest/Controller/AdminControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/kbtg/bootcamp/posttest/Controller/AdminControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/kbtg/bootcamp/posttest/Controller/UserControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/kbtg/bootcamp/posttest/Controller/UserControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Entity/Lottery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Entity/Lottery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Entity/UserTicket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kbtg/bootcamp/posttest/Entity/UserTicket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/kbtg/bootcamp/posttest/Repository/LotteryRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/kbtg/bootcamp/posttest/Repository/LotteryRepositoryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/kbtg/bootcamp/posttest/Repository/UserTicketRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/kbtg/bootcamp/posttest/Repository/UserTicketRepositoryTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +80,7 @@
       <recent name="com.kbtg.bootcamp.posttest.Controller" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.PosttestApplication">
+  <component name="RunManager" selected="Gradle.Tests in 'com.kbtg.bootcamp.posttest'">
     <configuration name="PosttestApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.kbtg.bootcamp.posttest.PosttestApplication" />
       <module name="posttest.main" />
@@ -97,30 +93,6 @@
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
-    </configuration>
-    <configuration name="AdminControllerTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;com.kbtg.bootcamp.posttest.Controller.AdminControllerTest&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
-      <method v="2" />
     </configuration>
     <configuration name="AdminControllerTest.TestCreateLottery" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
@@ -170,7 +142,29 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="UserControllerTest.TestBuyTicketSuccess" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="Tests in 'posttest.test'" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="UserControllerTest.TestDeleteLotteryFailBlankTicketId" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -183,7 +177,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;com.kbtg.bootcamp.posttest.Controller.UserControllerTest.TestBuyTicketSuccess&quot;" />
+            <option value="&quot;com.kbtg.bootcamp.posttest.Controller.UserControllerTest.TestDeleteLotteryFailBlankTicketId&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -207,11 +201,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.PosttestApplication" />
         <item itemvalue="Gradle.Tests in 'com.kbtg.bootcamp.posttest'" />
+        <item itemvalue="Gradle.UserControllerTest.TestDeleteLotteryFailBlankTicketId" />
+        <item itemvalue="Gradle.Tests in 'posttest.test'" />
         <item itemvalue="Gradle.AdminControllerTest.TestCreateLottery" />
-        <item itemvalue="Gradle.UserControllerTest.TestBuyTicketSuccess" />
-        <item itemvalue="Gradle.AdminControllerTest" />
+        <item itemvalue="Application.PosttestApplication" />
       </list>
     </recent_temporary>
   </component>
