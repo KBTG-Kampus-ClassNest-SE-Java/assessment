@@ -17,18 +17,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserService {
+public abstract class UserService {
 
 
-    private final LotteryRepository lotteryRepository;
     private final UserRepository userRepository;
-    private final UserTicketRepository userTicketRepository;
 
     @Autowired
-    public UserService(LotteryRepository lotteryRepository, UserRepository userRepository, UserTicketRepository userTicketRepository) {
-        this.lotteryRepository = lotteryRepository;
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.userTicketRepository = userTicketRepository;
     }
 
 
@@ -46,56 +42,12 @@ public class UserService {
     }
 
 
-    @Transactional
-    public UserTicketResponse buyLottery(String userId, String lottery_id) {
-        User user = userRepository.findById(Long.valueOf(userId))
-                .orElseThrow(() -> new NotFoundException("User not found with ID: " + userId));
-        Lottery lottery = lotteryRepository.findById(Long.valueOf(lottery_id))
-                .orElseThrow(() -> new NotFoundException("Lottery not found with ID: " + lottery_id));
-
-        userRepository.save(user);
-        lotteryRepository.save(lottery);
-        UserTicket userTicket = new UserTicket(user.getUser_id(), lottery.getLottery_id());
-        userTicketRepository.save(userTicket);
-        return new UserTicketResponse(userId);
-
-    }
-
-    public LotteryResponse deleteLottery(String userId, String ticketId) {
-        Lottery deletedLottery = lotteryRepository.findById(Long.valueOf(ticketId))
-                .orElseThrow(() -> new NotFoundException("Lottery ticket not found"));
-
-        UserTicket userTicket = userTicketRepository.findByUserIdAndLotteryId(Long.valueOf(userId), Long.valueOf(ticketId));
-        if (userTicket != null) {
-            userTicketRepository.delete(userTicket);
-        }
-
-        List<String> deletedTicketNumbers = List.of(deletedLottery.getIdAsString());
-        return new LotteryResponse(deletedTicketNumbers);
-    }
-
-    public UserLotteryResponse showUserLotteriesList(String userId) {
-        Long userIdLong = Long.parseLong(userId);
-
-        List<UserTicket> userTickets = userTicketRepository.findByUserId(userIdLong);
-
-        List<Long> lotteryIds = userTickets.stream()
-                .map(UserTicket::getLotteryId)
-                .collect(Collectors.toList());
-
-        List<Lottery> lotteries = lotteryRepository.findAllById(lotteryIds);
-
-        List<String> ticketIds = lotteries.stream()
-                .map(Lottery::getIdAsString)
-                .collect(Collectors.toList());
-
-        return new UserLotteryResponse(ticketIds);
-    }
-
     public List<User> getAllUser() {
         List<User> users;
         users = userRepository.findAll();
     return users;
     }
+
+    public abstract User CreateUser(String name);
 }
 
