@@ -1,6 +1,8 @@
 package com.kbtg.bootcamp.posttest.controllers;
 
 import com.kbtg.bootcamp.posttest.configs.SecurityConfig;
+import com.kbtg.bootcamp.posttest.dto.GetLotteriesByUserIdResponse;
+import com.kbtg.bootcamp.posttest.entities.Lottery;
 import com.kbtg.bootcamp.posttest.entities.UserTicket;
 import com.kbtg.bootcamp.posttest.exceptions.LotteryNotFoundException;
 import com.kbtg.bootcamp.posttest.exceptions.LotterySoldOutException;
@@ -15,10 +17,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import java.util.List;
+
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -51,7 +56,11 @@ class UserControllerTest {
                         .builder()
                         .id(1)
                         .userId("username")
-                        .ticketId("123456")
+                        .lottery(
+                                Lottery.builder()
+                                        .ticket("123456")
+                                        .build()
+                        )
                         .amount(1)
                         .build()
         );
@@ -90,5 +99,26 @@ class UserControllerTest {
         )
                 .andDo(print())
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void whenGetLotteryDetails_thenResponseLotteryDetailsWithStatusOk() throws Exception {
+        GetLotteriesByUserIdResponse expectedResponse = new GetLotteriesByUserIdResponse(
+                List.of("123456", "567890"),
+                2,
+                160
+        );
+
+        when(this.lotteryService.getLotteriesByUserId(anyString())).thenReturn(expectedResponse);
+
+        this.mvc.perform(get("/users/username/lotteries"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.tickets").isArray())
+                .andExpect(jsonPath("$.tickets").value(containsInAnyOrder("123456", "567890")))
+                .andExpect(jsonPath("$.count").isNumber())
+                .andExpect(jsonPath("$.count").value(2))
+                .andExpect(jsonPath("$.cost").isNumber())
+                .andExpect(jsonPath("$.cost").value(160));
     }
 }

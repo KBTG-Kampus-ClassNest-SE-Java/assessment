@@ -22,9 +22,10 @@ public class UserTicket {
     @Column(name = "user_id")
     private String userId;
 
-    @Column(name = "ticket_id")
-    private String ticketId;
-
     @Column(name = "amount")
     private Integer amount;
+
+    @ManyToOne
+    @JoinColumn(name = "ticket_id")
+    private Lottery lottery;
 }
