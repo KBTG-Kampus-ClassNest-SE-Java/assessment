@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class PublicService {
@@ -37,9 +38,12 @@ public class PublicService {
         this.userPermissionRepository = userPermissionRepository;
     }
 
-    public List<Lottery> getLottery() {
-        List<Lottery> lotteries = this.lotteryRepository.findAll();
-        return lotteries;
+    public Map<String, List<String>> getLottery() {
+        List<String> lotteries = this.lotteryRepository.findAll().stream().map(Lottery::getTicket).collect(Collectors.toList());
+
+        Map<String, List<String>> allTicket = new HashMap<>();
+        allTicket.put("ticket" ,lotteries);
+        return allTicket;
     }
 
     @Transactional
