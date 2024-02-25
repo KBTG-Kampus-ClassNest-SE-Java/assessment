@@ -1,5 +1,6 @@
 package com.kbtg.bootcamp.posttest.lottery;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kbtg.bootcamp.posttest.core.entity.AuditEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
@@ -21,14 +22,17 @@ public class Lottery extends AuditEntity {
     @Id
     @GeneratedValue(generator = "lottery_generator")
     @SequenceGenerator(name = "lottery_generator", sequenceName = "lottery_sequence", initialValue = 1)
+    @JsonIgnore
     private Long id;
 
     @Length(min = 6, max = 6, message = "Ticket must contain 6 characters")
     private String ticket;
 
+    @JsonIgnore
     @DecimalMin(value = "0.00", message = "Price has to be non negative number")
     private BigDecimal price;
 
+    @JsonIgnore
     @Min(value = 1, message = "Amount must be at least 1")
     private Integer amount;
 }
