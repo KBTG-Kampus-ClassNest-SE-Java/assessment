@@ -1,11 +1,10 @@
-package com.example.ptts.controller;
+package com.kbtg.bootcamp.posttest.entity;
 
 
-import com.example.ptts.entity.LotteryResponseDto;
-import com.example.ptts.entity.LotteryUserResponseDto;
-import com.example.ptts.entity.UserTicketResponseDto;
-import com.example.ptts.service.LotteryService;
-import jakarta.validation.Valid;
+import com.kbtg.bootcamp.posttest.LotteryResponseDto;
+import com.kbtg.bootcamp.posttest.LotteryUserResponseDto;
+import com.kbtg.bootcamp.posttest.UserTicketResponseDto;
+import com.kbtg.bootcamp.posttest.LotteryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
