@@ -12,20 +12,20 @@ services:
     ports:
       - "5432:5432"
     restart: always
-#  lottery_app:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#
-#    depends_on:
-#      - postgres
-#    environment:
-#      - DATABASE_URL=jdbc:postgresql://postgres:5432/lotteryDB
-#      - DATABASE_USERNAME=user
-#      - DATABASE_PASSWORD=password
-#    ports:
-#      - "8888:8888"
-#
+  lottery_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_URL=jdbc:postgresql://postgres:5432/lotteryDB
+      - DATABASE_USERNAME=user
+      - DATABASE_PASSWORD=password
+    ports:
+      - "8888:8888"
+
 
 volumes:
   data:
