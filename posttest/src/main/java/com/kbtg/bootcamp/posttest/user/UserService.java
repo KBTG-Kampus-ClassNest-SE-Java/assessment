@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public abstract class UserService {
+public class UserService {
 
 
     private final UserRepository userRepository;
@@ -47,7 +47,5 @@ public abstract class UserService {
         users = userRepository.findAll();
     return users;
     }
-
-    public abstract User CreateUser(String name);
 }
 

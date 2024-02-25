@@ -7,17 +7,18 @@ import com.kbtg.bootcamp.posttest.lottery.LotteryResponse;
 import com.kbtg.bootcamp.posttest.user.User;
 import com.kbtg.bootcamp.posttest.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class UserTicketService {
 
     private final UserTicketRepository userTicketRepository;
     private final LotteryRepository lotteryRepository;
-
     private final UserRepository userRepository;
 
     @Autowired

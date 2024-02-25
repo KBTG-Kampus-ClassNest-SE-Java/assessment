@@ -25,8 +25,6 @@ class LotteryControllerTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(lotteryController).build();
     }
 
 }
