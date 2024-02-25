@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -26,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Import(SecurityConfig.class)
 @WebMvcTest(LotteryController.class)
+@WithAnonymousUser
 class LotteryControllerTest {
 
     @Autowired
@@ -43,9 +43,8 @@ class LotteryControllerTest {
     }
 
     @Test
-    @WithAnonymousUser
     @DisplayName("When lotteries service returns non-empty list then response list of tickets with status ok")
-    void givenUserIsAnonymous_whenLotteryServiceReturnNonEmptyList_thenResponseLotteriesCorrectlyWithStatusOk() throws Exception {
+    void whenLotteryServiceReturnNonEmptyList_thenResponseLotteriesCorrectlyWithStatusOk() throws Exception {
         when(this.lotteryService.getLotteries()).thenReturn(List.of(
                 Lottery
                         .builder()
@@ -64,8 +63,8 @@ class LotteryControllerTest {
         this.mvc.perform(get("/lotteries"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.tickets.length()").value(2))
-                .andExpect(jsonPath("$.tickets").value(containsInAnyOrder("123456", "453143")));
+                .andExpect(jsonPath("$.tickets.length()").value(3))
+                .andExpect(jsonPath("$.tickets").value(containsInAnyOrder("123456", "453143", "453143")));
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.kbtg.bootcamp.posttest.services;
 
 import com.kbtg.bootcamp.posttest.dto.CreateLotteryRequest;
+import com.kbtg.bootcamp.posttest.dto.GetLotteriesByUserIdResponse;
 import com.kbtg.bootcamp.posttest.entities.Lottery;
 import com.kbtg.bootcamp.posttest.entities.UserTicket;
 import com.kbtg.bootcamp.posttest.exceptions.LotteryNotFoundException;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +49,25 @@ public class LotteryServiceImpl implements LotteryService {
     }
 
     @Override
+    public GetLotteriesByUserIdResponse getLotteriesByUserId(String userId) {
+        List<UserTicket> userTickets = this.userTicketRepository.findByUserId(userId);
+
+        List<String> ticketIds = new ArrayList<>();
+        int sum = 0;
+        for (UserTicket t : userTickets) {
+            sum += t.getAmount() * t.getLottery().getPrice();
+
+            for (int i = 0; i < t.getAmount(); i++) {
+                ticketIds.add(t.getLottery().getTicket());
+            }
+        }
+
+        int count = ticketIds.size();
+
+        return new GetLotteriesByUserIdResponse(ticketIds, count, sum);
+    }
+
+    @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public UserTicket buyLottery(String userId, String ticketId) {
         Optional<Lottery> optionalLottery = this.lotteryRepository.findById(ticketId);
@@ -67,13 +88,14 @@ public class LotteryServiceImpl implements LotteryService {
         } else {
             userTicket = UserTicket
                     .builder()
-                    .ticketId(ticketId)
                     .userId(userId)
                     .amount(1)
+                    .lottery(lottery)
                     .build();
-            this.userTicketRepository.save(userTicket);
+            userTicket = this.userTicketRepository.save(userTicket);
         }
 
         return userTicket;
     }
+
 }

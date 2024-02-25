@@ -1,6 +1,7 @@
 package com.kbtg.bootcamp.posttest.services;
 
 import com.kbtg.bootcamp.posttest.dto.CreateLotteryRequest;
+import com.kbtg.bootcamp.posttest.dto.GetLotteriesByUserIdResponse;
 import com.kbtg.bootcamp.posttest.entities.Lottery;
 import com.kbtg.bootcamp.posttest.entities.UserTicket;
 import com.kbtg.bootcamp.posttest.exceptions.LotteryNotFoundException;
@@ -16,13 +17,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -52,10 +52,10 @@ class LotteryServiceTest {
 
         Lottery newLottery = this.lotteryService.createLottery(createLotteryRequest);
 
-        assertNotNull(newLottery);
-        assertEquals("123456", newLottery.getTicket());
-        assertEquals(80, newLottery.getPrice());
-        assertEquals(1, newLottery.getAmount());
+        assertThat(newLottery).isNotNull();
+        assertThat(newLottery.getTicket()).isEqualTo("123456");
+        assertThat(newLottery.getPrice()).isEqualTo(80);
+        assertThat(newLottery.getAmount()).isEqualTo(1);
     }
 
     @Test
@@ -76,16 +76,16 @@ class LotteryServiceTest {
 
         List<Lottery> lotteries = this.lotteryService.getLotteries();
 
-        assertNotNull(lotteries);
-        assertEquals(2, lotteries.size());
+        assertThat(lotteries).isNotNull();
+        assertThat(lotteries).hasSize(2);
 
-        assertEquals("123456", lotteries.get(0).getTicket());
-        assertEquals(80, lotteries.get(0).getPrice());
-        assertEquals(1, lotteries.get(0).getAmount());
+        assertThat(lotteries.get(0).getTicket()).isEqualTo("123456");
+        assertThat(lotteries.get(0).getPrice()).isEqualTo(80);
+        assertThat(lotteries.get(0).getAmount()).isEqualTo(1);
 
-        assertEquals("000567", lotteries.get(1).getTicket());
-        assertEquals(100, lotteries.get(1).getPrice());
-        assertEquals(2, lotteries.get(1).getAmount());
+        assertThat(lotteries.get(1).getTicket()).isEqualTo("000567");
+        assertThat(lotteries.get(1).getPrice()).isEqualTo(100);
+        assertThat(lotteries.get(1).getAmount()).isEqualTo(2);
     }
 
     @Test
@@ -95,55 +95,93 @@ class LotteryServiceTest {
 
         List<Lottery> lotteries = this.lotteryService.getLotteries();
 
-        assertNotNull(lotteries);
-        assertEquals(0, lotteries.size());
+        assertThat(lotteries).isNotNull();
+        assertThat(lotteries).hasSize(0);
     }
 
     @Test
-    @DisplayName("Given user id and ticket id, when buy lottery, then the lottery is bought and return user ticket")
-    void givenUserIdAndTicketId_whenBuyLottery_thenReturnUserTicket() {
-        when(this.lotteryRepository.findById(any())).thenReturn(Optional.of(
-                Lottery
-                        .builder()
-                        .ticket("123456")
-                        .price(100)
-                        .amount(2)
-                        .build()
-        ));
+    @DisplayName("Given user id and ticket id, when buy lottery and user already have ticket data, then return user ticket")
+    void givenUserIdAndTicketId_whenBuyLotteryAndUserAlreadyHaveTicketData_thenReturnUserTicket() {
+        Lottery lottery = Lottery.builder()
+                .ticket("123456")
+                .price(100)
+                .amount(2)
+                .build();
 
-        when(this.userTicketRepository.existsByUserIdAndTicketId(any(), any())).thenReturn(true);
+        UserTicket userTicket = UserTicket.builder()
+                .id(1)
+                .userId("username")
+                .lottery(lottery)
+                .amount(1)
+                .build();
 
-        when(this.userTicketRepository.updateTicketAmountOfUser(any(), any(), eq(1))).thenReturn(
-                UserTicket
-                        .builder()
-                        .userId("username")
-                        .ticketId("123456")
-                        .amount(1)
-                        .build()
-        );
+        when(this.lotteryRepository.findById(anyString())).thenReturn(Optional.of(lottery));
 
-        UserTicket userTicket = this.lotteryService.buyLottery("username", "123456");
+        when(this.userTicketRepository.existsByUserIdAndTicketId(anyString(), anyString())).thenReturn(true);
 
-        assertNotNull(userTicket);
-        assertEquals("username", userTicket.getUserId());
-        assertEquals("123456", userTicket.getTicketId());
-        assertTrue(userTicket.getAmount() > 0);
+        when(this.userTicketRepository.updateTicketAmountOfUser(anyString(), anyString(), eq(1))).thenReturn(userTicket);
+
+        UserTicket resultUserTicket = this.lotteryService.buyLottery("username", "123456");
+
+        assertThat(resultUserTicket).isNotNull();
+        assertThat(resultUserTicket.getId()).isEqualTo(1);
+        assertThat(resultUserTicket.getUserId()).isEqualTo("username");
+        assertThat(resultUserTicket.getAmount()).isEqualTo(1);
+
+        assertThat(resultUserTicket.getLottery()).isNotNull();
+        assertThat(resultUserTicket.getLottery().getTicket()).isEqualTo("123456");
+        assertThat(resultUserTicket.getLottery().getPrice()).isEqualTo(100);
+        assertThat(resultUserTicket.getLottery().getAmount()).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("Given user id and ticket id, when buy lottery and user not have ticket data, then return user ticket")
+    void givenUserIdAndTicketId_whenBuyLotteryAndUserNotHaveTicketData_thenReturnUserTicket() {
+        Lottery lottery = Lottery.builder()
+                .ticket("123456")
+                .price(100)
+                .amount(2)
+                .build();
+
+        UserTicket userTicket = UserTicket.builder()
+                .id(1)
+                .userId("username")
+                .amount(1)
+                .lottery(lottery)
+                .build();
+
+        when(this.lotteryRepository.findById(anyString())).thenReturn(Optional.of(lottery));
+
+        when(this.userTicketRepository.existsByUserIdAndTicketId(anyString(), anyString())).thenReturn(false);
+
+        when(this.userTicketRepository.save(notNull())).thenReturn(userTicket);
+
+        UserTicket resultUserTicket = this.lotteryService.buyLottery("username", "123456");
+
+        assertThat(resultUserTicket).isNotNull();
+        assertThat(resultUserTicket.getId()).isEqualTo(1);
+        assertThat(resultUserTicket.getUserId()).isEqualTo("username");
+        assertThat(resultUserTicket.getAmount()).isEqualTo(1);
+
+        assertThat(resultUserTicket.getLottery()).isNotNull();
+        assertThat(resultUserTicket.getLottery().getTicket()).isEqualTo("123456");
+        assertThat(resultUserTicket.getLottery().getPrice()).isEqualTo(100);
+        assertThat(resultUserTicket.getLottery().getAmount()).isEqualTo(2);
     }
 
     @Test
     @DisplayName("Given user id and ticket id, when lottery is not found, then throw lottery not found exception")
     void givenUserIdAndTicketId_whenLotteryIsNotFound_thenThrowLotteryNotFoundException() {
-        when(this.lotteryRepository.findById(any())).thenReturn(Optional.empty());
+        when(this.lotteryRepository.findById(anyString())).thenReturn(Optional.empty());
 
-        assertThrows(LotteryNotFoundException.class, () -> {
-            this.lotteryService.buyLottery("username", "123456");
-        });
+        assertThatExceptionOfType(LotteryNotFoundException.class)
+                .isThrownBy(() -> this.lotteryService.buyLottery("username", "123456"));
     }
 
     @Test
     @DisplayName("Given user id and ticket id, when lottery is found but sold out, then throw lottery sold out exception")
     void givenUserIdAndTicketId_whenLotteryIsFoundButSoldOut_thenThrowLotterySoldOutException() {
-        when(this.lotteryRepository.findById(any())).thenReturn(Optional.of(
+        when(this.lotteryRepository.findById(anyString())).thenReturn(Optional.of(
                 Lottery
                         .builder()
                         .ticket("123456")
@@ -152,8 +190,46 @@ class LotteryServiceTest {
                         .build()
         ));
 
-        assertThrows(LotterySoldOutException.class, () -> {
-            this.lotteryService.buyLottery("username", "123456");
-        });
+        assertThatExceptionOfType(LotterySoldOutException.class)
+                .isThrownBy(() -> this.lotteryService.buyLottery("username", "123456"));
+    }
+
+    @Test
+    void whenGetLotteriesByUserId_thenReturnLotteryDetails() {
+        when(this.userTicketRepository.findByUserId(anyString())).thenReturn(List.of(
+                UserTicket
+                        .builder()
+                        .userId("username")
+                        .amount(2)
+                        .lottery(
+                                Lottery
+                                        .builder()
+                                        .ticket("123456")
+                                        .price(100)
+                                        .amount(1)
+                                        .build()
+                        )
+                        .build(),
+                UserTicket
+                        .builder()
+                        .userId("username")
+                        .amount(1)
+                        .lottery(
+                                Lottery
+                                        .builder()
+                                        .ticket("000567")
+                                        .price(80)
+                                        .amount(1)
+                                        .build()
+                        )
+                        .build()
+        ));
+
+        GetLotteriesByUserIdResponse response = this.lotteryService.getLotteriesByUserId("username");
+
+        assertThat(response).isNotNull();
+        assertThat(response.tickets()).containsExactlyInAnyOrder("123456", "123456", "000567");
+        assertThat(response.count()).isEqualTo(3);
+        assertThat(response.cost()).isEqualTo(280);
     }
 }

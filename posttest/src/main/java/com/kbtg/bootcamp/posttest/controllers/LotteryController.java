@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,10 +24,13 @@ public class LotteryController {
     @GetMapping
     public ResponseEntity<GetLotteriesResponse> getLotteries() {
         List<Lottery> lotteries = this.lotteryService.getLotteries();
-        List<String> tickets = lotteries
-                .stream()
-                .map(Lottery::getTicket)
-                .toList();
+
+        List<String> tickets = new ArrayList<>();
+        for (Lottery l : lotteries) {
+             for (int i = 0; i < l.getAmount(); i++) {
+                 tickets.add(l.getTicket());
+             }
+        }
 
         return ResponseEntity.ok(new GetLotteriesResponse(tickets));
     }

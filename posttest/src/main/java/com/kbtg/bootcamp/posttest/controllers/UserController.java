@@ -9,7 +9,6 @@ import com.kbtg.bootcamp.posttest.services.LotteryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -35,9 +34,9 @@ public class UserController {
 
     @GetMapping("/{userId}/lotteries")
     public ResponseEntity<GetLotteriesByUserIdResponse> getLotteriesByUserId(@PathVariable(value = "userId") String userId) {
-        List<String> tickets = List.of("123456", "654321");
-        GetLotteriesByUserIdResponse response = new GetLotteriesByUserIdResponse(tickets, 2, 160);
-        return ResponseEntity.ok().body(response);
+        GetLotteriesByUserIdResponse response = this.lotteryService.getLotteriesByUserId(userId);
+
+        return ResponseEntity.ok(response);
     }
 
 
