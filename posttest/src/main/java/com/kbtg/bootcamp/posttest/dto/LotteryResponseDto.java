@@ -1,11 +1,12 @@
-package com.kbtg.bootcamp.posttest.lottery;
+package com.kbtg.bootcamp.posttest.dto;
 
 import java.util.List;
 
-public class LotteryResponse {
+public class LotteryResponseDto {
     private List<String> tickets;
 
-    public LotteryResponse(List<String> tickets) {
+
+    public LotteryResponseDto(List<String> tickets) {
         this.tickets = tickets;
     }
 
@@ -16,4 +17,5 @@ public class LotteryResponse {
     public void setTickets(List<String> tickets) {
         this.tickets = tickets;
     }
+
 }

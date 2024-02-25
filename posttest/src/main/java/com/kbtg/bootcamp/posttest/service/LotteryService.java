@@ -1,5 +1,8 @@
-package com.kbtg.bootcamp.posttest.lottery;
+package com.kbtg.bootcamp.posttest.service;
 
+import com.kbtg.bootcamp.posttest.entity.Lottery;
+import com.kbtg.bootcamp.posttest.dto.LotteryRequestDto;
+import com.kbtg.bootcamp.posttest.repository.LotteryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +27,7 @@ public class LotteryService {
 
     @Transactional
     public String addLottery(LotteryRequestDto requestDto) {
+
         Lottery lottery = new Lottery();
         lottery.setTicket(requestDto.getTicket_id());
         lottery.setPrice(requestDto.getPrice());
@@ -31,4 +35,6 @@ public class LotteryService {
         lotteryRepository.save(lottery);
         return lottery.getTicket();
     }
+
+
 }

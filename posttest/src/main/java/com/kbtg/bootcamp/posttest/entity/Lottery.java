@@ -1,4 +1,4 @@
-package com.kbtg.bootcamp.posttest.lottery;
+package com.kbtg.bootcamp.posttest.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
