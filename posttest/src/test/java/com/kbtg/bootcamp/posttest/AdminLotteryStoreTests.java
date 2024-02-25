@@ -92,7 +92,7 @@ public class AdminLotteryStoreTests {
         this.mvc.perform(get("/lotteries"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.tickets", hasSize(2)));
+                .andExpect(jsonPath("$.tickets", hasSize(3)));
     }
 
     @Test
