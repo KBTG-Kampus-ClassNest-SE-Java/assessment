@@ -10,10 +10,8 @@ import com.kbtg.bootcamp.posttest.user.dto.UserTicketsRequestDto;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -88,11 +86,13 @@ public class UserService {
 
     public LotteryResponseDto deleteLottery (String userId, String ticket) {
         UserTicket userTicket = userTicketRepository.findByUserIdAndTicket(userId, ticket);
-//                .orElseThrow(() -> new NotFoundException("Ticket not found for the user"));
 
-        userTicketRepository.delete((UserTicket) userTicket);
+        if (userTicket == null) {
+            throw new NotFoundException("Ticket not found for the user");
+        }
+
+        userTicketRepository.delete(userTicket);
 
         return new LotteryResponseDto(ticket);
     }
-
 }

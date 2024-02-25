@@ -10,6 +10,5 @@ import java.util.Optional;
 @Repository
 public interface UserTicketRepository extends JpaRepository<UserTicket, Integer> {
     List<UserTicket> findByUserId (String userId);
-
     UserTicket findByUserIdAndTicket(String userId, String ticket);
 }

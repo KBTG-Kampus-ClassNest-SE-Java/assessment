@@ -12,8 +12,6 @@ import java.time.ZonedDateTime;
 
 @Getter
 @Setter
-//@AllArgsConstructor
-//@NoArgsConstructor
 public class ApiExceptionResponse {
 
     private final String message;

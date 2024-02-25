@@ -2,15 +2,13 @@ package com.kbtg.bootcamp.posttest.user;
 
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+
 
 @Entity
 @Table(name = "user_ticket")

@@ -12,7 +12,7 @@ public class LotteryService {
         this.lotteryRepository = lotteryRepository;
     }
 
-    public LotteryResponseDto createLottery(LotteryRequestDto requestDto){
+    public LotteryResponseDto createLottery (LotteryRequestDto requestDto){
         Lottery lottery = new Lottery();
         lottery.setTicket(requestDto.getTicket());
         lottery.setAmount(requestDto.getAmount());

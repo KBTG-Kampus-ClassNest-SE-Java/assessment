@@ -7,10 +7,6 @@ import java.util.Optional;
 
 @Repository
 public interface LotteryRepository extends JpaRepository<Lottery, Integer> {
-
     Optional<Lottery> findByTicket (String ticket);
 
-    void deleteByTicket(String ticket);
-
-//    void delete(Optional<Lottery> ticket);
 }
