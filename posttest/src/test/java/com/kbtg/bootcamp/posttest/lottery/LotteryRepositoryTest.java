@@ -1,7 +1,7 @@
 package com.kbtg.bootcamp.posttest.lottery;
 
 import com.kbtg.bootcamp.posttest.admin.AdminRequest;
-import com.kbtg.bootcamp.posttest.exception.DuplicateTickerException;
+import com.kbtg.bootcamp.posttest.exception.DuplicateLotteryException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +32,10 @@ class LotteryRepositoryTest {
 
 
         // Act & Assert
-        DuplicateTickerException exception = assertThrows(DuplicateTickerException.class, () -> {
+        DuplicateLotteryException exception = assertThrows(DuplicateLotteryException.class, () -> {
             Lottery lottery2 = new Lottery(ticket, 20.0, 200L); // Duplicate ticket value
             if (lotteryService.isLotteryExistsByTicketNumber(ticket)) {
-                throw new DuplicateTickerException("duplicate ticket");
+                throw new DuplicateLotteryException("duplicate ticket");
             }
         });
 

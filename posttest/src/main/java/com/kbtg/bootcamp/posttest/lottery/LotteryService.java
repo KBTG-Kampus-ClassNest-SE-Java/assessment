@@ -1,7 +1,7 @@
 package com.kbtg.bootcamp.posttest.lottery;
 
 import com.kbtg.bootcamp.posttest.admin.AdminRequest;
-import com.kbtg.bootcamp.posttest.exception.DuplicateTickerException;
+import com.kbtg.bootcamp.posttest.exception.DuplicateLotteryException;
 import com.kbtg.bootcamp.posttest.exception.LotteryNotBelongToUserException;
 import com.kbtg.bootcamp.posttest.exception.NotExistLotteryException;
 import com.kbtg.bootcamp.posttest.exception.NotExistUserIdException;
@@ -38,12 +38,12 @@ public class LotteryService {
         Lottery newLottery = new Lottery(request.ticket(), request.price(), request.amount());
         try {
             if (isLotteryExistsByTicketNumber(request.ticket())) {
-                throw new DuplicateTickerException("Duplicate Lottery!");
+                throw new DuplicateLotteryException("Duplicate Lottery!");
             }
             lotteryRepository.save(newLottery);
             LotteryResponse lotteryResponse =  new LotteryResponse(newLottery.getTicket());
             return ResponseEntity.ok(lotteryResponse);
-        } catch (DuplicateTickerException e) {
+        } catch (DuplicateLotteryException e) {
             return ResponseEntity.badRequest().body("Duplicate Lottery!");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -88,11 +88,11 @@ public class LotteryService {
                     responseBody.put("id", request.userId());
                 }
             } else {
-                throw new DuplicateTickerException("You already have one");
+                throw new DuplicateLotteryException("You already have one");
             }
             return ResponseEntity.ok().body(responseBody);
 
-        } catch (DuplicateTickerException e) {
+        } catch (DuplicateLotteryException e) {
             return ResponseEntity.badRequest().body("You already have one");
         } catch (NotExistLotteryException e) {
             return ResponseEntity.badRequest().body("Lottery does not exist");
