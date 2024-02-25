@@ -6,8 +6,6 @@ import com.kbtg.bootcamp.posttest.exception.StatusInternalServerErrorException;
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryRepository;
 import com.kbtg.bootcamp.posttest.payload.LotteryListDetailResponseDto;
-import com.kbtg.bootcamp.posttest.payload.LotteryResponseDto;
-import com.kbtg.bootcamp.posttest.payload.UserIdResponseDto;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

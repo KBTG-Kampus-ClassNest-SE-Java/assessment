@@ -1,8 +1,6 @@
 package com.kbtg.bootcamp.posttest.user;
 
 import com.kbtg.bootcamp.posttest.payload.LotteryListDetailResponseDto;
-import com.kbtg.bootcamp.posttest.payload.LotteryResponseDto;
-import com.kbtg.bootcamp.posttest.payload.UserIdResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

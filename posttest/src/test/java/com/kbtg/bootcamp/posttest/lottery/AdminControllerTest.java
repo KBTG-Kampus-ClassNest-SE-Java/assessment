@@ -3,7 +3,6 @@ package com.kbtg.bootcamp.posttest.lottery;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.kbtg.bootcamp.posttest.payload.LotteryRequestDto;
-import com.kbtg.bootcamp.posttest.payload.LotteryResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

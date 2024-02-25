@@ -1,8 +1,6 @@
 package com.kbtg.bootcamp.posttest.user;
 
 import com.kbtg.bootcamp.posttest.payload.LotteryListDetailResponseDto;
-import com.kbtg.bootcamp.posttest.payload.LotteryResponseDto;
-import com.kbtg.bootcamp.posttest.payload.UserIdResponseDto;
 import jakarta.validation.constraints.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
