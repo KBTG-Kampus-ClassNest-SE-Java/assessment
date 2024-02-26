@@ -40,7 +40,7 @@ public class UserTicketServiceImpl implements UserTicketService {
         userTicket.setAmount(1);
         userTicket.setCost(lotteryOptional.get().getPrice());
         UserTicket savedUserTicket = userTicketRepository.save(userTicket);
-        return new ResponseEntity<>((savedUserTicket), HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUserTicket);
     }
 
     @Override
@@ -64,16 +64,17 @@ public class UserTicketServiceImpl implements UserTicketService {
         return ResponseEntity.ok(result);
     }
 
-
     @Transactional
     @Override
     public ResponseEntity<SellLotteryResponse> sellLotteryTicket(String userId, String ticketId) {
-        List<UserTicket> userTicket = userTicketRepository.findByUserIdAndLotteryTicket(userId, ticketId);
-        List<Lottery> lotteryList = userTicket.stream()
-                .map(UserTicket::getLottery)
-                .collect(Collectors.toList());
-        userTicketRepository.deleteUserTicketByLotteryIn(lotteryList);
-        SellLotteryResponse sellLotteryResponse = new SellLotteryResponse(ticketId);
-        return ResponseEntity.ok(sellLotteryResponse);
+        List<UserTicket> userTickets = userTicketRepository.findByUserIdAndLotteryTicket(userId, ticketId);
+
+        if (userTickets.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        userTicketRepository.deleteUserTicketByUserIdAndLotteryTicket(userId, ticketId);
+
+        return ResponseEntity.ok(new SellLotteryResponse(ticketId));
     }
 }
