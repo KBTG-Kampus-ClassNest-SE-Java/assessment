@@ -28,6 +28,6 @@ public class AdminController {
 
         createLotteryResponse.setTicket(requestDto.getTicket());
 
-        return new ResponseEntity<>(createLotteryResponse, HttpStatus.OK);
+        return new ResponseEntity<>(createLotteryResponse, HttpStatus.CREATED);
     }
 }
