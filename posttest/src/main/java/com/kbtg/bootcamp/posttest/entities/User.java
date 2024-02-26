@@ -1,9 +1,9 @@
 package com.kbtg.bootcamp.posttest.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kbtg.bootcamp.posttest.entities.AuditEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
