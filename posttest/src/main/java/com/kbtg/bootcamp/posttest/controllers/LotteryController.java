@@ -11,7 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("lotteries")
 public class LotteryController {
     @Autowired
-    private LotteryService lotteryService;
+    private final LotteryService lotteryService;
+
+    public LotteryController(LotteryService lotteryService) {
+        this.lotteryService = lotteryService;
+    }
 
     @GetMapping("")
     public LotteriesResponse listLotteries() {

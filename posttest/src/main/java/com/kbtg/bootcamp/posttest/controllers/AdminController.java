@@ -16,7 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("admin")
 public class AdminController {
     @Autowired
-    private LotteryService lotteryService;
+    private final LotteryService lotteryService;
+
+    public AdminController(LotteryService lotteryService) {
+        this.lotteryService = lotteryService;
+    }
 
     @PostMapping("/lotteries")
     public ResponseEntity<LotteryResponse> addLottery(@Valid @RequestBody Lottery lottery) {
