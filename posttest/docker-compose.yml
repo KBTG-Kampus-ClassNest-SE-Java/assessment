@@ -12,5 +12,17 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  posttest:
+    container_name: posttest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    environment:
+      DATABASE_URL: jdbc:postgresql://postgres:5432/lottery
+    depends_on:
+      - postgres
+
 volumes:
   pgdata:
