@@ -1,15 +1,36 @@
-services:
-  db:
-    image: postgres:16
-    volumes:
-      - db_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    environment:
-      POSTGRES_DB: lottery
-      POSTGRES_USER: lottery_service
-      POSTGRES_PASSWORD: lottery_p@ssw0d
-    ports:
-      - "5432:5432"
+version: '3'
+
+networks:
+  lottery:
 
 volumes:
   db_data:
+
+services:
+  api:
+    build:
+      context: ./posttest
+    ports:
+      - "8888:8888"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: ${DATABASE_URL}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - lottery
+
+  db:
+    image: postgres:16
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - lottery
