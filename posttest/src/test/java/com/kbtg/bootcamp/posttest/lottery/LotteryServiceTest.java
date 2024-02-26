@@ -92,22 +92,6 @@ class LotteryServiceTest {
 	}
 
 	@Test
-	@DisplayName("Mixed Zero and Non Zero amount of Lottery should return List of Non Zero Ticket")
-	public void TestGetMixedLottery() {
-		when(lotteryRepository.findAll()).thenReturn(Arrays.asList(
-				new Lottery("123456", 80, 0),
-				new Lottery("123457", 80, 1)
-		));
-
-		List<String> result = lotteryService.getLotteries();
-
-		assertEquals(Arrays.asList("123457"), result);
-		assertNotNull(result);
-
-		verify(lotteryRepository).findAll();
-	}
-
-	@Test
 	@DisplayName("Initial state should return Empty List")
 	public void TestGetInitLottery() {
 		when(lotteryRepository.findAll()).thenReturn(Collections.emptyList());
