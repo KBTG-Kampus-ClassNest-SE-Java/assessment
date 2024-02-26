@@ -16,7 +16,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,13 +23,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.eq;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
@@ -67,7 +66,7 @@ public class PublicRequestTest {
         when(publicService.buyLottery(eq(userId), eq(ticketId))).thenReturn(Map.of("id", expectedValue));
 
         mockMvc.perform(post("/users/{userId}/lotteries/{ticketId}", userId, ticketId))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(expectedValue)));
     }
 
@@ -115,4 +114,30 @@ public class PublicRequestTest {
                 .andExpect(jsonPath("$.count", is(expectCountVal)))
                 .andExpect(jsonPath("$.cost", is(expectCostVal)));
     }
+
+    @Test
+    @DisplayName("when perform on DELETE: /users/:userId/lotteries/:ticketId should return json response key of delete ticket")
+    void deleteUserTicketShouldReturnTicket() throws Exception {
+
+        String userId = "0000000002";
+        Integer ticketId = 1;
+
+        Users user = new Users();
+        Lottery lottery = new Lottery();
+        lottery.setTicket("123456");
+        lottery.setAmount(1);
+        lottery.setPrice(80);
+
+        String actualTicketDelete = lottery.getTicket();
+
+
+        when(publicService.deleteUserTicket(eq(userId), eq(ticketId))).thenReturn(Map.of("ticket", actualTicketDelete));
+
+        String expectedValue = "123456";
+
+        mockMvc.perform(delete("/users/{userId}/lotteries/{ticketId}", userId, ticketId))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.ticket", is(expectedValue)));
+    }
+
 }
