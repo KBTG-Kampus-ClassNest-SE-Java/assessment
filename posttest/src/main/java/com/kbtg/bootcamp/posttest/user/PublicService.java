@@ -149,7 +149,6 @@ public class PublicService {
         if (checkUser.isEmpty()) {
             throw new NotFoundException("Username not found.");
         }
-//        List<UserTicketDetail> userTicketDetails = this.userTicketRepository.findUserTicketDetailByUserId(userId);
         List<Map<String, Object>> userTicketDetailObject = this.userTicketRepository.findUserTicketDetailByUserId(userId);
         List<String> ticketList = userTicketDetailObject.stream()
                 .map(element -> String.valueOf(element.get("ticket"))).toList();
