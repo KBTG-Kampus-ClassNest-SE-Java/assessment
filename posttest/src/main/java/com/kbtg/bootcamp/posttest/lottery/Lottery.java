@@ -1,6 +1,7 @@
 package com.kbtg.bootcamp.posttest.lottery;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kbtg.bootcamp.posttest.core.entity.AuditEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
@@ -31,6 +32,11 @@ public class Lottery extends AuditEntity {
     @JsonIgnore
     @Min(value = 1, message = "Amount must be at least 1")
     private Integer amount;
+
+    @JsonIgnore
+    @Column(name = "current_amount")
+    @JsonProperty("current_amount")
+    private Integer currentAmount;
 
     public Lottery(String ticket, BigDecimal price, Integer amount) {
         this.ticket = ticket;
@@ -68,5 +74,13 @@ public class Lottery extends AuditEntity {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
+    }
+
+    public Integer getCurrentAmount() {
+        return currentAmount;
+    }
+
+    public void setCurrentAmount(Integer currentAmount) {
+        this.currentAmount = currentAmount;
     }
 }
