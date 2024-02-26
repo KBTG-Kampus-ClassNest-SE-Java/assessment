@@ -10,3 +10,9 @@ In a plan to design an application, I utilize a ADAPT_Blueprint to help plan, de
 Link for Design tool
 - [Draw.io to use design ADAPT_Blueprint](https://drive.google.com/file/d/1cUecUDhqWGiZegPbAjinW34yCabCkQ28/view?usp=sharing)
 - [Database design](https://drawsql.app/teams/hard-code-dev/diagrams/kbtg-post-test-db)
+
+# Run an application
+run docker compose by this command
+```
+docker compose -f docker-compose.yml -d up
+```
