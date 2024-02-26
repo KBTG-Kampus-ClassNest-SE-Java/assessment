@@ -3,6 +3,9 @@ package com.kbtg.bootcamp.posttest.services;
 import com.kbtg.bootcamp.posttest.entities.Lottery;
 import com.kbtg.bootcamp.posttest.entities.User;
 import com.kbtg.bootcamp.posttest.entities.UserTicket;
+import com.kbtg.bootcamp.posttest.exceptions.LotteryNotFoundException;
+import com.kbtg.bootcamp.posttest.exceptions.LotterySoldOutException;
+import com.kbtg.bootcamp.posttest.exceptions.UserNotFoundException;
 import com.kbtg.bootcamp.posttest.repositories.LotteryRepository;
 import com.kbtg.bootcamp.posttest.repositories.UserRepository;
 import com.kbtg.bootcamp.posttest.repositories.UserTicketRepository;
@@ -18,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -93,6 +97,57 @@ public class ThaiLotteryServiceTest {
     }
 
     @Test
+    @DisplayName("Test buy lottery not found")
+    public void buyLotteryNotFound() {
+        var userId = 1000000001;
+        var user = new User("User 1");
+        user.setUserId(userId);
+
+        var ticketId = 1;
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(lotteryRepository.findById(ticketId)).thenReturn(Optional.empty());
+
+        assertThrows(LotteryNotFoundException.class, () -> thaiLotteryService.buyLottery(userId, ticketId));
+
+        verify(userRepository).findById(userId);
+        verify(lotteryRepository).findById(ticketId);
+    }
+
+    @Test
+    @DisplayName("Test buy lottery user not found")
+    public void buyLotteryUserNotFound() {
+        var userId = 1000000001;
+        var ticketId = 1;
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> thaiLotteryService.buyLottery(userId, ticketId));
+
+        verify(userRepository).findById(userId);
+    }
+
+    @Test
+    @DisplayName("Test buy lottery sold out")
+    public void buyLotterySoldOut() {
+        var userId = 1000000001;
+        var user = new User("User 1");
+        user.setUserId(userId);
+
+        var ticketId = 1;
+        var lottery = new Lottery("000011", BigDecimal.valueOf(80), 1);
+        lottery.setCurrentAmount(0);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(lotteryRepository.findById(ticketId)).thenReturn(Optional.of(lottery));
+
+        assertThrows(LotterySoldOutException.class, () -> thaiLotteryService.buyLottery(userId, ticketId));
+
+        verify(userRepository).findById(userId);
+        verify(lotteryRepository).findById(ticketId);
+    }
+
+    @Test
     @DisplayName("Test sell back my lottery")
     public void sellBackMyLottery() {
         var userId = 1000000001;
@@ -120,5 +175,36 @@ public class ThaiLotteryServiceTest {
         verify(userTicketRepository).findFirstByUserUserIdAndLotteryId(userId, ticketId);
         verify(userTicketRepository).delete(userTicket);
         verify(lotteryRepository).save(lottery);
+    }
+
+    @Test
+    @DisplayName("Test sell back my lottery not found")
+    public void sellBackMyLotteryNotFound() {
+        var userId = 1000000001;
+        var user = new User("User 1");
+        user.setUserId(userId);
+
+        var ticketId = 1;
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(lotteryRepository.findById(ticketId)).thenReturn(Optional.empty());
+
+        assertThrows(LotteryNotFoundException.class, () -> thaiLotteryService.sellBackMyLottery(userId, ticketId));
+
+        verify(userRepository).findById(userId);
+        verify(lotteryRepository).findById(ticketId);
+    }
+
+    @Test
+    @DisplayName("Test sell back my lottery user not found")
+    public void sellBackMyLotteryUserNotFound() {
+        var userId = 1000000001;
+        var ticketId = 1;
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> thaiLotteryService.sellBackMyLottery(userId, ticketId));
+
+        verify(userRepository).findById(userId);
     }
 }
