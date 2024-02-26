@@ -20,7 +20,7 @@ public class UserTicket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @Column(name = "user_id")
     private String userId;
