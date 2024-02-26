@@ -22,7 +22,6 @@ public class LotteryController {
 
 
     //EXP01
-    @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin/lotteries")
     public ResponseEntity<LotteryResponseDto> lotteryAdminPost(@RequestBody LotteryRequestDto request){
