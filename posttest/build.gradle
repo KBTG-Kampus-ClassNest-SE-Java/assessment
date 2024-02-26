@@ -17,6 +17,7 @@ configurations {
 	}
 }
 
+
 repositories {
 	mavenCentral()
 }
@@ -25,11 +26,31 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.postgresql:postgresql'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.3.0'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+}
+
+tasks.withType(JavaCompile) {
+	options.compilerArgs << "-parameters"
+}
+
+tasks.register('integrationTest',Test){
+
+
+	description = 'Runs integration tests'
+	group = 'verification'
+	useJUnitPlatform()
+	filter {
+		include '**/IntegrationTest.*'
+	}
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
