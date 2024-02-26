@@ -7,8 +7,7 @@ import com.kbtg.bootcamp.posttest.entities.UserTicket;
 import com.kbtg.bootcamp.posttest.exceptions.LotteryNotFoundException;
 import com.kbtg.bootcamp.posttest.exceptions.LotterySoldOutException;
 import com.kbtg.bootcamp.posttest.exceptions.UserTicketNotFoundException;
-import com.kbtg.bootcamp.posttest.services.LotteryService;
-import jakarta.validation.ConstraintViolationException;
+import com.kbtg.bootcamp.posttest.services.UserTicketService;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +20,10 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 public class UserController {
 
-    private final LotteryService lotteryService;
+    private final UserTicketService userTicketService;
 
-    public UserController(LotteryService lotteryService) {
-        this.lotteryService = lotteryService;
+    public UserController(UserTicketService userTicketService) {
+        this.userTicketService = userTicketService;
     }
 
     @PostMapping("/{userId}/lotteries/{ticketId}")
@@ -39,7 +38,7 @@ public class UserController {
             @NotNull
             String ticketId
     ) {
-        UserTicket userTicket = this.lotteryService.buyLottery(userId, ticketId);
+        UserTicket userTicket = this.userTicketService.buyLottery(userId, ticketId);
 
         BuyLotteryResponse response = new BuyLotteryResponse(userTicket.getId().toString());
 
@@ -53,7 +52,7 @@ public class UserController {
             @NotNull
             String userId
     ) {
-        GetLotteriesByUserIdResponse response = this.lotteryService.getLotteriesByUserId(userId);
+        GetLotteriesByUserIdResponse response = this.userTicketService.getLotteriesByUserId(userId);
 
         return ResponseEntity.ok(response);
     }
@@ -70,7 +69,7 @@ public class UserController {
             @NotNull
             String ticketId
     ) {
-        String soldTicketId = this.lotteryService.sellLottery(userId, ticketId);
+        String soldTicketId = this.userTicketService.sellLottery(userId, ticketId);
         DeleteUserLotteryResponse response = new DeleteUserLotteryResponse(soldTicketId);
         return ResponseEntity.ok(response);
     }

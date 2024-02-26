@@ -1,6 +1,5 @@
 package com.kbtg.bootcamp.posttest.services;
 
-import com.kbtg.bootcamp.posttest.dto.CreateLotteryRequest;
 import com.kbtg.bootcamp.posttest.dto.GetLotteriesByUserIdResponse;
 import com.kbtg.bootcamp.posttest.entities.Lottery;
 import com.kbtg.bootcamp.posttest.entities.UserTicket;
@@ -9,7 +8,6 @@ import com.kbtg.bootcamp.posttest.exceptions.LotterySoldOutException;
 import com.kbtg.bootcamp.posttest.exceptions.UserTicketNotFoundException;
 import com.kbtg.bootcamp.posttest.repositories.LotteryRepository;
 import com.kbtg.bootcamp.posttest.repositories.UserTicketRepository;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,35 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 @Service
-public class LotteryServiceImpl implements LotteryService {
+public class UserTicketServiceImpl implements UserTicketService {
 
     private final LotteryRepository lotteryRepository;
     private final UserTicketRepository userTicketRepository;
 
-    public LotteryServiceImpl(LotteryRepository lotteryRepository, UserTicketRepository userTicketRepository) {
+    public UserTicketServiceImpl(LotteryRepository lotteryRepository, UserTicketRepository userTicketRepository) {
         this.lotteryRepository = lotteryRepository;
         this.userTicketRepository = userTicketRepository;
-    }
-
-    @Override
-    @PreAuthorize("hasRole('ADMIN')")
-    public Lottery createLottery(CreateLotteryRequest createLotteryRequest) {
-        Lottery lottery = Lottery.builder()
-                .ticket(createLotteryRequest.ticket())
-                .price(createLotteryRequest.price())
-                .amount(createLotteryRequest.amount())
-                .build();
-
-        this.lotteryRepository.save(lottery);
-
-        return lottery;
-    }
-
-    @Override
-    public List<Lottery> getAvailableLotteries() {
-        return this.lotteryRepository.findByAmountGreaterThan0();
     }
 
     @Override

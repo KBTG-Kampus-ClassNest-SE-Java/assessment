@@ -3,9 +3,7 @@ package com.kbtg.bootcamp.posttest.unittest.controllers;
 import com.kbtg.bootcamp.posttest.configs.SecurityConfig;
 import com.kbtg.bootcamp.posttest.controllers.LotteryController;
 import com.kbtg.bootcamp.posttest.entities.Lottery;
-import com.kbtg.bootcamp.posttest.services.LotteryService;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.kbtg.bootcamp.posttest.services.LotteryStoreService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,20 +31,12 @@ class LotteryControllerTest {
     private MockMvc mvc;
 
     @MockBean
-    private LotteryService lotteryService;
-
-    @BeforeEach
-    void setUp() {
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
+    private LotteryStoreService lotteryStoreService;
 
     @Test
     @DisplayName("When lotteries service returns non-empty list then response list of tickets with status ok")
     void whenLotteryServiceReturnNonEmptyList_thenResponseLotteriesCorrectlyWithStatusOk() throws Exception {
-        when(this.lotteryService.getAvailableLotteries()).thenReturn(List.of(
+        when(this.lotteryStoreService.getAvailableLotteries()).thenReturn(List.of(
                 Lottery
                         .builder()
                         .ticket("123456")
@@ -71,7 +61,7 @@ class LotteryControllerTest {
     @Test
     @DisplayName("When lotteries service returns empty list then return empty list")
     void whenLotteryServiceReturnsEmptyList_thenResponseWithEmptyListWithStatusOk() throws Exception {
-        when(this.lotteryService.getAvailableLotteries()).thenReturn(List.of());
+        when(this.lotteryStoreService.getAvailableLotteries()).thenReturn(List.of());
 
         this.mvc.perform(get("/lotteries"))
                 .andDo(print())

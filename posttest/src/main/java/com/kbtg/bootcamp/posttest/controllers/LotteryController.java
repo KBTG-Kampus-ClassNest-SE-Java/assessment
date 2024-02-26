@@ -2,7 +2,7 @@ package com.kbtg.bootcamp.posttest.controllers;
 
 import com.kbtg.bootcamp.posttest.dto.GetLotteriesResponse;
 import com.kbtg.bootcamp.posttest.entities.Lottery;
-import com.kbtg.bootcamp.posttest.services.LotteryService;
+import com.kbtg.bootcamp.posttest.services.LotteryStoreService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,15 +15,15 @@ import java.util.List;
 @RequestMapping("/lotteries")
 public class LotteryController {
 
-    private final LotteryService lotteryService;
+    private final LotteryStoreService lotteryStoreService;
 
-    public LotteryController(LotteryService lotteryService) {
-        this.lotteryService = lotteryService;
+    public LotteryController(LotteryStoreService lotteryStoreService) {
+        this.lotteryStoreService = lotteryStoreService;
     }
 
     @GetMapping
     public ResponseEntity<GetLotteriesResponse> getLotteries() {
-        List<Lottery> lotteries = this.lotteryService.getAvailableLotteries();
+        List<Lottery> lotteries = this.lotteryStoreService.getAvailableLotteries();
 
         List<String> tickets = new ArrayList<>();
         for (Lottery l : lotteries) {

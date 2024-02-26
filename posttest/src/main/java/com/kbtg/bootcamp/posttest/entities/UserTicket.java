@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "user_ticket")
-@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class UserTicket {
 
     @Id
