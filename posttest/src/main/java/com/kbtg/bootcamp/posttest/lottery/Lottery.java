@@ -35,7 +35,6 @@ public class Lottery {
         return String.valueOf(lottery_id);
     }
 
-    // Getter for 'id' without 'idAsString' field
     @JsonIgnore
     public Long getId() {
         return lottery_id;

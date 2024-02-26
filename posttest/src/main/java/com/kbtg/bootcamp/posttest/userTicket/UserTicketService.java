@@ -49,7 +49,6 @@ public class UserTicketService {
     public UserTicketResponse deleteLotteryLotteryById(String userId, String ticketId) {
         UserTicket userTicket = userTicketRepository
                 .findByUserIdAndLotteryId(Long.valueOf(userId), Long.valueOf(ticketId));
-
         if (userTicket != null) {
             userTicketRepository.delete(userTicket);
             return new UserTicketResponse(Collections.singletonList(ticketId));

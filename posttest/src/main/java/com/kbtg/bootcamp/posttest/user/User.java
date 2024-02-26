@@ -26,9 +26,9 @@ public class User {
     @Size(min = 3, max = 20, message = "user name should be between 3 and 20 character")
     private String name;
 
-    public  User(){
-
+    public User() {
     }
+
     public User(String name) {
         this.user_id = ThreadLocalRandom.current().nextLong(1_000_000_000L, 10_000_000_000L);
         this.name = name;

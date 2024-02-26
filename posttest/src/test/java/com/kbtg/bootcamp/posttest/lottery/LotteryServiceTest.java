@@ -65,10 +65,8 @@ class LotteryServiceTest {
 
         when(lotteryRepository.findAll()).thenReturn(expectedLotteries);
 
-        // Act
         List<Lottery> actualLotteries = lotteryService.getAllLotteries();
 
-        // Assert
         assertEquals(expectedLotteries, actualLotteries);
     }
 
@@ -90,7 +88,7 @@ class LotteryServiceTest {
     @Test
     @DisplayName("Add valid lottery should return response with lottery ID")
     void testAddValidLottery() throws Exception {
-        // Arrange
+
         LotteryRequest request = new LotteryRequest();
         request.setTicket("123456");
         request.setPrice(10);
@@ -100,8 +98,8 @@ class LotteryServiceTest {
         when(lotteryRepository.save(any(Lottery.class))).thenReturn(newLottery);
 
         LotteryResponse response = lotteryService.addLottery(request);
-        // Assert
-        assertEquals(1, response.getLotteryIds().size());
-        assertEquals("123456", response.getLotteryIds().get(0));
+
+        assertEquals(1, response.getTicket().size());
+        assertEquals("123456", response.getTicket().get(0));
     }
 }

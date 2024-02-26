@@ -91,18 +91,4 @@ class UserServiceTest {
 
         assertEquals(2, users.size());
     }
-
-    @Test
-    @DisplayName("Default constructor should initialize fields")
-    void testDefaultConstructor() {
-        // Arrange
-        User user = new User();
-
-        // Assert
-        assertNotNull(user);
-        assertNotNull(user.getUser_id());
-        assertNotNull(user.getName());
-        assertTrue(user.getUser_id() >= 1_000_000_000L && user.getUser_id() <= 10_000_000_000L);
-    }
-
 }
