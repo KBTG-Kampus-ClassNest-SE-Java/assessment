@@ -1,7 +1,10 @@
-package com.kbtg.bootcamp.posttest.user;
+package com.kbtg.bootcamp.posttest.controllers;
 
-import com.kbtg.bootcamp.posttest.lottery.Lottery;
-import com.kbtg.bootcamp.posttest.lottery.LotteryService;
+import com.kbtg.bootcamp.posttest.models.BuyLotteryResponse;
+import com.kbtg.bootcamp.posttest.models.LotteryResponse;
+import com.kbtg.bootcamp.posttest.models.MyLotteryResponse;
+import com.kbtg.bootcamp.posttest.services.LotteryService;
+import com.kbtg.bootcamp.posttest.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +28,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}/lotteries/{ticketId}")
-    public Lottery sellBackMyLottery(@PathVariable("userId") Integer userId, @PathVariable("ticketId") Integer ticketId) {
+    public LotteryResponse sellBackMyLottery(@PathVariable("userId") Integer userId, @PathVariable("ticketId") Integer ticketId) {
         return lotteryService.sellBackMyLottery(userId, ticketId);
     }
 }

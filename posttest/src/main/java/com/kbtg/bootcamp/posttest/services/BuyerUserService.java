@@ -1,7 +1,11 @@
-package com.kbtg.bootcamp.posttest.user;
+package com.kbtg.bootcamp.posttest.services;
 
-import com.kbtg.bootcamp.posttest.core.exceptions.UserNotFoundException;
-import com.kbtg.bootcamp.posttest.lottery.Lottery;
+import com.kbtg.bootcamp.posttest.exceptions.UserNotFoundException;
+import com.kbtg.bootcamp.posttest.entities.Lottery;
+import com.kbtg.bootcamp.posttest.models.MyLotteryResponse;
+import com.kbtg.bootcamp.posttest.repositories.UserRepository;
+import com.kbtg.bootcamp.posttest.entities.UserTicket;
+import com.kbtg.bootcamp.posttest.repositories.UserTicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

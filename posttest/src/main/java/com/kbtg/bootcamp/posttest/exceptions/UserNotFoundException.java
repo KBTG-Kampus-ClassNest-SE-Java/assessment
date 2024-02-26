@@ -1,11 +1,11 @@
-package com.kbtg.bootcamp.posttest.core.exceptions;
+package com.kbtg.bootcamp.posttest.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class LotterySoldOutException extends LotteryNotFoundException {
-    public LotterySoldOutException(String message) {
+public class UserNotFoundException extends RuntimeException {
+    public UserNotFoundException(String message) {
         super(message);
     }
 }

@@ -1,4 +1,4 @@
-package com.kbtg.bootcamp.posttest.core.entity;
+package com.kbtg.bootcamp.posttest.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

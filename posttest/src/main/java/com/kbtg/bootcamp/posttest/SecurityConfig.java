@@ -1,4 +1,4 @@
-package com.kbtg.bootcamp.posttest.core.security;
+package com.kbtg.bootcamp.posttest;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

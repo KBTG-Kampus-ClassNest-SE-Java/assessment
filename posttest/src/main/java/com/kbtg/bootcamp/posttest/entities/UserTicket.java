@@ -1,10 +1,9 @@
-package com.kbtg.bootcamp.posttest.user;
+package com.kbtg.bootcamp.posttest.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.kbtg.bootcamp.posttest.core.entity.AuditEntity;
-import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "user_ticket")

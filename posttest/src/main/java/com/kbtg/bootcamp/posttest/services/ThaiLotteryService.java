@@ -1,13 +1,16 @@
-package com.kbtg.bootcamp.posttest.lottery;
+package com.kbtg.bootcamp.posttest.services;
 
-import com.kbtg.bootcamp.posttest.core.exceptions.LotteryNotFoundException;
-import com.kbtg.bootcamp.posttest.core.exceptions.LotterySoldOutException;
-import com.kbtg.bootcamp.posttest.core.exceptions.UserNotFoundException;
-import com.kbtg.bootcamp.posttest.shared.responses.LotteryResponse;
-import com.kbtg.bootcamp.posttest.user.BuyLotteryResponse;
-import com.kbtg.bootcamp.posttest.user.UserRepository;
-import com.kbtg.bootcamp.posttest.user.UserTicket;
-import com.kbtg.bootcamp.posttest.user.UserTicketRepository;
+import com.kbtg.bootcamp.posttest.exceptions.LotteryNotFoundException;
+import com.kbtg.bootcamp.posttest.exceptions.LotterySoldOutException;
+import com.kbtg.bootcamp.posttest.exceptions.UserNotFoundException;
+import com.kbtg.bootcamp.posttest.entities.Lottery;
+import com.kbtg.bootcamp.posttest.models.LotteriesResponse;
+import com.kbtg.bootcamp.posttest.repositories.LotteryRepository;
+import com.kbtg.bootcamp.posttest.models.LotteryResponse;
+import com.kbtg.bootcamp.posttest.models.BuyLotteryResponse;
+import com.kbtg.bootcamp.posttest.repositories.UserRepository;
+import com.kbtg.bootcamp.posttest.entities.UserTicket;
+import com.kbtg.bootcamp.posttest.repositories.UserTicketRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,7 +64,7 @@ public class ThaiLotteryService implements LotteryService {
 
     @Override
     @Transactional
-    public Lottery sellBackMyLottery(Integer userId, Integer ticketId) {
+    public LotteryResponse sellBackMyLottery(Integer userId, Integer ticketId) {
         var user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found"));
         var lottery = lotteryRepository.findById(ticketId).orElseThrow(() -> new LotteryNotFoundException("Lottery not found"));
         var userTicket = userTicketRepository.findFirstByUserUserIdAndLotteryId(user.getUserId(), lottery.getId());
@@ -71,6 +74,6 @@ public class ThaiLotteryService implements LotteryService {
         lottery.setCurrentAmount(lottery.getCurrentAmount() + 1);
         lotteryRepository.save(lottery);
 
-        return lottery;
+        return new LotteryResponse(lottery.getTicket());
     }
 }

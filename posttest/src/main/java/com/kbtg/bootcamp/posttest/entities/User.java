@@ -1,7 +1,7 @@
-package com.kbtg.bootcamp.posttest.user;
+package com.kbtg.bootcamp.posttest.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kbtg.bootcamp.posttest.core.entity.AuditEntity;
+import com.kbtg.bootcamp.posttest.entities.AuditEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;

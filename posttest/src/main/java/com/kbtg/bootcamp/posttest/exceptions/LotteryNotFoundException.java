@@ -1,11 +1,11 @@
-package com.kbtg.bootcamp.posttest.core.exceptions;
+package com.kbtg.bootcamp.posttest.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class UserNotFoundException extends RuntimeException {
-    public UserNotFoundException(String message) {
+public class LotteryNotFoundException extends RuntimeException {
+    public LotteryNotFoundException(String message) {
         super(message);
     }
 }

@@ -1,8 +1,8 @@
-package com.kbtg.bootcamp.posttest.admin;
+package com.kbtg.bootcamp.posttest.controllers;
 
-import com.kbtg.bootcamp.posttest.lottery.Lottery;
-import com.kbtg.bootcamp.posttest.lottery.LotteryService;
-import com.kbtg.bootcamp.posttest.shared.responses.LotteryResponse;
+import com.kbtg.bootcamp.posttest.entities.Lottery;
+import com.kbtg.bootcamp.posttest.services.LotteryService;
+import com.kbtg.bootcamp.posttest.models.LotteryResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("admin")
-public class AddLotteryController {
+public class AdminController {
     @Autowired
     private LotteryService lotteryService;
 

@@ -1,4 +1,4 @@
-package com.kbtg.bootcamp.posttest.shared.responses;
+package com.kbtg.bootcamp.posttest.models;
 
 import lombok.Data;
 
