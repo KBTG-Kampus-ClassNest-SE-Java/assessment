@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_DB: assessment
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 12345678
+    networks:
+      - lotteryservice-network
+  lottery-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8888:8888"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/assessment?searchpath=public&createDatabaseIfNotExist=true&useUnicode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Bangkok&prepareThreshold=0
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 12345678
+    depends_on:
+      - db
+    networks:
+      - lotteryservice-network
+
+volumes:
+  postgres-data:
+
+networks:
+  lotteryservice-network:
+    driver: bridge
