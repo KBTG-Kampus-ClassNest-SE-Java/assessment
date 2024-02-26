@@ -166,4 +166,38 @@ public class PublicService {
         return userTicketDetailResponse;
 
     }
+
+    @Transactional
+    public Map<String, String> deleteUserTicket(String userId, Integer ticketId) {
+
+        List<UserTicket> userTicketList = this.userTicketRepository.findUserTicketByUserIdTicketId(userId, ticketId);
+
+        Optional<UserTicket> userTicket = userTicketList.stream().min(Comparator.comparing(UserTicket::getId));
+
+        if (userTicket.isEmpty()) {
+            throw new NotFoundException("User ticket not found.");
+        }
+
+        Optional<Lottery> checkLottery = this.lotteryRepository.findById((long) ticketId);
+        if (checkLottery.isEmpty()) {
+            throw new NotFoundException("Ticket not found.");
+        }
+
+        Integer userTicketId = userTicket.get().getId();
+
+        this.userTicketRepository.deleteUserTicketByTicketIdUserTicketId(ticketId, userTicketId);
+
+        Lottery lottery = checkLottery.get();
+        Integer increaseLotteryAmount = lottery.getAmount() + 1;
+        lottery.setAmount(increaseLotteryAmount);
+        this.lotteryRepository.save(lottery);
+
+        String removeTicket = lottery.getTicket();
+        Map<String, String> responseDeleteTicket = new HashMap<>();
+        responseDeleteTicket.put("ticket", removeTicket);
+
+        return responseDeleteTicket;
+
+
+    }
 }
