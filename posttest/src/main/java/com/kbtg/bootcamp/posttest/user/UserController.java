@@ -23,16 +23,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/lotteries")
-    public ResponseEntity<LotteryListResponseDto> getLotteryList() {
-        try {
-            LotteryListResponseDto response = userService.getAllLotteries();
-            return ResponseEntity.ok(response);
-        } catch (Exception exception) {
-            throw new InternalServiceException("Internal service exception with Normal service");
-        }
-    }
-
     @PostMapping("/users/{userId}/lotteries/{lotteries}")
     public UserTicketsRequestDto buyLotteries(
             @Validated @Pattern(regexp = "\\d{10}") @PathVariable("userId") String userId,

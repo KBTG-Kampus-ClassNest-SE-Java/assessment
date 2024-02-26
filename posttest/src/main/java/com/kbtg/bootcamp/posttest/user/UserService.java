@@ -25,14 +25,6 @@ public class UserService {
         this.userTicketRepository = userTicketRepository;
     }
 
-    public LotteryListResponseDto getAllLotteries() {
-        List<String> tickets = lotteryRepository.findAll()
-                .stream()
-                .filter(lottery -> lottery.getAmount() >= 1)
-                .map(Lottery::getTicket)
-                .toList();
-        return new LotteryListResponseDto(tickets);
-    }
 
     public UserTicketsRequestDto buyLotteryTicket(String userId, String lotteries) {
         Optional<Lottery> ticket = lotteryRepository.findByTicket(String.valueOf(lotteries));
