@@ -17,7 +17,7 @@ public class UserController {
     private LotteryService lotteryService;
 
     @PostMapping("/{userId}/lotteries/{ticketId}")
-    public ButLotteryResponse buyLottery(@PathVariable Integer userId, @PathVariable Integer ticketId) {
+    public ButLotteryResponse buyLottery(@PathVariable("userId") Integer userId, @PathVariable("ticketId") Integer ticketId) {
         return lotteryService.buyLottery(userId, ticketId);
     }
 }
