@@ -2,7 +2,6 @@ package com.kbtg.bootcamp.posttest.user;
 
 import com.kbtg.bootcamp.posttest.exception.NotFoundException;
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
-import com.kbtg.bootcamp.posttest.lottery.dto.LotteryListResponseDto;
 import com.kbtg.bootcamp.posttest.lottery.LotteryRepository;
 import com.kbtg.bootcamp.posttest.lottery.dto.LotteryResponseDto;
 import com.kbtg.bootcamp.posttest.user.dto.UserTicketResponseDto;
@@ -24,7 +23,6 @@ public class UserService {
         this.lotteryRepository = lotteryRepository;
         this.userTicketRepository = userTicketRepository;
     }
-
 
     public UserTicketsRequestDto buyLotteryTicket(String userId, String lotteries) {
         Optional<Lottery> ticket = lotteryRepository.findByTicket(String.valueOf(lotteries));
