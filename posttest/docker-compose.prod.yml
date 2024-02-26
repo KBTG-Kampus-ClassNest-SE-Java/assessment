@@ -5,9 +5,8 @@ networks:
 
 services:
   postgres-db:
-    container_name: lottery-postgres-db
     image: postgres:latest
-    restart: always
+    restart: on-failure
     environment:
       POSTGRES_DB: lottery-db
       POSTGRES_USER: user
@@ -20,23 +19,18 @@ services:
       - lottery-service-network
 
   app:
-    container_name: lottery-app
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: amazoncorretto:17.0.9-alpine3.18
-    restart: always
-    volumes:
-      - $PWD:/app
-    working_dir: /app
+    build: .
+    restart: on-failure
     depends_on:
       - postgres-db
     environment:
-      - DATABASE_URL=${DATABASE_PWD}
+      - DATABASE_URL=jdbc:postgresql://postgres-db:5432/lottery-db
       - DATABASE_USERNAME=user
-      - DATABASE_PWD=password
+      - DATABASE_PASSWORD=password
     ports:
       - "8888:8888"
     networks:
       - lottery-service-network
-#    command: [ "./gradlew"]
+
+volumes:
+  postgres-data:

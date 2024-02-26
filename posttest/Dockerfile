@@ -1,5 +1,5 @@
 # stage-1 build artifact
-FROM amazoncorretto:17.0.9-alpine3.18 as builder
+FROM amazoncorretto:17-alpine3.19 as builder
 WORKDIR /app
 ADD . .
 RUN chmod +x ./gradlew

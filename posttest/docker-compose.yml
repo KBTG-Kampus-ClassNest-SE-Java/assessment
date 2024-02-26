@@ -11,7 +11,7 @@ services:
     environment:
       POSTGRES_DB: lottery-db
       POSTGRES_USER: user
-      POSTGRES_PASSWORD: ${DATABASE_PWD}
+      POSTGRES_PASSWORD: password
     volumes:
       - ./db-init/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
