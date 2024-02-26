@@ -55,4 +55,19 @@ public class ThaiLotteryService implements LotteryService {
 
         return new BuyLotteryResponse(userTicket.getId());
     }
+
+    @Override
+    @Transactional
+    public Lottery sellBackMyLottery(Integer userId, Integer ticketId) {
+        var user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found"));
+        var lottery = lotteryRepository.findById(ticketId).orElseThrow(() -> new LotteryNotFoundException("Lottery not found"));
+        var userTicket = userTicketRepository.findFirstByUserUserIdAndLotteryId(user.getUserId(), lottery.getId());
+
+        userTicketRepository.delete(userTicket);
+
+        lottery.setCurrentAmount(lottery.getCurrentAmount() + 1);
+        lotteryRepository.save(lottery);
+
+        return lottery;
+    }
 }

@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface UserTicketRepository extends JpaRepository<UserTicket, Integer> {
     List<UserTicket> findByUserUserId(@Param("userId") Integer userId);
+
+    UserTicket findFirstByUserUserIdAndLotteryId(@Param("userId") Integer userId, @Param("lotteryId") Integer id);
 }

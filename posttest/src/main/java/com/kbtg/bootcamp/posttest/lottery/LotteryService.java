@@ -6,6 +6,10 @@ import org.springframework.stereotype.Service;
 @Service
 public interface LotteryService {
     public void addLottery(Lottery lottery);
+
     public LotteryResponse listLotteries();
+
     BuyLotteryResponse buyLottery(Integer userId, Integer ticketId);
+
+    Lottery sellBackMyLottery(Integer userId, Integer ticketId);
 }
