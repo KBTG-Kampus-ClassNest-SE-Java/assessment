@@ -41,3 +41,5 @@ example of case that may affect return value of default Repositories's methods
 - this is used to handle some bussiness rules.
     ex1. buying ticket that already existed
     ex2. creating ticket that already existed
+### Discussion5 : Pull Request
+- As of understanding previously I thought I must pr on kbtg branch and then merge. So, to got any 1 of PR that already merged I create brance "PR" to do this tasks. the change is only this message in Discussion5
