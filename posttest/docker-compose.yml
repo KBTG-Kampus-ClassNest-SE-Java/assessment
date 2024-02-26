@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:16.2
+    environment:
+      POSTGRES_USER: lotteryusr
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: lottery
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  posttest:
+    container_name: posttest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    environment:
+      DATABASE_URL: jdbc:postgresql://postgres:5432/lottery
+    depends_on:
+      - postgres
+
+volumes:
+  pgdata:
