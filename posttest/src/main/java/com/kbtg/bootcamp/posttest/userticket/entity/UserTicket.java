@@ -24,8 +24,7 @@ public class UserTicket {
     public UserTicket() {
     }
 
-    public UserTicket(Integer id, String userId, Lottery lottery) {
-        this.id = id;
+    public UserTicket(String userId, Lottery lottery) {
         this.userId = userId;
         this.lottery = lottery;
     }
