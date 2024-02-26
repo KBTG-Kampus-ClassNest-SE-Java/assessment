@@ -28,6 +28,7 @@ public class UserService {
     public LotteryListResponseDto getAllLotteries() {
         List<String> tickets = lotteryRepository.findAll()
                 .stream()
+                .filter(lottery -> lottery.getAmount() >= 1)
                 .map(Lottery::getTicket)
                 .toList();
         return new LotteryListResponseDto(tickets);
@@ -83,7 +84,6 @@ public class UserService {
 
     }
 
-
     public LotteryResponseDto deleteLottery (String userId, String ticket) {
         UserTicket userTicket = userTicketRepository.findByUserIdAndTicket(userId, ticket);
 
@@ -92,6 +92,12 @@ public class UserService {
         }
 
         userTicketRepository.delete(userTicket);
+
+        Lottery lottery = new Lottery();
+        lottery.setTicket(ticket);
+        lottery.setAmount(userTicket.getAmount());
+        lottery.setPrice(userTicket.getPrice());
+        lotteryRepository.save(lottery);
 
         return new LotteryResponseDto(ticket);
     }
