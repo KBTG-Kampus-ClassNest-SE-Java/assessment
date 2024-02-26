@@ -1,6 +1,24 @@
 # ระบบย่อยซื้อลอตเตอรี่
 แอพพลิเคชั่นธนาคารต้องการเพิ่มฟีเจอร์ให้ผู้ใช้งานสามารถซื้อลอตเตอรี่ได้ เพื่อตอบสนองกลุ่มนักเสี่ยงโชคยุคใหม่ที่ต้องการความสะดวก และไม่ต้องกังวลเรื่องการจัดเก็บลอตเตอรี่ไว้กับตัวเอง รวมทั้งการขึ้นเงินก็สามารถทำผ่านแอพพลิเคชั่นได้อย่างง่ายดาย
 
+## Start and Stop Database and application with Docker Compose
+
+```shell
+docker-compose up -d
+docker-compose down
+```
+
+## Start and Stop all tests with Docker Compose
+
+```shell
+docker-compose -f docker-compose.test.yml up --exit-code-from it_test
+docker-compose -f docker-compose.test.yml down
+```
+
+
+
+# Instructions
+
 ## Business Requirements
 - แอดมินสามารถเพิ่มข้อมูลลอตเตอรี่เป็นตัวเลข 6 หลักได้
 - ผู้ใช้สามารถแสดงรายการลอตเตอรี่ที่มีทั้งหมดได้
@@ -110,12 +128,12 @@ sequenceDiagram
 * มีการป้องกันการใช้งาน API ของแอดมิน
 * มีการทำ Containerize ให้ใช้งานผ่าน Docker ได้
 * มี Test case เช่น Unit test ครอบคลุมส่วนของโค้ดและคะแนนจะขึ้นอยู่กับ Coverage ของ Test case ด้วย
-* โครงสร้างการทำงานถูกต้อง เช่น 
+* โครงสร้างการทำงานถูกต้อง เช่น
 	-	ประกาศตัวแปรถูกต้องไหม
 	-	มี Test cases
 	-	การเชื่อมต่อระบบ Database
 	-	การทำ Transaction ถูกต้องเหมาะสม
-* ความสามารถในการบำรุงรักษา เช่น 
+* ความสามารถในการบำรุงรักษา เช่น
 	-	การเขียนโค้ดง่ายต่อการอ่านและทำความเข้าใจ
 	-	การประมวลผลอยู่ใน Layer ที่เหมาะสม
 	-	ไม่มี If ซ้อนกันเยอะๆ
