@@ -19,7 +19,6 @@ public class RestResponseEntityExceptionHandler {
 
         List<Map<String, Object>> errors = violations.stream().map((violation) -> {
             Map<String, Object> field = new HashMap<>();
-            field.put("field", violation.getPropertyPath().toString());
             field.put("rejectedValue", violation.getInvalidValue());
             field.put("message", violation.getConstraintDescriptor().getAttributes().get("message"));
             return field;
