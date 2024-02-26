@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: lottery
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+  my_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_URL=jdbc:postgresql://postgres:5432/lotteryDB
+      - DATABASE_USERNAME=user
+      - DATABASE_PASSWORD=password
+    ports:
+      - "8888:8888"
+volumes:
+  data:
