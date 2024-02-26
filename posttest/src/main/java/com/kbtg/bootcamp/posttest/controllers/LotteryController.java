@@ -23,7 +23,7 @@ public class LotteryController {
 
     @GetMapping
     public ResponseEntity<GetLotteriesResponse> getLotteries() {
-        List<Lottery> lotteries = this.lotteryService.getLotteries();
+        List<Lottery> lotteries = this.lotteryService.getAvailableLotteries();
 
         List<String> tickets = new ArrayList<>();
         for (Lottery l : lotteries) {

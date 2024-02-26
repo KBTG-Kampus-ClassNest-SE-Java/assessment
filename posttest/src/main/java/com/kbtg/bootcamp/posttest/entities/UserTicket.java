@@ -15,8 +15,8 @@ import lombok.NoArgsConstructor;
 public class UserTicket {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", columnDefinition = "SERIAL4")
     private Integer id;
 
     @Column(name = "user_id")

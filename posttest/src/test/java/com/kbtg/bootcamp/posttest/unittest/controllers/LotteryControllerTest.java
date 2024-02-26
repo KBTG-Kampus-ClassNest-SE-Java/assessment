@@ -1,6 +1,7 @@
-package com.kbtg.bootcamp.posttest.controllers;
+package com.kbtg.bootcamp.posttest.unittest.controllers;
 
 import com.kbtg.bootcamp.posttest.configs.SecurityConfig;
+import com.kbtg.bootcamp.posttest.controllers.LotteryController;
 import com.kbtg.bootcamp.posttest.entities.Lottery;
 import com.kbtg.bootcamp.posttest.services.LotteryService;
 import org.junit.jupiter.api.AfterEach;
@@ -45,7 +46,7 @@ class LotteryControllerTest {
     @Test
     @DisplayName("When lotteries service returns non-empty list then response list of tickets with status ok")
     void whenLotteryServiceReturnNonEmptyList_thenResponseLotteriesCorrectlyWithStatusOk() throws Exception {
-        when(this.lotteryService.getLotteries()).thenReturn(List.of(
+        when(this.lotteryService.getAvailableLotteries()).thenReturn(List.of(
                 Lottery
                         .builder()
                         .ticket("123456")
@@ -70,7 +71,7 @@ class LotteryControllerTest {
     @Test
     @DisplayName("When lotteries service returns empty list then return empty list")
     void whenLotteryServiceReturnsEmptyList_thenResponseWithEmptyListWithStatusOk() throws Exception {
-        when(this.lotteryService.getLotteries()).thenReturn(List.of());
+        when(this.lotteryService.getAvailableLotteries()).thenReturn(List.of());
 
         this.mvc.perform(get("/lotteries"))
                 .andDo(print())

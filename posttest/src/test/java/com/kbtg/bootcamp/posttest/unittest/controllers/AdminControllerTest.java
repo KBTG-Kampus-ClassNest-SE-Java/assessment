@@ -1,6 +1,7 @@
-package com.kbtg.bootcamp.posttest.controllers;
+package com.kbtg.bootcamp.posttest.unittest.controllers;
 
 import com.kbtg.bootcamp.posttest.configs.SecurityConfig;
+import com.kbtg.bootcamp.posttest.controllers.AdminController;
 import com.kbtg.bootcamp.posttest.entities.Lottery;
 import com.kbtg.bootcamp.posttest.services.LotteryService;
 import org.junit.jupiter.api.AfterEach;
@@ -15,11 +16,8 @@ import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Date;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -47,27 +45,23 @@ class AdminControllerTest {
     @WithAnonymousUser
     @DisplayName("Given user is anonymous when create lottery then response with status unauthorized")
     void givenUserIsAnonymous_whenCreateLottery_thenResponseWithStatusUnauthorized() throws Exception {
-        this.mvc.perform(
-                post("/admin/lotteries")
-                        .with(csrf())
-                )
+        this.mvc.perform(post("/admin/lotteries"))
                 .andDo(print())
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     @WithMockUser(username = "notadmin", roles = "USER")
+    @DisplayName("Given user is not admin when create lottery then response with status forbidden")
     void givenUserIsNotAdmin_whenCreateLottery_thenResponseWithStatusForbidden() throws Exception {
-        this.mvc.perform(
-                post("/admin/lotteries")
-                        .with(csrf())
-                )
+        this.mvc.perform(post("/admin/lotteries"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
 
     @Test
     @WithMockUser(username = "username", roles = "ADMIN")
+    @DisplayName("Given user is admin when create lottery then response correctly with status created")
     void givenUserIsAdmin_whenCreateLottery_thenResponseCorrectlyWithStatusCreated() throws Exception {
         when(this.lotteryService.createLottery(any())).thenReturn(
                 Lottery
@@ -80,7 +74,6 @@ class AdminControllerTest {
 
         this.mvc.perform(
                 post("/admin/lotteries")
-                        .with(csrf())
                         .contentType("application/json")
                         .content("""
                                 {
@@ -94,4 +87,24 @@ class AdminControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.ticket").value("123456"));
     }
+
+    @Test
+    @WithMockUser(username = "username", roles = {"ADMIN"})
+    @DisplayName("Given user is admin when create lottery with incorrect data then response with status bad request")
+    void givenUserIsAdmin_whenCreateLotteryWithIncorrectData_thenResponseWithStatusBadRequest() throws Exception {
+        this.mvc.perform(
+                post("/admin/lotteries")
+                        .contentType("application/json")
+                        .content("""
+                                {
+                                    "ticket": "12345",
+                                    "price": -5,
+                                    "amount": 12
+                                }
+                                """)
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
 }
