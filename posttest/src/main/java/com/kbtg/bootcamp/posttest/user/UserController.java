@@ -2,10 +2,7 @@ package com.kbtg.bootcamp.posttest.user;
 
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("users")
@@ -16,8 +13,13 @@ public class UserController {
     @Autowired
     private LotteryService lotteryService;
 
+    @GetMapping("/{userId}/lotteries")
+    public MyLotteryResponse listAllMyLottery(@PathVariable("userId") Integer userId) {
+        return userService.listAllMyLottery(userId);
+    }
+
     @PostMapping("/{userId}/lotteries/{ticketId}")
-    public ButLotteryResponse buyLottery(@PathVariable("userId") Integer userId, @PathVariable("ticketId") Integer ticketId) {
+    public BuyLotteryResponse buyLottery(@PathVariable("userId") Integer userId, @PathVariable("ticketId") Integer ticketId) {
         return lotteryService.buyLottery(userId, ticketId);
     }
 }
