@@ -13,7 +13,7 @@ import org.hibernate.validator.constraints.Length;
 public class User extends AuditEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id", nullable = false, updatable = false)
+    @Column(name = "user_id")
     @JsonProperty("user_id")
     private Integer userId;
 
