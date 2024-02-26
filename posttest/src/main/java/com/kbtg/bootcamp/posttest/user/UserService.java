@@ -93,6 +93,7 @@ public class UserService {
 
         userTicketRepository.delete(userTicket);
 
+        // to resell lottery tickets
         Lottery lottery = new Lottery();
         lottery.setTicket(ticket);
         lottery.setAmount(userTicket.getAmount());
