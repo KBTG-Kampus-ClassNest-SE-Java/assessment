@@ -9,6 +9,7 @@ CREATE TABLE lottery (
     ticket VARCHAR(6) NOT NULL,
     price DECIMAL(6, 2) NOT NULL,
     amount INTEGER NOT NULL,
+    current_amount INTEGER NOT NULL,
     created_at TIMESTAMP NOT NULL
 );
 
@@ -26,13 +27,8 @@ VALUES
     (1000000002, 'Bob', NOW ());
 
 INSERT INTO
-    lottery (ticket, price, amount, created_at)
+    lottery (ticket, price, amount, current_amount, created_at)
 VALUES
-    ('000001', 80, 1, NOW ()),
-    ('000002', 80, 2, NOW ()),
-    ('123456', 80, 3, NOW ());
-
-INSERT INTO
-    user_ticket (user_id, lottery_id, created_at)
-VALUES
-    (1000000001, 1, NOW ());
+    ('000001', 80, 1, 1, NOW ()),
+    ('000002', 80, 2, 2, NOW ()),
+    ('123456', 80, 3, 3, NOW ());
