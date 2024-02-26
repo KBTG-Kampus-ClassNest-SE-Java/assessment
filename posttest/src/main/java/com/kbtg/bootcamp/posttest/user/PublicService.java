@@ -4,6 +4,7 @@ import com.kbtg.bootcamp.posttest.exception.BadRequestException;
 import com.kbtg.bootcamp.posttest.exception.NotFoundException;
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryRepository;
+import com.kbtg.bootcamp.posttest.response.UserTicketDetailResponse;
 import com.kbtg.bootcamp.posttest.security.Permission;
 import com.kbtg.bootcamp.posttest.security.PermissionRepository;
 import com.kbtg.bootcamp.posttest.security.Role;
@@ -40,14 +41,6 @@ public class PublicService {
         this.permissionRepository = permissionRepository;
         this.userPermissionRepository = userPermissionRepository;
         this.userTicketRepository = userTicketRepository;
-    }
-
-    public Map<String, List<String>> getLottery() {
-        List<String> lotteries = this.lotteryRepository.findAll().stream().map(Lottery::getTicket).collect(Collectors.toList());
-
-        Map<String, List<String>> allTicket = new HashMap<>();
-        allTicket.put("ticket" ,lotteries);
-        return allTicket;
     }
 
     @Transactional
@@ -146,6 +139,32 @@ public class PublicService {
 
         return Map.of("id", userTicket.getId());
 
+
+    }
+
+    public UserTicketDetailResponse getUserTicket(String userId) {
+
+        Optional<Users> checkUser = this.userRepository.findById(userId);
+
+        if (checkUser.isEmpty()) {
+            throw new NotFoundException("Username not found.");
+        }
+//        List<UserTicketDetail> userTicketDetails = this.userTicketRepository.findUserTicketDetailByUserId(userId);
+        List<Map<String, Object>> userTicketDetailObject = this.userTicketRepository.findUserTicketDetailByUserId(userId);
+        List<String> ticketList = userTicketDetailObject.stream()
+                .map(element -> String.valueOf(element.get("ticket"))).toList();
+
+        Integer count = ticketList.size();
+
+        Integer cost = userTicketDetailObject.stream()
+                .mapToInt(element -> (Integer) element.get("price")).sum();
+
+        UserTicketDetailResponse userTicketDetailResponse = new UserTicketDetailResponse();
+        userTicketDetailResponse.setTickets(ticketList);
+        userTicketDetailResponse.setCount(count);
+        userTicketDetailResponse.setCost(cost);
+
+        return userTicketDetailResponse;
 
     }
 }

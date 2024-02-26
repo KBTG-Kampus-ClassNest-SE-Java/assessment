@@ -1,7 +1,8 @@
 package com.kbtg.bootcamp.posttest.user;
 
-import com.kbtg.bootcamp.posttest.lottery.Lottery;
+import com.kbtg.bootcamp.posttest.response.UserTicketDetailResponse;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Map;
 
@@ -16,11 +17,10 @@ public class PublicController {
         this.publicService = publicService;
     }
 
-    @GetMapping("/lotteries")
-    public Map<String, List<String>> getLottery(){
-        return this.publicService.getLottery();
+    @GetMapping("/users/{userId}/lotteries")
+    public UserTicketDetailResponse getUserTicket(@PathVariable("userId") String userId) {
+        return this.publicService.getUserTicket(userId);
     }
-
 
     @PostMapping("/register")
     public String registerUser(@RequestBody UserRegisterDto requestDto) {
