@@ -42,8 +42,6 @@ class AdminControllerTest {
 		LotteryRequestDto lotteryRequestDto = new LotteryRequestDto("123456", 80,1);
 		String request = objectWriter.writeValueAsString(lotteryRequestDto);
 
-//        LotteryResponseDto response = new LotteryResponseDto("123456");
-//        when(lotteryService.createLottery(any())).thenReturn(response);
 		when(lotteryService.createLottery(any())).thenReturn("123456");
 
 

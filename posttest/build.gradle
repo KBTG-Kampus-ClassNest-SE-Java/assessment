@@ -29,42 +29,13 @@ spotless {
 	}
 }
 
-task copyGitHooks(type: Copy) {
-	description 'Copies the git hooks from /git-hooks to the .git folder.'
-	from("${rootDir}/git-hooks/") {
-		include '**/*.sh'
-		rename '(.*).sh', '$1'
-	}
-	into "${rootDir}/.git/hooks"
-	onlyIf { isLinuxOrMacOs() }
-}
-
-static def isLinuxOrMacOs() {
-	def osName = System.getProperty('os.name').toLowerCase(Locale.ROOT)
-	return osName.contains('linux') || osName.contains('mac os') || osName.contains('macos') || osName.contains('windows 11')
-}
-
-task installGitHooks(type: Exec) {
-	description 'Installs the pre-commit.sh git hooks from /git-hooks.'
-	group 'git hooks'
-	workingDir rootDir
-	commandLine 'chmod'
-	args '-R', '+x', '.git/hooks/'
-	dependsOn copyGitHooks
-	onlyIf { isLinuxOrMacOs() }
-	doLast {
-		logger.info('Git hook installed successfully.')
-	}
-}
-
-
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.postgresql:postgresql'
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

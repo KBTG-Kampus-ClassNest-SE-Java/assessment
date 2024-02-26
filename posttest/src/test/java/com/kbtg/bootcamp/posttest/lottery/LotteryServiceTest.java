@@ -53,7 +53,6 @@ class LotteryServiceTest {
 		LotteryRequestDto lotteryRequestDto = new LotteryRequestDto(ticket, amount, price);
 
 		when(lotteryRepository.findByTicket(ticket)).thenReturn(Optional.of(new Lottery(ticket, amount, price)));
-		Lottery lottery = Optional.of(new Lottery(ticket, amount, price)).get();
 
 		assertThrows(StatusInternalServerErrorException.class, () -> lotteryService.createLottery(lotteryRequestDto));
 

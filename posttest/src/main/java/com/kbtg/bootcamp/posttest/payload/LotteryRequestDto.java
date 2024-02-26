@@ -10,19 +10,15 @@ public class LotteryRequestDto {
 	String ticket;
 	@NotNull(message = "Price cannot be null") @Min(value = 1, message = "Price must be at least 1")
 	Integer price;
-
 	@NotNull(message = "Amount cannot be null") @Min(value = 1, message = "Amount must be at least 1")
 	Integer amount;
-
 	public LotteryRequestDto(String ticket, Integer price, Integer amount) {
 		this.ticket = ticket;
 		this.price = price;
 		this.amount = amount;
 	}
-
 	public LotteryRequestDto() {
 	}
-
 	public String getTicket() {
 		return ticket;
 	}

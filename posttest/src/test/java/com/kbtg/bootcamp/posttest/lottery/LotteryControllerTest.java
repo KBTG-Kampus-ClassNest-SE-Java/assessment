@@ -38,8 +38,6 @@ public class LotteryControllerTest {
 		lotteries.add("000002");
 		lotteries.add("123456");
 
-//        List<String> lotteryListResponseDto = new LotteryListResponseDto(lotteries);
-
 		when(lotteryService.getLotteries()).thenReturn(lotteries);
 
 		mockMvc.perform(get("/lotteries"))

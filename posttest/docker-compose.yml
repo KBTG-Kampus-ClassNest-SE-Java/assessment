@@ -1,4 +1,7 @@
-version: '3'
+version: '3.8'
+
+networks:
+  lottery-service-network:
 
 services:
   postgres-db:
@@ -8,7 +11,7 @@ services:
     environment:
       POSTGRES_DB: lottery-db
       POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: ${DATABASE_PWD}
     volumes:
       - ./db-init/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
@@ -16,8 +19,3 @@ services:
     networks:
       - lottery-service-network
 
-networks:
-  lottery-service-network:
-
-volumes:
-  pgdata:
