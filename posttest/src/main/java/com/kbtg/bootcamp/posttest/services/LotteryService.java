@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface LotteryService {
     Lottery createLottery(CreateLotteryRequest lottery);
-    List<Lottery> getLotteries();
+    List<Lottery> getAvailableLotteries();
     UserTicket buyLottery(String userId, String ticketId);
     GetLotteriesByUserIdResponse getLotteriesByUserId(String userId);
     String sellLottery(String userId, String ticketId);

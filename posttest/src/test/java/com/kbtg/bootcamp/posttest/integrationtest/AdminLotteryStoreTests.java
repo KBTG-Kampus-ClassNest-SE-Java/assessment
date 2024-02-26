@@ -98,24 +98,24 @@ public class AdminLotteryStoreTests {
     @DirtiesContext
     @DisplayName("Given user id and ticket id when user buy lottery then the lottery is bought")
     void givenUserIdAndTicketId_whenUserBuyLottery_thenTheLotteryIsBought() throws Exception {
-        this.mvc.perform(post("/users/username/lotteries/123456"))
+        this.mvc.perform(post("/users/2222233333/lotteries/123456"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists());
 
         // should query database to check
-        this.mvc.perform(get("/users/username/lotteries"))
+        this.mvc.perform(get("/users/2222233333/lotteries"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.tickets").value(anyOf(hasItem("123456"))))
-                .andExpect(jsonPath("$.count").value(2))
-                .andExpect(jsonPath("$.cost").value(160));
+                .andExpect(jsonPath("$.count").value(1))
+                .andExpect(jsonPath("$.cost").value(80));
     }
 
     @Test
     @DisplayName("Given user id and ticket id when lottery not found then response status is not found")
     void givenUserIdAndTicketId_whenLotteryNotFound_thenResponseStatusIsNotFound() throws Exception {
-        this.mvc.perform(post("/users/username/lotteries/43212"))
+        this.mvc.perform(post("/users/2222233334/lotteries/432121"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -123,7 +123,7 @@ public class AdminLotteryStoreTests {
     @Test
     @DisplayName("Given user id and ticket id when lottery is found but sold out then response status is bad request")
     void givenUserIdAndTicketId_whenLotteryIsFoundButSoldOut_thenResponseStatusIsBadRequest() throws Exception {
-        this.mvc.perform(post("/users/username/lotteries/654321"))
+        this.mvc.perform(post("/users/2222233334/lotteries/654321"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -131,7 +131,7 @@ public class AdminLotteryStoreTests {
     @Test
     @DisplayName("When user list their lotteries then response with all lotteries they have with status ok")
     void whenUserListTheirLotteries_thenResponseWithAllLotteriesTheyHaveWithStatusOk() throws Exception {
-        this.mvc.perform(get("/users/username/lotteries"))
+        this.mvc.perform(get("/users/2222233334/lotteries"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.tickets").isArray())
@@ -147,7 +147,7 @@ public class AdminLotteryStoreTests {
     @DirtiesContext
     @DisplayName("When user sell their lottery then the lottery is sold and response correctly with status ok")
     void whenUserSellTheirLottery_thenTheLotteryIsSoldAndResponseCorrectlyWithStatusOk() throws Exception {
-        this.mvc.perform(delete("/users/username/lotteries/123456"))
+        this.mvc.perform(delete("/users/2222233334/lotteries/123456"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.ticket").isString())
@@ -158,7 +158,7 @@ public class AdminLotteryStoreTests {
     @DirtiesContext
     @DisplayName("When user sell their lottery that does not exist then response status is not found")
     void whenUserSellTheirLotteryThatDoesNotExist_thenResponseStatusIsNotFound() throws Exception {
-        this.mvc.perform(delete("/users/username/lotteries/999999"))
+        this.mvc.perform(delete("/users/2222233334/lotteries/999999"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -167,7 +167,7 @@ public class AdminLotteryStoreTests {
     @DirtiesContext
     @DisplayName("When user sell their lottery then amount of lottery in store and user ticket is correct")
     void whenUserSellTheirLottery_thenAmountOfLotteryInStoreAndUserTicketIsCorrect() throws Exception {
-        this.mvc.perform(delete("/users/username/lotteries/123456"))
+        this.mvc.perform(delete("/users/2222233334/lotteries/123456"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.ticket").isString())

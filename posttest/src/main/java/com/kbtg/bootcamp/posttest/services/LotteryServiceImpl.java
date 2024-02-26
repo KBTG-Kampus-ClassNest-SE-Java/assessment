@@ -45,8 +45,8 @@ public class LotteryServiceImpl implements LotteryService {
     }
 
     @Override
-    public List<Lottery> getLotteries() {
-        return this.lotteryRepository.findAll();
+    public List<Lottery> getAvailableLotteries() {
+        return this.lotteryRepository.findByAmountGreaterThan0();
     }
 
     @Override

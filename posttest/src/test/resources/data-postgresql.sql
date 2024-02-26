@@ -3,6 +3,6 @@ VALUES
     ('123456', 80, 3),
     ('654321', 100, 0);
 
-INSERT INTO user_ticket (id, user_id, ticket_id, amount)
+INSERT INTO user_ticket (user_id, ticket_id, amount)
 VALUES
-    (1, 'username', '123456', 1);
+    ('2222233334', '123456', 1);

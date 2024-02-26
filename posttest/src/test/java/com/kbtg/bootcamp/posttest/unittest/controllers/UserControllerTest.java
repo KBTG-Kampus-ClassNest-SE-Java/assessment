@@ -52,11 +52,11 @@ class UserControllerTest {
     @Test
     @DisplayName("When buy lottery with exist ticket id then response correctly with status ok")
     void whenBuyLotteryWithExistTicketId_thenResponseCorrectlyWithStatusOk() throws Exception {
-        when(this.lotteryService.buyLottery(any(), any())).thenReturn(
+        when(this.lotteryService.buyLottery(anyString(), eq("123456"))).thenReturn(
                 UserTicket
                         .builder()
                         .id(1)
-                        .userId("username")
+                        .userId("2222233334")
                         .lottery(
                                 Lottery.builder()
                                         .ticket("123456")
@@ -66,10 +66,7 @@ class UserControllerTest {
                         .build()
         );
 
-        this.mvc.perform(
-            post("/users/username/lotteries/123456")
-                    .with(csrf())
-        )
+        this.mvc.perform(post("/users/2222233334/lotteries/123456"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isString())
@@ -79,12 +76,9 @@ class UserControllerTest {
     @Test
     @DisplayName("When buy lottery with not exist ticket id then response with status not found")
     void whenBuyLotteryWithNotExistTicketId_thenResponseWithStatusNotFound() throws Exception {
-        when(this.lotteryService.buyLottery(any(), eq("987654"))).thenThrow(LotteryNotFoundException.class);
+        when(this.lotteryService.buyLottery(anyString(), eq("987654"))).thenThrow(LotteryNotFoundException.class);
 
-        this.mvc.perform(
-                post("/users/username/lotteries/987654")
-                        .with(csrf())
-        )
+        this.mvc.perform(post("/users/2222233334/lotteries/987654"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -92,14 +86,27 @@ class UserControllerTest {
     @Test
     @DisplayName("When buy lottery that is already sold out then response with status not found")
     void whenBuyLotteryThatIsAlreadySoldOut_thenResponseWithStatusNotFound() throws Exception {
-        when(this.lotteryService.buyLottery(any(), eq("123456"))).thenThrow(LotterySoldOutException.class);
+        when(this.lotteryService.buyLottery(anyString(), eq("123456"))).thenThrow(LotterySoldOutException.class);
 
-        this.mvc.perform(
-                post("/users/username/lotteries/123456")
-                        .with(csrf())
-        )
+        this.mvc.perform(post("/users/2222233334/lotteries/123456"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("When buy lottery with invalid ticket id then response with status bad request")
+    void whenBuyLotteryWithInvalidTicketId_thenResponseWithStatusBadRequest() throws Exception {
+        this.mvc.perform(post("/users/2222233334/lotteries/invalid"))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("When buy lottery with invalid user id then response with status bad request")
+    void whenBuyLotteryWithInvalidUserId_thenResponseWithStatusBadRequest() throws Exception {
+        this.mvc.perform(post("/users/invalid/lotteries/123456"))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -113,7 +120,7 @@ class UserControllerTest {
 
         when(this.lotteryService.getLotteriesByUserId(anyString())).thenReturn(expectedResponse);
 
-        this.mvc.perform(get("/users/username/lotteries"))
+        this.mvc.perform(get("/users/2222233334/lotteries"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.tickets").isArray())
@@ -125,11 +132,19 @@ class UserControllerTest {
     }
 
     @Test
+    @DisplayName("When get lottery details with invalid user id then response with status bad request")
+    void whenGetLotteryDetailsWithInvalidUserId_thenResponseWithStatusBadRequest() throws Exception {
+        this.mvc.perform(get("/users/invalid/lotteries"))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     @DisplayName("When sell lottery then response ticket id with status ok")
     void whenSellLottery_thenResponseTicketIdWithStatusOk() throws Exception {
         when(this.lotteryService.sellLottery(anyString(), anyString())).thenReturn("123456");
 
-        this.mvc.perform(delete("/users/username/lotteries/123456"))
+        this.mvc.perform(delete("/users/2222233334/lotteries/123456"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.ticket").isString())
@@ -141,9 +156,25 @@ class UserControllerTest {
     void whenSellLotteryAndLotteryServiceThrowUserTicketNotFoundException_thenResponseStatusIsNotFound() throws Exception {
         when(this.lotteryService.sellLottery(anyString(), anyString())).thenThrow(UserTicketNotFoundException.class);
 
-        this.mvc.perform(delete("/users/username/lotteries/123456"))
+        this.mvc.perform(delete("/users/2222233334/lotteries/123456"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("When sell lottery with invalid user id then response with status bad request")
+    void whenSellLotteryWithInvalidUserId_thenResponseWithStatusBadRequest() throws Exception {
+        this.mvc.perform(delete("/users/invalid/lotteries/123456"))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("When sell lottery with invalid ticket id then response with status bad request")
+    void whenSellLotteryWithInvalidTicketId_thenResponseWithStatusBadRequest() throws Exception {
+        this.mvc.perform(delete("/users/2222233334/lotteries/invalid"))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
     }
 
 }
