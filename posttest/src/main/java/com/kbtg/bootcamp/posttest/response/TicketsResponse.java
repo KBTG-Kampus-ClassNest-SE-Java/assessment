@@ -4,18 +4,17 @@ import java.util.List;
 
 public class TicketsResponse {
 
+    private List<String> tickets;
 
-	private List<String> tickets;
-	
-	 public TicketsResponse(List<String> tickets) {
-	        this.tickets = tickets;
-	    }
+    public TicketsResponse(List<String> tickets) {
+        this.tickets = tickets;
+    }
 
-	    public List<String> getTickets() {
-	        return tickets;
-	    }
+    public List<String> getTickets() {
+        return tickets;
+    }
 
-	    public void setTickets(List<String> tickets) {
-	        this.tickets = tickets;
-	    }
+    public void setTickets(List<String> tickets) {
+        this.tickets = tickets;
+    }
 }

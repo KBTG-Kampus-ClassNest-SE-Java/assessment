@@ -9,20 +9,21 @@ import java.util.Date;
 @Table(name = "user_ticket")
 public class UserTicket {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Long ID;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long ID;
 
-    @Column(name = "LotteryID",length = 10)
+    @Column(name = "LotteryID", length = 10)
     private Long lotteryID;
 
     @Column(name = "UserID")
     private String userID;
 
-    @Column(name = "TicketNumber",length = 6)
+    @Column(name = "TicketNumber", length = 6)
     private String ticketNumber;
 
     @Column(name = "TicketPrice")
-    private  int ticketPrice;
+    private int ticketPrice;
 
     @Column(name = "DateTime")
     @Temporal(TemporalType.TIMESTAMP)
@@ -33,7 +34,7 @@ public class UserTicket {
 
     }
 
-    public UserTicket(String userID,Long lotteryID, String ticketNumber,int ticketPrice) {
+    public UserTicket(String userID, Long lotteryID, String ticketNumber, int ticketPrice) {
         this.userID = userID;
         this.lotteryID = lotteryID;
         this.ticketNumber = ticketNumber;

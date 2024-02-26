@@ -9,16 +9,16 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class PosttestApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(PosttestApplication.class, args);
+    public static void main(String[] args) {
+        SpringApplication.run(PosttestApplication.class, args);
 
-	}
+    }
 
-	@Bean
-	CommandLineRunner init(UserService userService) {
-		return args -> {
-			userService.mockupUser();
-		};
-	}
+    @Bean
+    CommandLineRunner init(UserService userService) {
+        return args -> {
+            userService.mockupUser();
+        };
+    }
 
 }

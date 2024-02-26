@@ -11,18 +11,17 @@ import java.time.ZonedDateTime;
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
-
-    @ExceptionHandler({ TicketNotFoundException.class })
+    @ExceptionHandler({TicketNotFoundException.class})
     public ResponseEntity<ApiErrorResponse> handleNotFoundException(TicketNotFoundException e) {
-        ApiErrorResponse errorResponse =
-                new ApiErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND, ZonedDateTime.now());
+        ApiErrorResponse errorResponse = new ApiErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND,
+                ZonedDateTime.now());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler({ BadRequestException.class })
+    @ExceptionHandler({BadRequestException.class})
     public ResponseEntity<ApiErrorResponse> handleNotFoundException(BadRequestException e) {
-        ApiErrorResponse errorResponse =
-                new ApiErrorResponse(e.getMessage(), HttpStatus.BAD_REQUEST, ZonedDateTime.now());
+        ApiErrorResponse errorResponse = new ApiErrorResponse(e.getMessage(), HttpStatus.BAD_REQUEST,
+                ZonedDateTime.now());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 

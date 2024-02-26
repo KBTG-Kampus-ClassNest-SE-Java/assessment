@@ -1,12 +1,11 @@
 package com.kbtg.bootcamp.posttest.request;
 
-
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 public class LotteryRequest {
     @NotNull
-    @Length(min = 6,max = 6,message = "Ticket number could be 6 characters")
+    @Length(min = 6, max = 6, message = "Ticket number could be 6 characters")
     private String ticket;
 
     @NotNull
@@ -14,7 +13,6 @@ public class LotteryRequest {
 
     @NotNull
     private int amount;
-
 
     public String getTicket() {
         return ticket;

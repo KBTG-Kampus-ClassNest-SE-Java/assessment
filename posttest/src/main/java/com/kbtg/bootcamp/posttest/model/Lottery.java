@@ -7,10 +7,11 @@ import jakarta.persistence.*;
 
 public class Lottery {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ID;
 
-    @Column(name = "TicketNumber",length = 6)
+    @Column(name = "TicketNumber", length = 6)
     private String ticketNumber;
 
     @Column(name = "Amount")
@@ -18,11 +19,10 @@ public class Lottery {
 
     @Column(name = "Price")
     private int price;
-    
-    public Lottery() {
-    	
-    }
 
+    public Lottery() {
+
+    }
 
     public Lottery(String ticketNumber, int amount, int price) {
 

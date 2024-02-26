@@ -19,13 +19,17 @@ public class User {
     @Column(name = "Password")
     private String password;
 
+    @Column(name = "Tel")
+    private String telNum;
+
     public User() {
     }
 
-    public User(String ID, String username, String password) {
+    public User(String ID, String username, String password, String telNum) {
         this.ID = ID;
         this.username = username;
         this.password = password;
+        this.telNum = telNum;
     }
 
     public String getId() {
@@ -52,4 +56,11 @@ public class User {
         this.password = password;
     }
 
+    public String getTelNum() {
+        return telNum;
+    }
+
+    public void setTelNum(String telNum) {
+        this.telNum = telNum;
+    }
 }

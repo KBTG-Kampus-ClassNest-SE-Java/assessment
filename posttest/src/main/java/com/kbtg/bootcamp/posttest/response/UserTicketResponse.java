@@ -4,23 +4,22 @@ import java.util.List;
 
 public class UserTicketResponse {
 
-    private List<String> tickets ;
+    private List<String> tickets;
     private int amount;
     private int price;
 
-    public UserTicketResponse(List<String> tickets , int amount, int price) {
-        this.tickets  = tickets;
+    public UserTicketResponse(List<String> tickets, int amount, int price) {
+        this.tickets = tickets;
         this.amount = amount;
         this.price = price;
     }
 
-
     public List<String> getTickets() {
-        return tickets ;
+        return tickets;
     }
 
     public void setTickets(List<String> tickets) {
-        this.tickets  = tickets;
+        this.tickets = tickets;
     }
 
     public int getAmount() {

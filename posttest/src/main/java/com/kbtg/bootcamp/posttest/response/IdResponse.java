@@ -8,11 +8,11 @@ public class IdResponse {
         this.ID = ID;
     }
 
-    public void setID(long ID) {
-        this.ID = ID;
-    }
-
     public long getID() {
         return ID;
+    }
+
+    public void setID(long ID) {
+        this.ID = ID;
     }
 }
