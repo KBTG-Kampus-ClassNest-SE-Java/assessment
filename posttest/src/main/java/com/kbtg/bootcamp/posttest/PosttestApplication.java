@@ -6,8 +6,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class PosttestApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(PosttestApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(PosttestApplication.class, args);
+        System.out.println("START OK! START OK!");
+
+
+    }
 
 }

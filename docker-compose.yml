@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  web:
+    image: assessment_con:latest
+    ports:
+      - "8888:8888"
+    environment:
+      - ENV_VARIABLE=value
+    depends_on:
+      - database
+    volumes:
+      - ./path/to/local/directory:/app/data
+
+  database:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=lottery
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
