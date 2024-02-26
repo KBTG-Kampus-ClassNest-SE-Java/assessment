@@ -1,0 +1,33 @@
+version: '3.8'
+
+networks:
+  post-test-network:
+
+services:
+  db:
+    image: postgres:16.0
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: assessment
+    restart: on-failure
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/
+    networks:
+      - post-test-network
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/assessment
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=root
+    depends_on:
+      - db
+    ports:
+      - "8888:8888"
+    networks:
+      - post-test-network
