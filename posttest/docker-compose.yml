@@ -4,13 +4,14 @@ services:
   postgres:
     image: postgres:latest
     environment:
-      POSTGRES_DB: lottery
-      POSTGRES_USER: user
+      POSTGRES_DB: lotteryDB
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"
+    restart: always
   my_app:
     build:
       context: .
@@ -19,8 +20,8 @@ services:
     depends_on:
       - postgres
     environment:
-      - DATABASE_URL=jdbc:postgresql://postgres:5432/lotteryDB
-      - DATABASE_USERNAME=user
+      - DATABASE_URL=jdbc:postgresql://localhost:5432/lotteryDB
+      - DATABASE_USERNAME=postgres
       - DATABASE_PASSWORD=password
     ports:
       - "8888:8888"

@@ -1,0 +1,30 @@
+package com.kbtg.bootcamp.posttest.security;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import static org.springframework.security.config.Customizer.withDefaults;
+
+@Configuration
+@EnableWebSecurity // enables Spring security feature in application
+public class SecurityConfiguration {
+    @Bean
+    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+        return
+        http
+            .csrf(AbstractHttpConfigurer::disable)
+            .authorizeRequests((requests) -> requests
+            .requestMatchers(new AntPathRequestMatcher("/users/**")).permitAll()
+            .requestMatchers(new AntPathRequestMatcher("/test/**")).permitAll()
+            .anyRequest().authenticated()
+        )
+        .httpBasic(withDefaults())
+        .build();
+    }
+
+}
