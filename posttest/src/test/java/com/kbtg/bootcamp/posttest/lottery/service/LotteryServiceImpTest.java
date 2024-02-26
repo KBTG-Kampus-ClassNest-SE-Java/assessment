@@ -3,7 +3,6 @@ package com.kbtg.bootcamp.posttest.lottery.service;
 
 import com.kbtg.bootcamp.posttest.exception.LotteryException;
 import com.kbtg.bootcamp.posttest.lottery.entity.Lottery;
-import com.kbtg.bootcamp.posttest.lottery.exception.DubLotteryExceptionHandling;
 import com.kbtg.bootcamp.posttest.lottery.repo.LotteryRepo;
 import com.kbtg.bootcamp.posttest.lottery.rest.dto.LotteryListResDto;
 import com.kbtg.bootcamp.posttest.lottery.rest.dto.LotteryRequestDto;
