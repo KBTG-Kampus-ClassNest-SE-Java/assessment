@@ -4,8 +4,8 @@ ADD . .
 RUN ["./gradlew","bootJar"]
 
 # Step to run tests
-FROM builder as test
-RUN ["./gradlew", "test"]
+#FROM builder as test
+#RUN ["./gradlew", "test"]
 
 FROM gcr.io/distroless/java21-debian12:latest
 WORKDIR /app

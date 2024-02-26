@@ -20,9 +20,9 @@ services:
     ports:
       - "8888:8888"
     environment:
-      DATABASE_URL: jdbc:postgresql://db:5432/assessment?searchpath=public&createDatabaseIfNotExist=true&useUnicode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Bangkok&prepareThreshold=0
-      DATABASE_USERNAME: root
-      DATABASE_PASSWORD: 12345678
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/assessment?searchpath=public&createDatabaseIfNotExist=true&useUnicode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Bangkok&prepareThreshold=0
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 12345678
     depends_on:
       - db
     networks:
