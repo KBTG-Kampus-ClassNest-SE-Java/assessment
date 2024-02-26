@@ -44,7 +44,7 @@ public class LotteryControllerTest {
 
     @BeforeEach
     void setUp() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(lotteryController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(lotteryController).build();
     }
 
 
