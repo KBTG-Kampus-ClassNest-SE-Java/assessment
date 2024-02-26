@@ -107,7 +107,7 @@ class UserTicketServiceImpTest {
 
     @Test
     @DisplayName("Should cost 190 when buying 2 lotteries cost 100 and 90 ")
-    void testGetLotteriesByUserId3() {
+    void testGetLotteryByUserId3() {
 
         Lottery lottery = new Lottery();
         lottery.setAmount(AMOUNT);
@@ -143,8 +143,8 @@ class UserTicketServiceImpTest {
     }
 
     @Test
-    @DisplayName("should be null when deleting wrong user_id and ticket number")
-    void testDeleteLotteriesByUserId() {
+    @DisplayName("Should be null when deleting wrong user_id and ticket number")
+    void testSellLottery() {
 
         when(userTicketRepo.findByUserId(Mockito.any())).thenReturn(new ArrayList<>());
 
