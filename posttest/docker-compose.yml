@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  postgresdb:
+    image: postgres:16.2 # Pinned version
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret_password
+      POSTGRES_DB: assessment
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./sql:/docker-entrypoint-initdb.d
+
+
+
+  lottery-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8888:8888"
+    environment:
+      DATABASE_URL: jdbc:postgresql://postgresdb:5432/assessment
+      DATABASE_USERNAME: admin
+      DATABASE_PASSWORD: secret_password
+    depends_on:
+      - postgresdb
+
+volumes:
+  postgres-data:
