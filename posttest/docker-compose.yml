@@ -4,17 +4,9 @@ networks:
   integration-test-post-test-lottery-app:
 
 services:
-  post-test-lottery-backend:
-    build:
-      context: ./
-    ports:
-      - "8888:8888"
-    networks:
-      - integration-test-post-test-lottery-app
-    depends_on:
-      - postgresdb
   postgresdb:
     image: postgres:16.0
+    container_name: postgresdb
     environment:
       POSTGRES_DB: posttestdb
       POSTGRES_USER: user
@@ -25,5 +17,20 @@ services:
       - "5432:5432"
     networks:
       - integration-test-post-test-lottery-app
+  post-test-lottery-backend:
+    build:
+      context: .
+    ports:
+      - "8888:8888"
+    networks:
+      - integration-test-post-test-lottery-app
+    depends_on:
+      - postgresdb
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresdb:5432/posttestdb
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    restart: always
 volumes:
   pgdata:
