@@ -2,6 +2,7 @@ package com.kbtg.bootcamp.posttest.admin;
 
 import com.kbtg.bootcamp.posttest.lottery.Lottery;
 import com.kbtg.bootcamp.posttest.lottery.LotteryService;
+import com.kbtg.bootcamp.posttest.shared.responses.LotteryResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,14 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("admin")
-public class AdminController {
+public class AddLotteryController {
     @Autowired
     private LotteryService lotteryService;
 
     @PostMapping("/lotteries")
-    public ResponseEntity<Lottery> addLottery(@Valid @RequestBody Lottery lottery) {
-        lotteryService.addLottery(lottery);
+    public ResponseEntity<LotteryResponse> addLottery(@Valid @RequestBody Lottery lottery) {
+        var lotteryResponse = lotteryService.addLottery(lottery);
 
-        return new ResponseEntity<>(lottery, HttpStatus.CREATED);
+        return new ResponseEntity<>(lotteryResponse, HttpStatus.CREATED);
     }
 }

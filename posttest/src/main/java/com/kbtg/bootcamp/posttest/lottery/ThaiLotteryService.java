@@ -3,6 +3,7 @@ package com.kbtg.bootcamp.posttest.lottery;
 import com.kbtg.bootcamp.posttest.core.exceptions.LotteryNotFoundException;
 import com.kbtg.bootcamp.posttest.core.exceptions.LotterySoldOutException;
 import com.kbtg.bootcamp.posttest.core.exceptions.UserNotFoundException;
+import com.kbtg.bootcamp.posttest.shared.responses.LotteryResponse;
 import com.kbtg.bootcamp.posttest.user.BuyLotteryResponse;
 import com.kbtg.bootcamp.posttest.user.UserRepository;
 import com.kbtg.bootcamp.posttest.user.UserTicket;
@@ -23,17 +24,19 @@ public class ThaiLotteryService implements LotteryService {
     private UserTicketRepository userTicketRepository;
 
     @Override
-    public void addLottery(Lottery lottery) {
+    public LotteryResponse addLottery(Lottery lottery) {
         lottery.setCurrentAmount(lottery.getAmount());
 
         lotteryRepository.save(lottery);
+
+        return new LotteryResponse(lottery.getTicket());
     }
 
     @Override
-    public LotteryResponse listLotteries() {
+    public LotteriesResponse listLotteries() {
         var tickets = lotteryRepository.findDistinctTickets();
 
-        return new LotteryResponse(tickets);
+        return new LotteriesResponse(tickets);
     }
 
     @Override

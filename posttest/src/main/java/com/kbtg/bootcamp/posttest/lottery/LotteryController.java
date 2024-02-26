@@ -12,7 +12,7 @@ public class LotteryController {
     private LotteryService lotteryService;
 
     @GetMapping("")
-    public LotteryResponse listLotteries() {
+    public LotteriesResponse listLotteries() {
         return lotteryService.listLotteries();
     }
 }

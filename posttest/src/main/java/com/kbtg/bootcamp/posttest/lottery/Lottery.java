@@ -25,11 +25,9 @@ public class Lottery extends AuditEntity {
     private String ticket;
 
     @Column(name = "price", precision = 6, scale = 2)
-    @JsonIgnore
     @DecimalMin(value = "0.00", message = "Price has to be non negative number")
     private BigDecimal price;
 
-    @JsonIgnore
     @Min(value = 1, message = "Amount must be at least 1")
     private Integer amount;
 
