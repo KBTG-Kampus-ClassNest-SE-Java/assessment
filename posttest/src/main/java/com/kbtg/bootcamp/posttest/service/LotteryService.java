@@ -49,7 +49,6 @@ public class LotteryService implements ImpLotteryService {
 
         }
 
-
     }
 
     @Override

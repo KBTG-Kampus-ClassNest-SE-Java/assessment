@@ -35,6 +35,4 @@ public class UserTicketService implements ImpUserTicketService {
 
 
 
-
-
 }

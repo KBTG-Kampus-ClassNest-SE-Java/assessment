@@ -1,7 +1,4 @@
-package com.kbtg.bootcamp.posttest.lotteryResponse;
-
-import lombok.Getter;
-import lombok.Setter;
+package com.kbtg.bootcamp.posttest.response;
 
 import java.util.List;
 
