@@ -1,20 +1,19 @@
 package com.kbtg.bootcamp.posttest.lottery.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @NoArgsConstructor
-public class UserLottery {
+public class UserTicket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+
+    private String userId;
+
     @ManyToOne
     @JoinColumn(name = "lottery_id")
     private Lottery lottery;

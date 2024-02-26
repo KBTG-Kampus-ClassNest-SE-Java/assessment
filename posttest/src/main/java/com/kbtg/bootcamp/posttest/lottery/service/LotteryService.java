@@ -1,14 +1,13 @@
 package com.kbtg.bootcamp.posttest.lottery.service;
 
-import com.kbtg.bootcamp.posttest.lottery.entity.Lottery;
-import com.kbtg.bootcamp.posttest.lottery.entity.UserLottery;
-
-import java.util.List;
+import com.kbtg.bootcamp.posttest.lottery.Respone.LotteryResponse;
+import com.kbtg.bootcamp.posttest.lottery.request.AdminLotteryRequest;
+import org.springframework.http.ResponseEntity;
 
 public interface LotteryService {
 
-    Lottery addLottery(Lottery lottery);
+    ResponseEntity<Object> addLottery(AdminLotteryRequest lotteryRequest);
 
-    List<Lottery> getLotteries();
+    ResponseEntity<LotteryResponse> getAllLotteries();
 
 }

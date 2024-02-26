@@ -1,12 +1,14 @@
 package com.kbtg.bootcamp.posttest.lottery.controller;
 
-import com.kbtg.bootcamp.posttest.lottery.entity.UserLottery;
-import com.kbtg.bootcamp.posttest.lottery.service.UserLotteryService;
+import com.kbtg.bootcamp.posttest.lottery.annotaion.TenDigitId;
+import com.kbtg.bootcamp.posttest.lottery.request.SellLotteryResponse;
+import com.kbtg.bootcamp.posttest.lottery.service.UserTicketService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -14,20 +16,20 @@ import java.util.List;
 public class UserLotteryController {
 
 
-    private final UserLotteryService userLotteryService;
+    private final UserTicketService userTicketService;
 
     @PostMapping("/{ticketId}")
-    public ResponseEntity<Object> buyLottery(@PathVariable String userId, @PathVariable String ticketId) {
-        return userLotteryService.buyLottery(userId, ticketId);
+    public ResponseEntity<Object> buyLottery(@PathVariable @TenDigitId @Valid String userId, @PathVariable String ticketId) {
+        return userTicketService.buyLottery(userId, ticketId);
     }
 
     @GetMapping
-    public ResponseEntity<List<UserLottery>> getUserPurchasedLotteries(@PathVariable String userId) {
-        return userLotteryService.getUserLotteryTickets(userId);
+    public ResponseEntity<Map<String, Object>> getUserPurchasedLotteries(@PathVariable @TenDigitId @Valid String userId) {
+        return userTicketService.getUserLotteryTickets(userId);
     }
 
     @DeleteMapping("/{ticketId}")
-    public ResponseEntity<UserLottery> sellLottery(@PathVariable String userId, @PathVariable String ticketId) {
-        return userLotteryService.sellLotteryTicket(userId, ticketId);
+    public ResponseEntity<SellLotteryResponse> sellLottery(@PathVariable @TenDigitId @Valid String userId, @PathVariable String ticketId) {
+        return userTicketService.sellLotteryTicket(userId, ticketId);
     }
 }
