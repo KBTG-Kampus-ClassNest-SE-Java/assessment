@@ -1,4 +1,4 @@
-package com.kbtg.bootcamp.posttest.services;
+package com.kbtg.bootcamp.posttest.unittest.services;
 
 import com.kbtg.bootcamp.posttest.dto.CreateLotteryRequest;
 import com.kbtg.bootcamp.posttest.dto.GetLotteriesByUserIdResponse;
@@ -6,8 +6,10 @@ import com.kbtg.bootcamp.posttest.entities.Lottery;
 import com.kbtg.bootcamp.posttest.entities.UserTicket;
 import com.kbtg.bootcamp.posttest.exceptions.LotteryNotFoundException;
 import com.kbtg.bootcamp.posttest.exceptions.LotterySoldOutException;
+import com.kbtg.bootcamp.posttest.exceptions.UserTicketNotFoundException;
 import com.kbtg.bootcamp.posttest.repositories.LotteryRepository;
 import com.kbtg.bootcamp.posttest.repositories.UserTicketRepository;
+import com.kbtg.bootcamp.posttest.services.LotteryServiceImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -232,4 +234,38 @@ class LotteryServiceTest {
         assertThat(response.count()).isEqualTo(3);
         assertThat(response.cost()).isEqualTo(280);
     }
+
+    @Test
+    @DisplayName("Given user id and ticket id, when sell lottery, then return ticket id")
+    void givenUserIdAndTicketId_whenSellLottery_thenReturnTicketId() {
+        when(this.userTicketRepository.findByUserIdAndTicketId(anyString(), anyString())).thenReturn(Optional.of(
+            UserTicket.builder()
+                    .id(1)
+                    .userId("username")
+                    .amount(2)
+                    .lottery(
+                            Lottery.builder()
+                                    .ticket("000001")
+                                    .price(100)
+                                    .amount(1)
+                                    .build()
+                    )
+                    .build()
+        ));
+
+        String ticketId = this.lotteryService.sellLottery("username", "000001");
+
+        assertThat(ticketId).isNotNull();
+        assertThat(ticketId).isEqualTo("000001");
+    }
+
+    @Test
+    @DisplayName("Given user id and ticket id, when sell lottery and user ticket is not found, then throw user ticket not found exception")
+    void givenUserIdAndTicketId_whenSellLotteryAndUserTicketIsNotFound_thenThrowUserTicketNotFoundException() {
+        when(this.userTicketRepository.findByUserIdAndTicketId(anyString(), anyString())).thenReturn(Optional.empty());
+
+        assertThatExceptionOfType(UserTicketNotFoundException.class)
+                .isThrownBy(() -> this.lotteryService.sellLottery("username", "000001"));
+    }
+
 }

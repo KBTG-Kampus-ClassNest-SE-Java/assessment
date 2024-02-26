@@ -1,6 +1,7 @@
-package com.kbtg.bootcamp.posttest.controllers;
+package com.kbtg.bootcamp.posttest.unittest.controllers;
 
 import com.kbtg.bootcamp.posttest.configs.SecurityConfig;
+import com.kbtg.bootcamp.posttest.controllers.LotteryController;
 import com.kbtg.bootcamp.posttest.entities.Lottery;
 import com.kbtg.bootcamp.posttest.services.LotteryService;
 import org.junit.jupiter.api.AfterEach;

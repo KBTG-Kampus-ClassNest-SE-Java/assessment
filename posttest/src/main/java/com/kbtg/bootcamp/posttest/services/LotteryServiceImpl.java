@@ -6,6 +6,7 @@ import com.kbtg.bootcamp.posttest.entities.Lottery;
 import com.kbtg.bootcamp.posttest.entities.UserTicket;
 import com.kbtg.bootcamp.posttest.exceptions.LotteryNotFoundException;
 import com.kbtg.bootcamp.posttest.exceptions.LotterySoldOutException;
+import com.kbtg.bootcamp.posttest.exceptions.UserTicketNotFoundException;
 import com.kbtg.bootcamp.posttest.repositories.LotteryRepository;
 import com.kbtg.bootcamp.posttest.repositories.UserTicketRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -96,6 +97,22 @@ public class LotteryServiceImpl implements LotteryService {
         }
 
         return userTicket;
+    }
+
+    @Override
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    public String sellLottery(String userId, String ticketId) {
+        Optional<UserTicket> optionalUserTicket = this.userTicketRepository.findByUserIdAndTicketId(userId, ticketId);
+        if (optionalUserTicket.isEmpty()) {
+            throw new UserTicketNotFoundException("User ticket with id " + ticketId + " not found");
+        }
+
+        UserTicket userTicket = optionalUserTicket.get();
+
+        this.lotteryRepository.updateTicketAmountInStore(ticketId, userTicket.getAmount());
+        this.userTicketRepository.deleteByUserIdAndTicketId(userId, ticketId);
+
+        return ticketId;
     }
 
 }

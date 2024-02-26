@@ -12,4 +12,5 @@ public interface LotteryService {
     List<Lottery> getLotteries();
     UserTicket buyLottery(String userId, String ticketId);
     GetLotteriesByUserIdResponse getLotteriesByUserId(String userId);
+    String sellLottery(String userId, String ticketId);
 }

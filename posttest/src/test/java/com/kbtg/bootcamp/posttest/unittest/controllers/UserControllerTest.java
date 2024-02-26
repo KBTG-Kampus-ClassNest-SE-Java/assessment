@@ -1,11 +1,13 @@
-package com.kbtg.bootcamp.posttest.controllers;
+package com.kbtg.bootcamp.posttest.unittest.controllers;
 
 import com.kbtg.bootcamp.posttest.configs.SecurityConfig;
+import com.kbtg.bootcamp.posttest.controllers.UserController;
 import com.kbtg.bootcamp.posttest.dto.GetLotteriesByUserIdResponse;
 import com.kbtg.bootcamp.posttest.entities.Lottery;
 import com.kbtg.bootcamp.posttest.entities.UserTicket;
 import com.kbtg.bootcamp.posttest.exceptions.LotteryNotFoundException;
 import com.kbtg.bootcamp.posttest.exceptions.LotterySoldOutException;
+import com.kbtg.bootcamp.posttest.exceptions.UserTicketNotFoundException;
 import com.kbtg.bootcamp.posttest.services.LotteryService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,8 +25,7 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -102,6 +103,7 @@ class UserControllerTest {
     }
 
     @Test
+    @DisplayName("When get lottery details then response lottery details with status ok")
     void whenGetLotteryDetails_thenResponseLotteryDetailsWithStatusOk() throws Exception {
         GetLotteriesByUserIdResponse expectedResponse = new GetLotteriesByUserIdResponse(
                 List.of("123456", "567890"),
@@ -121,4 +123,27 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.cost").isNumber())
                 .andExpect(jsonPath("$.cost").value(160));
     }
+
+    @Test
+    @DisplayName("When sell lottery then response ticket id with status ok")
+    void whenSellLottery_thenResponseTicketIdWithStatusOk() throws Exception {
+        when(this.lotteryService.sellLottery(anyString(), anyString())).thenReturn("123456");
+
+        this.mvc.perform(delete("/users/username/lotteries/123456"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.ticket").isString())
+                .andExpect(jsonPath("$.ticket").value("123456"));
+    }
+
+    @Test
+    @DisplayName("When sell lottery and lottery service throw UserTicketNotFoundException then response status is not found")
+    void whenSellLotteryAndLotteryServiceThrowUserTicketNotFoundException_thenResponseStatusIsNotFound() throws Exception {
+        when(this.lotteryService.sellLottery(anyString(), anyString())).thenThrow(UserTicketNotFoundException.class);
+
+        this.mvc.perform(delete("/users/username/lotteries/123456"))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.kbtg.bootcamp.posttest;
+package com.kbtg.bootcamp.posttest.integrationtest;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,8 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -142,5 +141,36 @@ public class AdminLotteryStoreTests {
                 .andExpect(jsonPath("$.cost").isNumber())
                 .andExpect(jsonPath("$.cost").value(80))
                 .andExpect(jsonPath("$.tickets.length()").value(1));
+    }
+
+    @Test
+    @DirtiesContext
+    @DisplayName("When user sell their lottery then the lottery is sold and response correctly with status ok")
+    void whenUserSellTheirLottery_thenTheLotteryIsSoldAndResponseCorrectlyWithStatusOk() throws Exception {
+        this.mvc.perform(delete("/users/username/lotteries/123456"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.ticket").isString())
+                .andExpect(jsonPath("$.ticket").value("123456"));
+    }
+
+    @Test
+    @DirtiesContext
+    @DisplayName("When user sell their lottery that does not exist then response status is not found")
+    void whenUserSellTheirLotteryThatDoesNotExist_thenResponseStatusIsNotFound() throws Exception {
+        this.mvc.perform(delete("/users/username/lotteries/999999"))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DirtiesContext
+    @DisplayName("When user sell their lottery then amount of lottery in store and user ticket is correct")
+    void whenUserSellTheirLottery_thenAmountOfLotteryInStoreAndUserTicketIsCorrect() throws Exception {
+        this.mvc.perform(delete("/users/username/lotteries/123456"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.ticket").isString())
+                .andExpect(jsonPath("$.ticket").value("123456"));
     }
 }
