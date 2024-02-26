@@ -3,9 +3,7 @@ package com.kbtg.bootcamp.posttest.unittest.controllers;
 import com.kbtg.bootcamp.posttest.configs.SecurityConfig;
 import com.kbtg.bootcamp.posttest.controllers.AdminController;
 import com.kbtg.bootcamp.posttest.entities.Lottery;
-import com.kbtg.bootcamp.posttest.services.LotteryService;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.kbtg.bootcamp.posttest.services.LotteryStoreService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,15 +29,7 @@ class AdminControllerTest {
     private MockMvc mvc;
 
     @MockBean
-    private LotteryService lotteryService;
-
-    @BeforeEach
-    void setUp() {
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
+    private LotteryStoreService lotteryStoreService;
 
     @Test
     @WithAnonymousUser
@@ -63,7 +53,7 @@ class AdminControllerTest {
     @WithMockUser(username = "username", roles = "ADMIN")
     @DisplayName("Given user is admin when create lottery then response correctly with status created")
     void givenUserIsAdmin_whenCreateLottery_thenResponseCorrectlyWithStatusCreated() throws Exception {
-        when(this.lotteryService.createLottery(any())).thenReturn(
+        when(this.lotteryStoreService.createLottery(any())).thenReturn(
                 Lottery
                         .builder()
                         .ticket("123456")

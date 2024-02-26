@@ -8,9 +8,7 @@ import com.kbtg.bootcamp.posttest.entities.UserTicket;
 import com.kbtg.bootcamp.posttest.exceptions.LotteryNotFoundException;
 import com.kbtg.bootcamp.posttest.exceptions.LotterySoldOutException;
 import com.kbtg.bootcamp.posttest.exceptions.UserTicketNotFoundException;
-import com.kbtg.bootcamp.posttest.services.LotteryService;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.kbtg.bootcamp.posttest.services.UserTicketService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +22,6 @@ import java.util.List;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -39,20 +36,12 @@ class UserControllerTest {
     private MockMvc mvc;
 
     @MockBean
-    private LotteryService lotteryService;
-
-    @BeforeEach
-    void setUp() {
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
+    private UserTicketService userTicketService;
 
     @Test
     @DisplayName("When buy lottery with exist ticket id then response correctly with status ok")
     void whenBuyLotteryWithExistTicketId_thenResponseCorrectlyWithStatusOk() throws Exception {
-        when(this.lotteryService.buyLottery(anyString(), eq("123456"))).thenReturn(
+        when(this.userTicketService.buyLottery(anyString(), eq("123456"))).thenReturn(
                 UserTicket
                         .builder()
                         .id(1)
@@ -76,7 +65,7 @@ class UserControllerTest {
     @Test
     @DisplayName("When buy lottery with not exist ticket id then response with status not found")
     void whenBuyLotteryWithNotExistTicketId_thenResponseWithStatusNotFound() throws Exception {
-        when(this.lotteryService.buyLottery(anyString(), eq("987654"))).thenThrow(LotteryNotFoundException.class);
+        when(this.userTicketService.buyLottery(anyString(), eq("987654"))).thenThrow(LotteryNotFoundException.class);
 
         this.mvc.perform(post("/users/2222233334/lotteries/987654"))
                 .andDo(print())
@@ -86,7 +75,7 @@ class UserControllerTest {
     @Test
     @DisplayName("When buy lottery that is already sold out then response with status not found")
     void whenBuyLotteryThatIsAlreadySoldOut_thenResponseWithStatusNotFound() throws Exception {
-        when(this.lotteryService.buyLottery(anyString(), eq("123456"))).thenThrow(LotterySoldOutException.class);
+        when(this.userTicketService.buyLottery(anyString(), eq("123456"))).thenThrow(LotterySoldOutException.class);
 
         this.mvc.perform(post("/users/2222233334/lotteries/123456"))
                 .andDo(print())
@@ -118,7 +107,7 @@ class UserControllerTest {
                 160
         );
 
-        when(this.lotteryService.getLotteriesByUserId(anyString())).thenReturn(expectedResponse);
+        when(this.userTicketService.getLotteriesByUserId(anyString())).thenReturn(expectedResponse);
 
         this.mvc.perform(get("/users/2222233334/lotteries"))
                 .andDo(print())
@@ -142,7 +131,7 @@ class UserControllerTest {
     @Test
     @DisplayName("When sell lottery then response ticket id with status ok")
     void whenSellLottery_thenResponseTicketIdWithStatusOk() throws Exception {
-        when(this.lotteryService.sellLottery(anyString(), anyString())).thenReturn("123456");
+        when(this.userTicketService.sellLottery(anyString(), anyString())).thenReturn("123456");
 
         this.mvc.perform(delete("/users/2222233334/lotteries/123456"))
                 .andDo(print())
@@ -154,7 +143,7 @@ class UserControllerTest {
     @Test
     @DisplayName("When sell lottery and lottery service throw UserTicketNotFoundException then response status is not found")
     void whenSellLotteryAndLotteryServiceThrowUserTicketNotFoundException_thenResponseStatusIsNotFound() throws Exception {
-        when(this.lotteryService.sellLottery(anyString(), anyString())).thenThrow(UserTicketNotFoundException.class);
+        when(this.userTicketService.sellLottery(anyString(), anyString())).thenThrow(UserTicketNotFoundException.class);
 
         this.mvc.perform(delete("/users/2222233334/lotteries/123456"))
                 .andDo(print())

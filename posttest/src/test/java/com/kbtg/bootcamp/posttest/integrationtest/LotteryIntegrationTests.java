@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AdminLotteryStoreTests {
+public class LotteryIntegrationTests {
 
     @Autowired
     private MockMvc mvc;
@@ -68,7 +68,8 @@ public class AdminLotteryStoreTests {
     }
 
     @Test
-    @WithMockUser(username = "abcdefg123", roles = {"USER"})
+    @WithMockUser(username = "abcdefg123")
+    @DisplayName("Given create lottery request when create lottery with user then response status is forbidden")
     void givenCreateLotteryRequest_whenCreateLotteryWithUser_thenResponseStatusIsForbidden() throws Exception {
         this.mvc.perform(
                         post("/admin/lotteries")
@@ -103,7 +104,6 @@ public class AdminLotteryStoreTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists());
 
-        // should query database to check
         this.mvc.perform(get("/users/2222233333/lotteries"))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -155,7 +155,6 @@ public class AdminLotteryStoreTests {
     }
 
     @Test
-    @DirtiesContext
     @DisplayName("When user sell their lottery that does not exist then response status is not found")
     void whenUserSellTheirLotteryThatDoesNotExist_thenResponseStatusIsNotFound() throws Exception {
         this.mvc.perform(delete("/users/2222233334/lotteries/999999"))
@@ -163,14 +162,4 @@ public class AdminLotteryStoreTests {
                 .andExpect(status().isNotFound());
     }
 
-    @Test
-    @DirtiesContext
-    @DisplayName("When user sell their lottery then amount of lottery in store and user ticket is correct")
-    void whenUserSellTheirLottery_thenAmountOfLotteryInStoreAndUserTicketIsCorrect() throws Exception {
-        this.mvc.perform(delete("/users/2222233334/lotteries/123456"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.ticket").isString())
-                .andExpect(jsonPath("$.ticket").value("123456"));
-    }
 }

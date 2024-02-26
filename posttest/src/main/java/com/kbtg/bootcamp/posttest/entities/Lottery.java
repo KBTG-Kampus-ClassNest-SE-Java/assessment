@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "lottery")
-@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class Lottery {
 
     @Id
