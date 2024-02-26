@@ -13,21 +13,17 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "lottery")
 @Data
-@Getter
-@Setter
-@ToString
-@AllArgsConstructor
 @NoArgsConstructor
 public class Lottery extends AuditEntity {
     @Id
-    @GeneratedValue(generator = "lottery_generator")
-    @SequenceGenerator(name = "lottery_generator", sequenceName = "lottery_sequence", initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
-    private Long id;
+    private Integer id;
 
     @Length(min = 6, max = 6, message = "Ticket must contain 6 characters")
     private String ticket;
 
+    @Column(name = "price", precision = 6, scale = 2)
     @JsonIgnore
     @DecimalMin(value = "0.00", message = "Price has to be non negative number")
     private BigDecimal price;
@@ -35,4 +31,42 @@ public class Lottery extends AuditEntity {
     @JsonIgnore
     @Min(value = 1, message = "Amount must be at least 1")
     private Integer amount;
+
+    public Lottery(String ticket, BigDecimal price, Integer amount) {
+        this.ticket = ticket;
+        this.price = price;
+        this.amount = amount;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(String ticket) {
+        this.ticket = ticket;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
 }

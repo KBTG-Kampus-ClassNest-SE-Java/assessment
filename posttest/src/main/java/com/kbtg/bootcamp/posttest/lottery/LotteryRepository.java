@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface LotteryRepository extends JpaRepository<Lottery, Long> {
+public interface LotteryRepository extends JpaRepository<Lottery, Integer> {
     @Query("SELECT DISTINCT ticket FROM Lottery WHERE amount > 0 ORDER BY ticket")
     List<String> findDistinctTickets();
 }
