@@ -1,58 +1,56 @@
 package com.kbtg.bootcamp.posttest.user;
 
-import com.kbtg.bootcamp.posttest.lottery.Lottery;
-import com.kbtg.bootcamp.posttest.lottery.LotteryService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.kbtg.bootcamp.posttest.payload.LotteryDetailDto;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
-    @Autowired
-    private LotteryService lotteryService;
+    private final UserService userService;
 
-    @GetMapping("/{requestedUserId}/lotteries")
-    public ResponseEntity<?> getAllUserLotteryByUserIdPage(
-            @PathVariable(name = "requestedUserId") String requestedUserId
-    ) {
-        return
-        lotteryService.getUserLotteryDetail(requestedUserId);
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @GetMapping("/lotteries")
-    public UserResponse getLotteriesPage() {
-        List<String> collect = lotteryService.getAllLotteries().stream()
-                .map(Lottery::getTicket)
-                .collect(Collectors.toList());
-        return new UserResponse(collect);
+    @PostMapping("/{userId}/lotteries/{ticketId}")
+    public ResponseEntity<Map<String, String>> createUserAndLottery(@PathVariable("userId")
+                                                                    @NotBlank(message = "User ID value must not be blank")
+                                                                    @Pattern(regexp = "\\d{10}", message = "User ID must be 10 digit number")
+                                                                    String userId,
+                                                                    @PathVariable("ticketId")
+                                                                    @NotBlank
+                                                                    @Pattern(regexp = "\\d{6}", message = "Ticket ID must be 6 digit number")
+                                                                    String ticketId) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Collections.singletonMap("id", userService.createUserAndLottery(userId, ticketId)));
     }
 
-    @PostMapping("/{requestedUserId}/lotteries/{requestedTicketId}")
-    public ResponseEntity<?> getBuyLotteryPage(
-            @PathVariable(name = "requestedUserId") String requestedUserId,
-            @PathVariable(name = "requestedTicketId") String requestedTicketId,
-            @RequestBody UserRequest request
-    ) {
-        return lotteryService.buyLotteries(request);
+    @GetMapping("/{userId}/lotteries")
+    public LotteryDetailDto getUserBuyLotteryDetail(@PathVariable("userId")
+                                                                @NotBlank(message = "User ID value must not be blank")
+                                                                @Pattern(regexp = "\\d{10}", message = "User ID must be 10 digit number")
+                                                                String userId) {
+        return userService.getUserDetail(userId);
     }
 
-    @DeleteMapping("/{requestedUserID}/lotteries/{requestedTicketId}")
-    public ResponseEntity<?> sellingBackALotteryPage(
-            @PathVariable(name = "requestedUserID") String requestedUserID,
-            @PathVariable(name = "requestedTicketId") String requestedTicketId
-    ) {
-        return
-                lotteryService.sellLotteryByUsingUserIdAndLotteryTicket(requestedUserID, requestedTicketId);
+    @DeleteMapping("/{userId}/lotteries/{ticketId}")
+    public ResponseEntity<Map<String, String>> sellLottery(@PathVariable("userId")
+                                                           @NotBlank(message = "User ID value must not be blank")
+                                                           @Pattern(regexp = "\\d{10}", message = "User ID must be 10 digit number")
+                                                           String userId,
+                                                           @PathVariable("ticketId")
+                                                           @NotBlank
+                                                           @Pattern(regexp = "\\d{6}", message = "Ticket ID must be 6 digit number")
+                                                           String ticketId) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Collections.singletonMap("ticket", userService.sellLotteryByUserIdAndTicketId(userId, ticketId)));
     }
-
-
-
-
-
-
 }

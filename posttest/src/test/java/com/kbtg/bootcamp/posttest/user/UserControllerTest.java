@@ -1,323 +1,270 @@
 package com.kbtg.bootcamp.posttest.user;
 
-import com.kbtg.bootcamp.posttest.exception.LotteryNotBelongToUserException;
-import com.kbtg.bootcamp.posttest.exception.NotExistLotteryException;
-import com.kbtg.bootcamp.posttest.exception.NotExistUserIdException;
-import com.kbtg.bootcamp.posttest.lottery.Lottery;
-import com.kbtg.bootcamp.posttest.lottery.LotteryService;
+import com.kbtg.bootcamp.posttest.payload.LotteryDetailDto;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
+import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
-@SpringBootTest(
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-)
-@AutoConfigureMockMvc
-@ExtendWith(SpringExtension.class)
-class UserControllerTest {
-
-    @Autowired
+@ExtendWith(MockitoExtension.class)
+public class UserControllerTest {
     MockMvc mockMvc;
-
-    @Autowired
-    TestRestTemplate testRestTemplate;
-
-    @Autowired
-    LotteryService lotteryService;
-
-    @Autowired
-    UserController userController;
-
-
-
-    @Test
-    @DisplayName("can't return not null")
-    void shouldReturnNonNull() {
-        List<Lottery> allLotteries = lotteryService.getAllLotteries();
-        assertThat(allLotteries).isNotNull();
+    @Mock
+    UserService userService;
+    @BeforeEach
+    void setUp() {
+        UserController userController = new UserController(userService);
+        mockMvc = MockMvcBuilders.standaloneSetup(userController).alwaysDo(print()).build();
     }
 
     @Test
-    @DisplayName("should return UserResponse")
-    void shouldReturnUserResponse() {
+    @DisplayName("[createUserAndLottery] Should be make user, lottery and Status CREATED (201)")
+    void shouldCreateUserAndLottery() throws Exception {
 
-        // arrange
-        UserResponse userResponse = userController.getLotteriesPage();
-        List<Lottery> allLotteries = lotteryService.getAllLotteries();
-        // act
-        List<String> expectedTickets = allLotteries.stream()
-                .map(Lottery::getTicket)
-                .collect(Collectors.toList());
-
-        // assert
-        assertThat(userResponse.getTickets()).isEqualTo(expectedTickets);
-    }
-
-
-    @Test
-    @DisplayName("Return HTTPStatusOK and Body")
-    void test() {
-        UserRequest request = new UserRequest("1234567890","111111");
-        ResponseEntity<?> response =
-                testRestTemplate.postForEntity("/users/1234567890/lotteries/111111",request, Object.class );
-        // assert
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    }
-
-    @Test
-    @DisplayName("Return lottery that has null Profile")
-    void shouldReturnLotteryThatHasNullProfile() {
-        List<Lottery> lotteriesWithNullProfile = lotteryService.getAllLotteries().stream()
-                .filter(lottery -> lottery.getProfile() == null).collect(Collectors.toList());
-
-        // Assert that the list is not empty
-        assertThat(lotteriesWithNullProfile).isNotEmpty();
-
-        // Assert that all lotteries in the list have a null profile
-        assertThat(lotteriesWithNullProfile)
-                .allMatch(lottery -> lottery.getProfile() == null);
-    }
-
-    @Test
-    void testtest() {
-        lotteryService.validateInputInformation("1234567890","111111");
-    }
-
-
-    @Test
-    @DisplayName("Return Exception when user buy the possessions lottery")
-    void shouldReturnDuplicateException() {
-        // Arrange
         String userId = "1234567890";
-        String lotteryId = "111111";
+        String ticketId = "123456";
 
+//        UserIdResponseDto response = new UserIdResponseDto(1);
 
-        // Act & Assert
-        ResponseEntity<?> responseEntity = lotteryService.buyLotteries(new UserRequest(userId, lotteryId));
+        when(userService.createUserAndLottery(userId, ticketId)).thenReturn("1");
 
-
-        // Assert
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-        assertThat(responseEntity.getBody()).isEqualTo("You already have one");
+        mockMvc.perform(post("/users/" + userId + "/lotteries/" + ticketId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id", is("1")))
+                .andReturn();
     }
-
-
-
     @Test
-    @DisplayName("shouldReturn Body with Id from user_ticket")
-    void test3() {
-        UserRequest request = new UserRequest("1234567890","111111");
-        Map<String, String> responseBody = new HashMap<>();
-        responseBody.put("id", request.userId());
-        ResponseEntity<?> result = ResponseEntity.ok().body(responseBody);
-        ResponseEntity<String> response =
-                testRestTemplate.postForEntity("/users/1234567890/lotteries/111111",request, String.class );
+    @DisplayName("[createUserAndLottery] Should be Bad request (400) with userId is not number")
+    void shouldBadRequestWithUserIdNotNumber() throws Exception {
 
-        // assert
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        String userId = "tenzeroten";
+        String ticketId = "123456";
+
+        mockMvc.perform(post("/users/" + userId + "/lotteries/" + ticketId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andReturn();
     }
-
-
-
     @Test
-    @DisplayName("should Return Status OK with correct path variable")
-    void testEXP04p2() {
-        ResponseEntity<String> response =
-                testRestTemplate.getForEntity("/users/0987654321/lotteries",String.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    @DisplayName("[createUserAndLottery] Should be Bad request (400) with userId is less then 10 digits")
+    void shouldBadRequestWithUserIdLessThanTenDigits() throws Exception {
+
+        String userId = "123456789";
+        String ticketId = "123456";
+
+        mockMvc.perform(post("/users/" + userId + "/lotteries/" + ticketId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andReturn();
     }
-
     @Test
-    @DisplayName("return List of lottery that existedUserId have")
-    void testEXP04p3() {
-        boolean userExistsByUserId = lotteryService.isUserExistsByUserId("0987654321");
-        System.out.println("userExistsByUserId = " + userExistsByUserId);
+    @DisplayName("[createUserAndLottery] Should be Bad request (400) with userId is more then 10 digits")
+    void shouldBadRequestWithUserIdMoreThanTenDigits() throws Exception {
+
+        String userId = "12345678901";
+        String ticketId = "123456";
+
+        mockMvc.perform(post("/users/" + userId + "/lotteries/" + ticketId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andReturn();
     }
-
     @Test
-    @DisplayName("houldReturnStatus OK")
-    void testEXP05p0() {
+    @DisplayName("[createUserAndLottery] Should be Bad request (400) with ticketId is not number")
+    void shouldBadRequestWithTicketIdNotNumber() throws Exception {
 
-        testRestTemplate = mock(TestRestTemplate.class);
-        // Create a mock response entity with the desired status code
-        ResponseEntity<Void> response = new ResponseEntity<>(HttpStatus.OK);
-
-        // Define the behavior of the restTemplateMock when the exchange method is called
-        when(testRestTemplate.exchange(eq("/users/1234567890/lotteries/555555"), eq(HttpMethod.DELETE), any(), eq(Void.class)))
-                .thenReturn(response);
-
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    }
-
-    @Test
-    @DisplayName("Should return NOT_FOUND when selling back a non-existent lottery ticket")
-    void sellingBackNonExistentLotteryTicket() {
-        // Arrange
-        String nonExistentTicketId = "999999"; // this ticket doesn't exist
-        testRestTemplate = mock(TestRestTemplate.class);
-
-        ResponseEntity<Void> response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
-        // Act
-        // Define the behavior of the restTemplateMock when the exchange method is called
-        when(testRestTemplate.exchange(eq("/users/1234567890/lotteries/"+nonExistentTicketId), eq(HttpMethod.DELETE), any(), eq(Void.class)))
-                .thenReturn(response);
-
-        // Assert
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-    }
-
-    @Test
-    @DisplayName("Should return the lottery associated with the given user ID")
-    void shouldReturnLotteryForExistingUserId() {
-        // Arrange
-        String requestedUserID = "1234567890"; // Existing user ID
-        String requestedLotteryId = "111111"; // Existing Lottery ID
-        testRestTemplate = mock(TestRestTemplate.class);
-        ResponseEntity<Void> response = ResponseEntity.ok().build();
-        when(testRestTemplate.exchange(
-                eq("/users/" +requestedUserID + "lotteries/" + requestedLotteryId),
-                eq(HttpMethod.GET),
-                any(),
-                eq(Void.class)
-        )).thenReturn(response);
-
-        // Assert
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    }
-
-    @Test
-    @DisplayName("hould return a list of lotteries associated with the given user ID")
-    void shouldReturnListOfLotteriesForExistingUserId() {
-        // Arrange
-        String userId = "1234567890"; // Existing user ID
-        String lotteryId = "111111";// Existing lottery ID
-
-        // Mock
-        testRestTemplate = mock(TestRestTemplate.class);
-        ResponseEntity<Void> expectedResponse = ResponseEntity.ok().build();
-
-        // Stub the exchange
-        when(testRestTemplate.exchange(
-                eq("/users/" + userId + "/lotteries/" + lotteryId),
-                eq(HttpMethod.DELETE),
-                any(),
-                eq(Void.class)
-        )).thenReturn(expectedResponse);
-
-        // Act: Perform the actual method call that you want to test
-        ResponseEntity<Void> actualResponse = testRestTemplate.exchange(
-                "/users/" + userId + "/lotteries/" + lotteryId,
-                HttpMethod.DELETE,
-                null,
-                Void.class
-        );
-
-        // Assert
-        assertThat(actualResponse.getStatusCode()).isEqualTo(expectedResponse.getStatusCode());
-        // Check if the body of the actual response is not null
-        assertThat(actualResponse).isNotNull();
-    }
-
-    @Test
-    @DisplayName("throw exception LotteryNotBelongToUserException")
-    void testException() {
         String userId = "1234567890";
-        String lotteryId = "333333";
-        testRestTemplate = mock(TestRestTemplate.class);
+        String ticketId = "OneTwoThree";
 
-        ResponseEntity<Void> response = ResponseEntity.badRequest().build();
-        when(testRestTemplate.exchange(
-                eq("/users/" + userId + "/lotteries/" +lotteryId),
-                eq(HttpMethod.DELETE),
-                any(),
-                eq(Void.class)
-        )).thenReturn(response);
+        mockMvc.perform(post("/users/" + userId + "/lotteries/" + ticketId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+    }
+    @Test
+    @DisplayName("[createUserAndLottery] Should be Bad request (400) with ticketId is less then 6 digits")
+    void shouldBadRequestWithTicketIdLessThanSixDigits() throws Exception {
 
-        assertThrows(LotteryNotBelongToUserException.class, () -> {
-            lotteryService.validateLotteryOwnership("1234567890", "333333");
-        });
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        String userId = "1234567890";
+        String ticketId = "12345";
+
+        mockMvc.perform(post("/users/" + userId + "/lotteries/" + ticketId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andReturn();
     }
 
     @Test
-    void testHandleNotExistLotteryException() {
-        // Arrange
-        Exception exception = new NotExistLotteryException("Lottery does not exist");
+    @DisplayName("[createUserAndLottery] Should be Bad request (400) with ticketId is more then 6 digits")
+    void shouldBadRequestWithTicketIdMoreThanSixDigits() throws Exception {
 
-        // Act
-        ResponseEntity<?> response = lotteryService.handleException(exception);
+        String userId = "1234567890";
+        String ticketId = "1234567";
 
-        // Assert
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Lottery does not exist", response.getBody());
+        mockMvc.perform(post("/users/" + userId + "/lotteries/" + ticketId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+    }
+    @Test
+    @DisplayName("[getUserBuyLotteryDetail] Should be get user lottery detail (List of Lotteries, count and cost Status OK (200)")
+    void shouldGetUserBuyLotteryDetailOK() throws Exception {
+
+        String userId = "1234567890";
+        List<String> lotteries = new ArrayList<>();
+        lotteries.add("000001");
+        lotteries.add("000002");
+
+        Integer count = 2;
+        Integer cost = 160;
+
+        LotteryDetailDto response = new LotteryDetailDto(lotteries, count, cost);
+
+        when(userService.getUserDetail(userId)).thenReturn(response);
+
+        mockMvc.perform(get("/users/" + userId + "/lotteries/"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.tickets", is(lotteries)))
+                .andExpect(jsonPath("$.count", is(2)))
+                .andExpect(jsonPath("$.cost", is(160)))
+                .andReturn();
+    }
+    @Test
+    @DisplayName("[getUserBuyLotteryDetail] Should be Bad Request (400) with userId is not number")
+    void shouldBadRequestWithUserIdNotNumberAtGetUserBuyLotteryDetail() throws Exception {
+
+        String userId = "OneTwoThree";
+
+        mockMvc.perform(get("/users/" + userId + "/lotteries/"))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+    }
+    @Test
+    @DisplayName("[getUserBuyLotteryDetail] Should be Bad Request (400) with userId is less than 10 digits")
+    void shouldBadRequestWithUserIdLessThanTenDigitsAtGetUserBuyLotteryDetail() throws Exception {
+
+        String userId = "123456789";
+
+        mockMvc.perform(get("/users/" + userId + "/lotteries/"))
+                .andExpect(status().isBadRequest())
+                .andReturn();
     }
 
     @Test
-    void testHandleNotExistUserIdException() {
-        // Arrange
-        Exception exception = new NotExistUserIdException("User does not exist");
+    @DisplayName("[getUserBuyLotteryDetail] Should be Bad Request (400) with userId is more than 10 digits")
+    void shouldBadRequestWithUserIdMoreThanTenDigitsAtGetUserBuyLotteryDetail() throws Exception {
 
-        // Act
-        ResponseEntity<?> response = lotteryService.handleException(exception);
+        String userId = "12345678901";
 
-        // Assert
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("User does not exist", response.getBody());
+        mockMvc.perform(get("/users/" + userId + "/lotteries/"))
+                .andExpect(status().isBadRequest())
+                .andReturn();
     }
 
     @Test
-    void testHandleLotteryNotBelongToUserException() {
-        // Arrange
-        Exception exception = new LotteryNotBelongToUserException("Lottery does not belong to user.");
+    @DisplayName("[sellLottery] Should be delete user ticket and Status OK (200)")
+    void shouldSellLotteryOK() throws Exception {
 
-        // Act
-        ResponseEntity<?> response = lotteryService.handleException(exception);
+        String userId = "1234567890";
+        String ticketId = "123456";
 
-        // Assert
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Lottery does not belong to user.", response.getBody());
+//        LotteryResponseDto response = new LotteryResponseDto(ticketId);
+
+        when(userService.sellLotteryByUserIdAndTicketId(userId, ticketId)).thenReturn(ticketId);
+
+        mockMvc.perform(delete("/users/" + userId + "/lotteries/" + ticketId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.ticket", is(ticketId)))
+                .andReturn();
     }
-
     @Test
-    void testHandleInternalServerError() {
-        // Arrange
-        Exception exception = new RuntimeException("Internal Server Error");
+    @DisplayName("[sellLottery] Should be Bad Request (400) with userId is not number")
+    void shouldBadRequestWithUserIdNotNumberAtSellLottery() throws Exception {
 
-        // Act
-        ResponseEntity<?> response = lotteryService.handleException(exception);
+        String userId = "OneTwoThree";
+        String ticketId = "123456";
 
-        // Assert
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        mockMvc.perform(delete("/users/" + userId + "/lotteries/" + ticketId))
+                .andExpect(status().isBadRequest())
+                .andReturn();
     }
+    @Test
+    @DisplayName("[sellLottery] Should be Bad Request (400) with userId is less than 10 digits")
+    void shouldBadRequestWithUserIdLessThanTenDigitsAtSellLottery() throws Exception {
 
+        String userId = "123456789";
+        String ticketId = "123456";
 
+        mockMvc.perform(delete("/users/" + userId + "/lotteries/" + ticketId))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+    }
+    @Test
+    @DisplayName("[sellLottery] Should be Bad Request (400) with userId is more than 10 digits")
+    void shouldBadRequestWithUserIdMoreThanTenDigitsAtSellLottery() throws Exception {
 
+        String userId = "12345678901";
+        String ticketId = "123456";
 
+        mockMvc.perform(delete("/users/" + userId + "/lotteries/" + ticketId))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+    }
+    @Test
+    @DisplayName("[sellLottery] Should be Bad Request (400) with ticketId is not number")
+    void shouldBadRequestWithTicketIdNotNumberAtSellLottery() throws Exception {
 
+        String userId = "1234567890";
+        String ticketId = "OneTwoThree";
 
+        mockMvc.perform(delete("/users/" + userId + "/lotteries/" + ticketId))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+    }
+    @Test
+    @DisplayName("[sellLottery] Should be Bad Request (400) with ticketId is less than 6 digits")
+    void shouldBadRequestWithTicketIdLessThanSixDigitsAtSellLottery() throws Exception {
 
+        String userId = "1234567890";
+        String ticketId = "12345";
+
+        mockMvc.perform(delete("/users/" + userId + "/lotteries/" + ticketId))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+    }
+    @Test
+    @DisplayName("[sellLottery] Should be Bad Request (400) with ticketId is more than 6 digits")
+    void shouldBadRequestWithTicketIdMoreThanSixDigitsAtSellLottery() throws Exception {
+
+        String userId = "1234567890";
+        String ticketId = "1234567";
+
+        mockMvc.perform(delete("/users/" + userId + "/lotteries/" + ticketId))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+    }
 }

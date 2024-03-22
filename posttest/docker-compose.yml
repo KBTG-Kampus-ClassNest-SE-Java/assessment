@@ -1,29 +1,21 @@
-version: '3.8'
-
+version: "3.8"
 services:
-  postgres:
-    image: postgres:latest
+  db:
+    container_name: postgres_container
+    image: postgres
+    restart: always
     environment:
-      POSTGRES_DB: lotteryDB
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-    volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      POSTGRES_DB: lotteryDB
     ports:
       - "5432:5432"
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
     restart: always
-  my_app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-
-    depends_on:
-      - postgres
     environment:
-      - DATABASE_URL=jdbc:postgresql://localhost:5432/lotteryDB
-      - DATABASE_USERNAME=postgres
-      - DATABASE_PASSWORD=password
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
     ports:
-      - "8888:8888"
-volumes:
-  data:
+      - "8888:80"
